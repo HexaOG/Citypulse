@@ -175,17 +175,34 @@ export const Complaints = () => {
               </h2>
               
               <div className="flex flex-col items-center justify-center mb-4">
-                <div className={`relative w-32 h-32 flex items-center justify-center rounded-full border-4 ${
-                  replayOffsetHours < 0 ? 'border-amber-500/30' : 'border-rose-500/30'
-                }`}>
-                  <div className={`absolute inset-0 rounded-full border-4 border-r-transparent animate-[spin_5s_linear_infinite_reverse] ${
-                    replayOffsetHours < 0 ? 'border-amber-500' : 'border-rose-500'
-                  }`} />
-                  <div className="flex flex-col items-center">
-                    <span className={`text-3xl font-bold ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'}`}>
+                <div className="relative w-36 h-36 flex items-center justify-center">
+                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      className="text-white/5 dark:text-white/5"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      strokeDasharray={`${(loadIndex / 100) * (2 * Math.PI * 40)} ${2 * Math.PI * 40}`}
+                      strokeLinecap="round"
+                      className={`${replayOffsetHours < 0 ? 'text-amber-500' : 'text-rose-500'} transition-all duration-1000 ease-out`}
+                    />
+                  </svg>
+                  <div className="flex flex-col items-center z-10">
+                    <span className={`text-4xl font-black font-mono tracking-tight ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'}`}>
                       {loadIndex}%
                     </span>
-                    <span className="text-[10px] tracking-widest text-gray-400">LOAD INDEX</span>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mt-1">LOAD INDEX</span>
                   </div>
                 </div>
               </div>

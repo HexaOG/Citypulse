@@ -120,8 +120,9 @@ export const Home = () => {
   };
 
   return (
-    <div className="relative w-full h-full bg-background transition-colors duration-300 overflow-y-auto">
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/40 via-transparent to-transparent pointer-events-none"></div>
+    <div className="relative w-full h-full bg-[#08090e] transition-colors duration-300 overflow-y-auto">
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(6,182,212,0.12)_0%,_rgba(139,92,246,0.06)_40%,_transparent_75%)] pointer-events-none"></div>
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
       
       <div className="relative z-10 min-h-screen flex flex-col p-6 pointer-events-auto">
         <Header />
@@ -174,15 +175,36 @@ export const Home = () => {
               </div>
               
               <div className="flex flex-col items-center">
-                <div className={`relative w-24 h-24 flex items-center justify-center rounded-full border-4 ${
-                  replayOffsetHours < 0 ? 'border-amber-500/30' : 'border-emerald-500/30'
-                }`}>
-                  <div className={`absolute inset-0 rounded-full border-4 border-t-transparent animate-spin ${
-                    replayOffsetHours < 0 ? 'border-amber-500' : 'border-emerald-500'
-                  }`} style={{ animationDuration: '4s' }} />
-                  <div className={`text-2xl font-bold ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-emerald-500'}`}>{dynamicChiScore}</div>
+                <div className="relative w-28 h-28 flex items-center justify-center">
+                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      className="text-white/5 dark:text-white/5"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      strokeDasharray={`${(dynamicChiScore / 100) * (2 * Math.PI * 40)} ${2 * Math.PI * 40}`}
+                      strokeLinecap="round"
+                      className={`${replayOffsetHours < 0 ? 'text-amber-500' : 'text-emerald-500'} transition-all duration-1000 ease-out`}
+                    />
+                  </svg>
+                  <div className={`text-3xl font-black font-mono tracking-tight z-10 ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-emerald-500'}`}>
+                    {dynamicChiScore}
+                  </div>
                 </div>
-                <div className={`mt-2 text-xs font-bold tracking-widest ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-emerald-500'}`}>
+                <div className={`mt-2 text-[10px] font-bold tracking-widest px-2.5 py-1 flex items-center rounded-xl bg-opacity-20 border ${
+                  replayOffsetHours < 0 ? 'bg-amber-500 border-amber-500/40 text-amber-500' : 'bg-emerald-500 border-emerald-500/40 text-emerald-500'
+                }`}>
                   {dynamicChiScore > 80 ? 'STABLE' : (dynamicChiScore > 50 ? 'WARNING' : 'CRITICAL')}
                 </div>
               </div>

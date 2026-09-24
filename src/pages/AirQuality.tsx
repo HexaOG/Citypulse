@@ -23,8 +23,6 @@ export const AirQuality = () => {
 
   const textColor = isPoor ? 'text-rose-500' : (isModerate ? 'text-amber-500' : 'text-cyan-500');
   const textColorMuted = isPoor ? 'text-rose-500/80' : (isModerate ? 'text-amber-500/80' : 'text-cyan-500/80');
-  const borderColor = isPoor ? 'border-rose-500' : (isModerate ? 'border-amber-500' : 'border-cyan-500');
-  const borderOpacity = isPoor ? 'border-rose-500/30' : (isModerate ? 'border-amber-500/30' : 'border-cyan-500/30');
   const borderLeft = isPoor ? 'border-l-rose-500' : (isModerate ? 'border-l-amber-500' : 'border-l-cyan-500');
   const bgOpacity = isPoor ? 'bg-rose-500/20' : (isModerate ? 'bg-amber-500/20' : 'bg-cyan-500/20');
 
@@ -45,11 +43,32 @@ export const AirQuality = () => {
               </h2>
               
               <div className="flex flex-col items-center justify-center mb-4">
-                <div className={`relative w-32 h-32 flex items-center justify-center rounded-full border-4 ${borderOpacity}`}>
-                  <div className={`absolute inset-0 rounded-full border-4 ${borderColor} border-l-transparent animate-[spin_4s_linear_infinite]`} />
-                  <div className="flex flex-col items-center">
-                    <span className={`text-3xl font-bold ${textColor}`}>{aqi}</span>
-                    <span className={`text-[10px] tracking-widest ${textColorMuted}`}>{status}</span>
+                <div className="relative w-36 h-36 flex items-center justify-center">
+                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      className="text-white/5 dark:text-white/5"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      strokeDasharray={`${((Math.min(aqi, 500)) / 500) * (2 * Math.PI * 40)} ${2 * Math.PI * 40}`}
+                      strokeLinecap="round"
+                      className={`${textColor} transition-all duration-1000 ease-out`}
+                    />
+                  </svg>
+                  <div className="flex flex-col items-center z-10">
+                    <span className={`text-4xl font-black font-mono tracking-tight ${textColor}`}>{aqi}</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-widest mt-1 ${textColorMuted}`}>{status}</span>
                   </div>
                 </div>
               </div>

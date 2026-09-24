@@ -22,8 +22,6 @@ export const Traffic = () => {
   const { congestion, delay, incidents, isCritical, isWarning, synthesis } = trafficData;
 
   const textColor = isCritical ? 'text-rose-500' : (isWarning ? 'text-amber-500' : 'text-emerald-500');
-  const borderColor = isCritical ? 'border-rose-500' : (isWarning ? 'border-amber-500' : 'border-emerald-500');
-  const borderOpacity = isCritical ? 'border-rose-500/30' : (isWarning ? 'border-amber-500/30' : 'border-emerald-500/30');
   const borderLeft = isCritical ? 'border-l-rose-500' : (isWarning ? 'border-l-amber-500' : 'border-l-emerald-500');
   const bgOpacity = isCritical ? 'bg-rose-500/20' : (isWarning ? 'bg-amber-500/20' : 'bg-emerald-500/20');
 
@@ -44,11 +42,32 @@ export const Traffic = () => {
               </h2>
               
               <div className="flex flex-col items-center justify-center mb-4">
-                <div className={`relative w-32 h-32 flex items-center justify-center rounded-full border-4 ${borderOpacity}`}>
-                  <div className={`absolute inset-0 rounded-full border-4 ${borderColor} border-t-transparent animate-[spin_3s_linear_infinite]`} />
-                  <div className="flex flex-col items-center">
-                    <span className={`text-3xl font-bold ${textColor}`}>{congestion}%</span>
-                    <span className="text-[10px] tracking-widest text-gray-400">CONGESTION</span>
+                <div className="relative w-36 h-36 flex items-center justify-center">
+                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      className="text-white/5 dark:text-white/5"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      strokeDasharray={`${(congestion / 100) * (2 * Math.PI * 40)} ${2 * Math.PI * 40}`}
+                      strokeLinecap="round"
+                      className={`${textColor} transition-all duration-1000 ease-out`}
+                    />
+                  </svg>
+                  <div className="flex flex-col items-center z-10">
+                    <span className={`text-4xl font-black font-mono tracking-tight ${textColor}`}>{congestion}%</span>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mt-1">CONGESTION</span>
                   </div>
                 </div>
               </div>

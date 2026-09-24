@@ -28,8 +28,6 @@ export const Weather = () => {
   const isRain = precip > 2;
   const isStorm = precip > 6;
   const themeColor = isStorm ? 'text-amber-400' : (isRain ? 'text-cyan-400' : 'text-emerald-500');
-  const borderColor = isStorm ? 'border-amber-500' : (isRain ? 'border-cyan-500' : 'border-emerald-500');
-  const borderOpacity = isStorm ? 'border-amber-500/30' : (isRain ? 'border-cyan-500/30' : 'border-emerald-500/30');
   const borderLeft = isStorm ? 'border-l-amber-500' : (isRain ? 'border-l-cyan-500' : 'border-l-emerald-500');
   const bgOpacity = isStorm ? 'bg-amber-500/20' : (isRain ? 'bg-cyan-500/20' : 'bg-emerald-500/20');
 
@@ -51,11 +49,32 @@ export const Weather = () => {
               </h2>
               
               <div className="flex flex-col items-center justify-center mb-4">
-                <div className={`relative w-32 h-32 flex items-center justify-center rounded-full border-4 ${borderOpacity}`}>
-                  <div className={`absolute inset-0 rounded-full border-4 ${borderColor} border-t-transparent animate-[spin_5s_linear_infinite]`} />
-                  <div className="flex flex-col items-center">
-                    <span className={`text-3xl font-bold ${themeColor}`}>{temp}°C</span>
-                    <span className={`text-[10px] tracking-widest uppercase font-semibold text-gray-300`}>{condition}</span>
+                <div className="relative w-36 h-36 flex items-center justify-center">
+                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      className="text-white/5 dark:text-white/5"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      strokeDasharray={`${Math.min((Math.abs(temp) / 50), 1) * (2 * Math.PI * 40)} ${2 * Math.PI * 40}`}
+                      strokeLinecap="round"
+                      className={`${themeColor} transition-all duration-1000 ease-out`}
+                    />
+                  </svg>
+                  <div className="flex flex-col items-center z-10">
+                    <span className={`text-4xl font-black font-mono tracking-tight ${themeColor}`}>{temp}°C</span>
+                    <span className={`text-[10px] tracking-widest uppercase font-bold text-gray-300 mt-1`}>{condition}</span>
                   </div>
                 </div>
               </div>
