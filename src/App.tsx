@@ -13,7 +13,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="relative w-screen h-screen overflow-hidden bg-background">
+      <div className="relative w-screen h-screen overflow-hidden bg-slate-50 dark:bg-[#08090e] text-slate-900 dark:text-slate-100 transition-colors duration-300">
         <Navigation />
         
         <Routes>

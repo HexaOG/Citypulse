@@ -170,37 +170,42 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
     return CATEGORY_MAP[cat] || CATEGORY_MAP['Other'];
   };
 
-  // If collapsed, render right-side slide tab
-  if (!isCommunityDrawerOpen) {
-    return (
-      <button
-        onClick={() => setIsCommunityDrawerOpen(true)}
-        aria-label="Open Community Reports Feed"
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-40 bg-[#121821]/90 backdrop-blur-xl border-l border-y border-white/10 hover:border-cyan-500/50 p-3 rounded-l-2xl shadow-[0_0_25px_rgba(0,0,0,0.5)] flex flex-col items-center gap-2.5 text-white group cursor-pointer transition-all hover:pr-4"
-      >
-        <div className={`p-2 rounded-xl transition-all ${
-          replayOffsetHours < 0 
-            ? 'bg-amber-500/20 text-amber-400 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-black' 
-            : 'bg-cyan-500/20 text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-black'
-        }`}>
-          <MessageSquareText size={20} />
-        </div>
-        <div className="[writing-mode:vertical-rl] rotate-180 text-[11px] font-bold tracking-widest uppercase text-gray-300 group-hover:text-cyan-300">
-          {replayOffsetHours < 0 ? `Replay (T-${Math.abs(replayOffsetHours)}h)` : 'Community Feed'}
-        </div>
-        <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border shadow-sm ${
-          replayOffsetHours < 0 
-            ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' 
-            : 'bg-rose-500/20 text-rose-400 border-rose-500/30'
-        }`}>
-          {timeFilteredReports.length}
-        </span>
-      </button>
-    );
-  }
-
   return (
-    <aside className="absolute top-24 bottom-6 right-6 w-96 md:w-[430px] z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl rounded-2xl flex flex-col pointer-events-auto animate-in slide-in-from-right-6 duration-300">
+    <>
+      {/* Collapsed Vertical Tab Trigger Pill */}
+      {!isCommunityDrawerOpen && (
+        <button
+          type="button"
+          onClick={() => setIsCommunityDrawerOpen(true)}
+          aria-label="Open Community Reports Feed"
+          className="fixed right-0 top-1/3 -translate-y-1/2 z-[1050] pointer-events-auto flex flex-col items-center gap-2 py-4 px-2 rounded-l-xl shadow-xl border border-r-0 cursor-pointer transition-all bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-slate-200/90 dark:border-slate-800 text-slate-800 dark:text-slate-100 hover:px-3 group animate-in fade-in slide-in-from-right-2 duration-200"
+        >
+          <div className={`p-2 rounded-xl transition-all ${
+            replayOffsetHours < 0 
+              ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-white' 
+              : 'bg-sky-500/15 text-sky-600 dark:text-sky-400 group-hover:bg-sky-500 group-hover:text-white'
+          }`}>
+            <MessageSquareText size={18} />
+          </div>
+          <span className="[writing-mode:vertical-lr] text-xs font-bold tracking-wider uppercase text-slate-800 dark:text-slate-100 py-1">
+            COMMUNITY FEED
+          </span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border shadow-sm ${
+            replayOffsetHours < 0 
+              ? 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/40' 
+              : 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30'
+          }`}>
+            {timeFilteredReports.length}
+          </span>
+        </button>
+      )}
+
+      {/* Main Community Feed Drawer Panel */}
+      <aside
+        className={`fixed top-20 bottom-6 right-4 md:right-6 w-96 md:w-[430px] z-[1050] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-2xl rounded-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+          isCommunityDrawerOpen ? 'translate-x-0 pointer-events-auto' : 'translate-x-[calc(100%+32px)] pointer-events-none'
+        }`}
+      >
       {/* Drawer Header */}
       <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -487,5 +492,6 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
         )}
       </div>
     </aside>
+    </>
   );
 };
