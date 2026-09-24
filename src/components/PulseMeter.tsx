@@ -1,6 +1,5 @@
-import React from 'react';
 import { usePulseStore } from '../store/useStore';
-import { Activity, TrendingDown, TrendingUp } from 'lucide-react';
+import { TrendingDown, TrendingUp } from 'lucide-react';
 
 export const PulseMeter = () => {
   const chiScore = usePulseStore(state => state.chiScore);

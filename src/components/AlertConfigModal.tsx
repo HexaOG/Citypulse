@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Bell, X } from 'lucide-react';
 
 export const AlertConfigModal = () => {

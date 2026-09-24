@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Play, Pause, Rewind, FastForward } from 'lucide-react';
 
 export const TimeTravelSlider = () => {

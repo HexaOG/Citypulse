@@ -1,4 +1,3 @@
-import React from 'react';
 import { Header } from '../components/Header';
 import { PulseMeter } from '../components/PulseMeter';
 import { SituationBriefing } from '../components/SituationBriefing';
@@ -16,10 +15,10 @@ export const Weather = () => {
       <div className="absolute inset-0 z-10 pointer-events-none">
         <Header />
         
-        <div className="absolute top-24 left-24 right-6 flex items-start justify-between pointer-events-auto">
+        <div className="absolute top-24 left-24 right-6 flex items-start justify-between pointer-events-none">
           <div className="flex gap-6 items-start w-full">
-            <PulseMeter />
-            <SituationBriefing />
+            <div className="pointer-events-auto"><PulseMeter /></div>
+            <div className="pointer-events-auto flex-1"><SituationBriefing /></div>
           </div>
         </div>
         
