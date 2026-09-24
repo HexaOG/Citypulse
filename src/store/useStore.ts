@@ -327,6 +327,8 @@ interface PulseState {
   // Community Feed Actions
   addCommunityReport: (report: CommunityReport) => void;
   confirmReportIssue: (id: string) => void;
+  setCommunityReports: (reports: CommunityReport[]) => void;
+  appendCommunityReportStoreOnly: (report: CommunityReport) => void;
   setSelectedAreaFilter: (area: string) => void;
   setFocusedIncidentId: (id: string | null) => void;
   setFocusedLocation: (loc: { coordinates: [number, number]; zoom?: number } | null) => void;
@@ -406,22 +408,55 @@ export const usePulseStore = create<PulseState>((set) => ({
   setSelectedLocation: (loc) => set({ selectedLocation: loc }),
   setActiveTickets: (count) => set({ activeTickets: count }),
   setComplaintSynthesis: (msg) => set({ complaintSynthesis: msg }),
+  setCommunityReports: (reports) => set({ communityReports: reports }),
+  appendCommunityReportStoreOnly: (report) => set((state) => {
+    // avoid duplicates
+    if (state.communityReports.some(r => r.id === report.id)) return state;
+    return {
+      communityReports: [{ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 }, ...state.communityReports],
+      activeTickets: state.activeTickets + 1,
+      events: [
+        {
+          eventId: report.id,
+          sourceFeed: '311',
+          timestamp: new Date().toISOString(),
+          coordinates: report.coordinates,
+          category: report.category,
+          severity: report.severity
+        },
+        ...state.events
+      ]
+    };
+  }),
 
-  addCommunityReport: (report) => set((state) => ({
-    communityReports: [{ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 }, ...state.communityReports],
-    activeTickets: state.activeTickets + 1,
-    events: [
-      {
-        eventId: report.id,
-        sourceFeed: '311',
-        timestamp: new Date().toISOString(),
-        coordinates: report.coordinates,
-        category: report.category,
-        severity: report.severity
-      },
-      ...state.events
-    ].slice(-100)
-  })),
+  addCommunityReport: (report) => {
+    // Post to backend database
+    fetch('http://localhost:8080/api/reports', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 })
+    }).catch(err => console.error('Failed to post report:', err));
+
+    // Optimistically update store
+    set((state) => {
+      if (state.communityReports.some(r => r.id === report.id)) return state;
+      return {
+        communityReports: [{ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 }, ...state.communityReports],
+        activeTickets: state.activeTickets + 1,
+        events: [
+          {
+            eventId: report.id,
+            sourceFeed: '311',
+            timestamp: new Date().toISOString(),
+            coordinates: report.coordinates,
+            category: report.category,
+            severity: report.severity
+          },
+          ...state.events
+        ]
+      };
+    });
+  },
 
   confirmReportIssue: (id) => set((state) => ({
     communityReports: state.communityReports.map((item) => {
