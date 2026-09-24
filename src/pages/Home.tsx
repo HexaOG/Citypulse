@@ -16,7 +16,7 @@ export const Home = () => {
   let weatherStatus = 'active';
   if (latestWeather && latestWeather.rawMetrics) {
       const temp = latestWeather.rawMetrics.temperature;
-      const condition = latestWeather.category === 'rain' ? 'Rain' : 'Clear';
+      const condition = latestWeather.category;
       weatherMetric = temp !== undefined ? `${temp}°C / ${condition}` : condition;
       weatherStatus = latestWeather.severity === 'critical' || latestWeather.severity === 'high' ? 'critical' : 'good';
   }

@@ -72,7 +72,7 @@ class MultiStreamSimulator:
                 if now - last_fetch > 60:
                     try:
                         def get_wx():
-                            url = f"https://api.open-meteo.com/v1/forecast?latitude={BASE_LAT}&longitude={BASE_LNG}&current=temperature_2m,precipitation,wind_speed_10m"
+                            url = f"https://api.open-meteo.com/v1/forecast?latitude={BASE_LAT}&longitude={BASE_LNG}&current=temperature_2m,precipitation,wind_speed_10m,weather_code"
                             req = urllib.request.Request(url, headers={'User-Agent': 'CityPulse/1.0'})
                             with urllib.request.urlopen(req, timeout=5) as r:
                                 return json.loads(r.read())
@@ -86,9 +86,20 @@ class MultiStreamSimulator:
                     precip = cached_wx.get("precipitation", 0)
                     wind = cached_wx.get("wind_speed_10m", 0)
                     temp = cached_wx.get("temperature_2m", 20)
-                    if precip > 0:
-                        category = 'rain'
-                        severity = 'medium' if precip > 5 else 'low'
+                    wmo_code = cached_wx.get("weather_code", 0)
+                    
+                    if wmo_code == 0: category = 'Sunny'
+                    elif wmo_code in [1, 2]: category = 'Partly Cloudy'
+                    elif wmo_code == 3: category = 'Overcast'
+                    elif wmo_code in [45, 48]: category = 'Foggy'
+                    elif 50 <= wmo_code <= 69 or 80 <= wmo_code <= 82: category = 'Rainy'
+                    elif 70 <= wmo_code <= 79 or 85 <= wmo_code <= 86: category = 'Snowy'
+                    elif wmo_code >= 95: category = 'Thunderstorm'
+                    else: category = 'Clear'
+                    
+                    severity = 'low'
+                    if precip > 5 or wind > 30: severity = 'medium'
+                    if precip > 20 or wind > 50 or wmo_code >= 95: severity = 'high'
             
             event = CanonicalCivicEvent(
                 eventId=str(uuid.uuid4()),

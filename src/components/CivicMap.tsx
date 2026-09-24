@@ -37,7 +37,13 @@ export const CivicMap = () => {
             >
               <Popup>
                 <strong className="uppercase">{ev.sourceFeed}</strong><br/>
-                {ev.category}<br/>
+                Condition: {ev.category}<br/>
+                {ev.sourceFeed === 'weather' && ev.rawMetrics?.temperature !== undefined && (
+                  <>Temp: {ev.rawMetrics.temperature}°C<br/></>
+                )}
+                {ev.sourceFeed === 'aqi' && ev.rawMetrics?.us_aqi !== undefined && (
+                  <>AQI: {ev.rawMetrics.us_aqi}<br/></>
+                )}
                 Severity: {ev.severity}
               </Popup>
             </CircleMarker>
