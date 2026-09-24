@@ -11,6 +11,8 @@ export const Home = () => {
 
   const latestWeather = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'weather'), [events]);
   const latestAQI = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'aqi'), [events]);
+  const latestTraffic = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'transit'), [events]);
+  const recentComplaints = useMemo(() => events.filter(e => e.sourceFeed === '311').length, [events]);
 
   let weatherMetric = 'Connecting...';
   let weatherStatus = 'active';
@@ -24,11 +26,26 @@ export const Home = () => {
   let aqiMetric = 'Connecting...';
   let aqiStatus = 'active';
   if (latestAQI && latestAQI.rawMetrics?.us_aqi !== undefined) {
-      const aqi = latestAQI.rawMetrics.us_aqi;
+      const aqi = Math.round(latestAQI.rawMetrics.us_aqi);
       aqiMetric = `${aqi} AQI`;
       if (aqi < 50) aqiStatus = 'good';
       else if (aqi < 100) aqiStatus = 'warning';
       else aqiStatus = 'critical';
+  }
+
+  let trafficMetric = 'Connecting...';
+  let trafficStatus = 'active';
+  if (latestTraffic) {
+      const delay = latestTraffic.rawMetrics?.delay_minutes;
+      trafficMetric = delay ? `${Math.round(delay)} min delay` : latestTraffic.category;
+      trafficStatus = latestTraffic.severity === 'critical' ? 'critical' : (latestTraffic.severity === 'high' ? 'warning' : 'good');
+  }
+
+  let complaintsMetric = '0 Active';
+  let complaintsStatus = 'good';
+  if (recentComplaints > 0) {
+      complaintsMetric = `${recentComplaints} Active`;
+      complaintsStatus = recentComplaints > 20 ? 'critical' : (recentComplaints > 10 ? 'warning' : 'active');
   }
 
   const modules = [
@@ -44,9 +61,9 @@ export const Home = () => {
       title: 'Traffic & Transit',
       to: '/traffic',
       icon: Car,
-      metric: 'Moderate Delay',
-      color: 'amber',
-      status: 'warning'
+      metric: trafficMetric,
+      color: trafficStatus === 'critical' ? 'rose' : (trafficStatus === 'warning' ? 'amber' : 'emerald'),
+      status: trafficStatus
     },
     {
       title: 'Air Quality (AQI)',
@@ -60,9 +77,9 @@ export const Home = () => {
       title: '311 Complaints',
       to: '/complaints',
       icon: AlertTriangle,
-      metric: '14 Active',
-      color: 'rose',
-      status: 'critical'
+      metric: complaintsMetric,
+      color: complaintsStatus === 'critical' ? 'rose' : (complaintsStatus === 'warning' ? 'amber' : 'emerald'),
+      status: complaintsStatus
     }
   ];
 

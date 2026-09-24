@@ -6,9 +6,9 @@ import urllib.request
 from datetime import datetime, timezone
 from models import CanonicalCivicEvent
 
-# Base coordinates for downtown area
-BASE_LAT = 40.7128
-BASE_LNG = -74.0060
+# Base coordinates for downtown area (Jaipur, India)
+BASE_LAT = 26.9124
+BASE_LNG = 75.7873
 
 def generate_random_coords(radius=0.05):
     return [

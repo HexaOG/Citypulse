@@ -66,7 +66,7 @@ export const CivicMap = () => {
   return (
     <div className="absolute inset-0 z-0">
       <MapContainer 
-        center={[40.7128, -74.0060]} 
+        center={[26.9124, 75.7873]} 
         zoom={14} 
         style={{ height: '100%', width: '100%', cursor: usePulseStore(s => s.isSelectingLocation) ? 'crosshair' : 'grab' }}
         zoomControl={false}
