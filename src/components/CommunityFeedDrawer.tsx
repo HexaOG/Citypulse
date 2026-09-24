@@ -39,10 +39,14 @@ const CATEGORY_PILLS = [
 
 const AREA_OPTIONS = [
   'All Areas',
-  'Sector 4',
-  'East Corridor',
-  'Central Bypass',
-  'North Ring'
+  'Malviya Nagar',
+  'Vaishali Nagar',
+  'Mansarovar',
+  'Pink City',
+  'Raja Park',
+  'Jagatpura',
+  'Vidyadhar Nagar',
+  'Sodala'
 ];
 
 interface CommunityFeedDrawerProps {

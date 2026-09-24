@@ -34,10 +34,14 @@ const CATEGORY_OPTIONS = [
 ];
 
 const AREA_OPTIONS = [
-  'Sector 4',
-  'East Corridor',
-  'Central Bypass',
-  'North Ring'
+  'Malviya Nagar',
+  'Vaishali Nagar',
+  'Mansarovar',
+  'Pink City',
+  'Raja Park',
+  'Jagatpura',
+  'Vidyadhar Nagar',
+  'Sodala'
 ];
 
 export const Complaints = () => {
@@ -60,7 +64,7 @@ export const Complaints = () => {
   // Form State
   const [category, setCategory] = useState('Power Outage');
   const [customCategory, setCustomCategory] = useState('');
-  const [area, setArea] = useState('Sector 4');
+  const [area, setArea] = useState('Malviya Nagar');
   const [severity, setSeverity] = useState('High');
   const [description, setDescription] = useState('');
 
@@ -83,9 +87,9 @@ export const Complaints = () => {
 
   const incidents = [
     ...liveIncidents,
-    { type: 'Waterlogging', area: 'Sector 4', time: '10 min ago', status: 'Active' },
-    { type: 'Power Outage', area: 'Sector 4', time: '25 min ago', status: 'Active' },
-    { type: 'Pothole', area: 'Main Bypass', time: '1 hr ago', status: 'Investigating' }
+    { type: 'Waterlogging', area: 'Malviya Nagar', time: '10 min ago', status: 'Active' },
+    { type: 'Power Outage', area: 'Pink City', time: '25 min ago', status: 'Active' },
+    { type: 'Pothole', area: 'JLN Marg', time: '1 hr ago', status: 'Investigating' }
   ];
 
   const handleSubmit = (e: FormEvent) => {

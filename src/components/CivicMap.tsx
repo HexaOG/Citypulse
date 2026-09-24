@@ -50,12 +50,12 @@ export const CivicMap = () => {
   const events = usePulseStore(state => state.events);
   const selectedLocation = usePulseStore(state => state.selectedLocation);
   const communityReports = usePulseStore(state => state.communityReports);
-  const selectedAreaFilter = usePulseStore(state => state.selectedAreaFilter);
   const focusedIncidentId = usePulseStore(state => state.focusedIncidentId);
   const setFocusedIncidentId = usePulseStore(state => state.setFocusedIncidentId);
   const setIsCommunityDrawerOpen = usePulseStore(state => state.setIsCommunityDrawerOpen);
+  const selectedAreaFilter = usePulseStore(state => state.selectedAreaFilter);
+  const isSelectingLocation = usePulseStore(state => state.isSelectingLocation);
 
-  // Filter community reports by selected sector
   const visibleReports = selectedAreaFilter === 'All Areas'
     ? communityReports
     : communityReports.filter(r => r.area === selectedAreaFilter);
@@ -68,7 +68,7 @@ export const CivicMap = () => {
       <MapContainer 
         center={[26.9124, 75.7873]} 
         zoom={14} 
-        style={{ height: '100%', width: '100%', cursor: usePulseStore(s => s.isSelectingLocation) ? 'crosshair' : 'grab' }}
+        style={{ height: '100%', width: '100%', cursor: isSelectingLocation ? 'crosshair' : 'grab' }}
         zoomControl={false}
       >
         <TileLayer
@@ -95,7 +95,9 @@ export const CivicMap = () => {
         {/* Sector Boundary Polygon Highlight */}
         {currentSector && (
           <Polygon 
+            key={`poly-${isSelectingLocation}`}
             positions={currentSector.polygon}
+            interactive={!isSelectingLocation}
             pathOptions={{ 
               color: '#06b6d4', 
               fillColor: '#06b6d4', 
@@ -120,8 +122,9 @@ export const CivicMap = () => {
 
           return (
             <CircleMarker
-              key={`community-${report.id}`}
+              key={`community-${report.id}-${isSelectingLocation}`}
               center={report.coordinates}
+              interactive={!isSelectingLocation}
               pathOptions={{ 
                 color: markerColor, 
                 fillColor: markerColor, 
@@ -138,18 +141,9 @@ export const CivicMap = () => {
               }}
             >
               <Popup>
-                <div className="text-xs min-w-[180px]">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="font-mono font-bold text-rose-500">#{report.id}</span>
-                    <span className="text-[10px] text-gray-500">{report.area}</span>
-                  </div>
-                  <div className="font-bold text-sm">{report.category}</div>
-                  <div className="text-[11px] text-gray-600 dark:text-gray-300 my-1">{report.description}</div>
-                  <div className="flex justify-between items-center text-[10px] pt-1 mt-1 border-t border-gray-200">
-                    <span className="font-semibold text-amber-500">Severity: {report.severity}</span>
-                    <span className="text-cyan-600 dark:text-cyan-400 font-bold">▲ {report.confirmations} confirmed</span>
-                  </div>
-                </div>
+                <div className="font-bold border-b border-white/10 pb-1 mb-1">{report.category}</div>
+                <div className="text-xs mb-1">{report.description}</div>
+                <div className="text-[10px] text-gray-400">{report.time}</div>
               </Popup>
             </CircleMarker>
           );
@@ -167,6 +161,36 @@ export const CivicMap = () => {
               center={[ev.coordinates[0], ev.coordinates[1]]}
               pathOptions={{ color, fillColor: color, fillOpacity: 0.8 }}
               radius={ev.severity === 'Critical' ? 10 : 6}
+            >
+              <Popup>
+                <strong className="uppercase">{ev.sourceFeed}</strong><br/>
+                Condition: {ev.category}<br/>
+                {ev.sourceFeed === 'weather' && ev.rawMetrics?.temperature !== undefined && (
+                  <>Temp: {ev.rawMetrics.temperature}°C<br/></>
+                )}
+                {ev.sourceFeed === 'aqi' && ev.rawMetrics?.us_aqi !== undefined && (
+                  <>AQI: {ev.rawMetrics.us_aqi}<br/></>
+                )}
+                Severity: {ev.severity}
+              </Popup>
+            </CircleMarker>
+          );
+        })}
+
+        {/* Pulse Events */}
+        {events.map((ev, i) => {
+          let color = '#3b82f6'; // weather blue
+          if (ev.sourceFeed === 'transit') color = '#eab308'; // amber
+          if (ev.sourceFeed === '311') color = '#f43f5e'; // rose
+          if (ev.sourceFeed === 'aqi') color = '#06b6d4'; // cyan
+          
+          return (
+            <CircleMarker
+              key={`${ev.eventId}-${i}-${isSelectingLocation}`}
+              center={[ev.coordinates[1], ev.coordinates[0]]}
+              interactive={!isSelectingLocation}
+              pathOptions={{ color, fillColor: color, fillOpacity: 0.8 }}
+              radius={ev.severity === 'critical' ? 10 : 6}
             >
               <Popup>
                 <strong className="uppercase">{ev.sourceFeed}</strong><br/>

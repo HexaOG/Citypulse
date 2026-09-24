@@ -25,44 +25,60 @@ export interface CommunityReport {
 }
 
 export const SECTORS: Record<string, { name: string; center: [number, number]; polygon: [number, number][] }> = {
-  'Sector 4': {
-    name: 'Sector 4 (Metro Center)',
-    center: [26.9180, 75.7820],
+  'Malviya Nagar': {
+    name: 'Malviya Nagar',
+    center: [26.8505, 75.8118],
     polygon: [
-      [26.9135, 75.7775],
-      [26.9225, 75.7775],
-      [26.9225, 75.7850],
-      [26.9135, 75.7850],
+      [26.8300, 75.8000], [26.8700, 75.8000], [26.8700, 75.8300], [26.8300, 75.8300],
     ]
   },
-  'East Corridor': {
-    name: 'East Corridor (Waterfront)',
-    center: [26.9100, 75.7900],
+  'Vaishali Nagar': {
+    name: 'Vaishali Nagar',
+    center: [26.9124, 75.7429],
     polygon: [
-      [26.9040, 75.7830],
-      [26.9160, 75.7830],
-      [26.9160, 75.7980],
-      [26.9040, 75.7980],
+      [26.8900, 75.7200], [26.9300, 75.7200], [26.9300, 75.7600], [26.8900, 75.7600],
     ]
   },
-  'Central Bypass': {
-    name: 'Central Bypass (West Highway)',
-    center: [26.9150, 75.7750],
+  'Mansarovar': {
+    name: 'Mansarovar',
+    center: [26.8549, 75.7605],
     polygon: [
-      [26.9070, 75.7680],
-      [26.9210, 75.7680],
-      [26.9210, 75.7820],
-      [26.9070, 75.7820],
+      [26.8300, 75.7300], [26.8800, 75.7300], [26.8800, 75.7800], [26.8300, 75.7800],
     ]
   },
-  'North Ring': {
-    name: 'North Ring (Heights)',
-    center: [26.9250, 75.7860],
+  'Pink City': {
+    name: 'Pink City (Walled City)',
+    center: [26.9240, 75.8267],
     polygon: [
-      [26.9210, 75.7770],
-      [26.9300, 75.7770],
-      [26.9300, 75.7950],
-      [26.9210, 75.7950],
+      [26.9100, 75.8100], [26.9400, 75.8100], [26.9400, 75.8400], [26.9100, 75.8400],
+    ]
+  },
+  'Raja Park': {
+    name: 'Raja Park',
+    center: [26.8967, 75.8239],
+    polygon: [
+      [26.8800, 75.8100], [26.9100, 75.8100], [26.9100, 75.8400], [26.8800, 75.8400],
+    ]
+  },
+  'Jagatpura': {
+    name: 'Jagatpura',
+    center: [26.8122, 75.8354],
+    polygon: [
+      [26.7900, 75.8100], [26.8400, 75.8100], [26.8400, 75.8600], [26.7900, 75.8600],
+    ]
+  },
+  'Vidyadhar Nagar': {
+    name: 'Vidyadhar Nagar',
+    center: [26.9669, 75.7838],
+    polygon: [
+      [26.9400, 75.7600], [26.9900, 75.7600], [26.9900, 75.8100], [26.9400, 75.8100],
+    ]
+  },
+  'Sodala': {
+    name: 'Sodala',
+    center: [26.8943, 75.7725],
+    polygon: [
+      [26.8800, 75.7500], [26.9100, 75.7500], [26.9100, 75.7900], [26.8800, 75.7900],
     ]
   }
 };
@@ -72,11 +88,11 @@ export const INITIAL_COMMUNITY_REPORTS: CommunityReport[] = [
     id: "CP-1082",
     category: "Power Outage",
     description: "Substation trip caused complete blackout across 4 residential blocks. Traffic signals inoperative.",
-    area: "Sector 4",
-    street: "Maple Ave & 4th Street",
+    area: "Malviya Nagar",
+    street: "JLN Marg & Calgiri Road",
     severity: "Critical",
     timestamp: "8 mins ago",
-    coordinates: [26.9185, 75.7815],
+    coordinates: [26.8505, 75.8118],
     confirmations: 19,
     userConfirmed: false
   },
@@ -84,11 +100,11 @@ export const INITIAL_COMMUNITY_REPORTS: CommunityReport[] = [
     id: "CP-1083",
     category: "Water Main Break",
     description: "Significant flooding on main avenue. Pressure dropped in adjacent apartment complexes.",
-    area: "East Corridor",
-    street: "Riverside Dr & 12th",
+    area: "Pink City",
+    street: "Moti Dungri & MI Road",
     severity: "High",
     timestamp: "24 mins ago",
-    coordinates: [26.9110, 75.7920],
+    coordinates: [26.9240, 75.8267],
     confirmations: 42,
     userConfirmed: true
   },
@@ -96,11 +112,11 @@ export const INITIAL_COMMUNITY_REPORTS: CommunityReport[] = [
     id: "CP-1084",
     category: "Traffic Hazard",
     description: "Overturned delivery vehicle blocking two right lanes. EMS on scene.",
-    area: "Central Bypass",
-    street: "Westbound Mile 4",
+    area: "Vaishali Nagar",
+    street: "Gandhi Path",
     severity: "High",
     timestamp: "45 mins ago",
-    coordinates: [26.9155, 75.7730],
+    coordinates: [26.9124, 75.7429],
     confirmations: 8,
     userConfirmed: false
   },
@@ -108,11 +124,11 @@ export const INITIAL_COMMUNITY_REPORTS: CommunityReport[] = [
     id: "CP-1085",
     category: "Urban Hazard",
     description: "Scaffolding collapse at construction site. Structural team required for assessment.",
-    area: "North Ring",
-    street: "Heights Boulevard",
+    area: "Mansarovar",
+    street: "Madhyam Marg",
     severity: "Medium",
     timestamp: "1 hr ago",
-    coordinates: [26.9230, 75.7830],
+    coordinates: [26.8549, 75.7605],
     confirmations: 11,
     userConfirmed: false
   }
