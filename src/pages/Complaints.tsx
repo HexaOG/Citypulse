@@ -19,6 +19,8 @@ import {
   HelpCircle,
   ChevronDown,
   Check,
+  RotateCcw,
+  History,
   Building2
 } from 'lucide-react';
 import { usePulseStore } from '../store/useStore';
@@ -55,7 +57,10 @@ export const Complaints = () => {
     setComplaintSynthesis, 
     setIsSelectingLocation,
     setSelectedLocation,
-    events
+    communityReports,
+    replayOffsetHours,
+    setReplayOffsetHours,
+    setIsReplaying
   } = usePulseStore();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,22 +80,17 @@ export const Complaints = () => {
   const selectedCategoryObj = CATEGORY_OPTIONS.find(c => c.id === category) || CATEGORY_OPTIONS[0];
   const CategoryIcon = selectedCategoryObj.icon;
 
-  // Combine static incidents with live ones from store
-  const liveIncidents = events
-    .filter(ev => ev.sourceFeed === '311')
-    .map(ev => ({
-      type: ev.category,
-      area: 'Map Pinned',
-      time: 'Just now',
-      status: 'Active'
-    })).reverse();
-
-  const incidents = [
-    ...liveIncidents,
-    { type: 'Waterlogging', area: 'Malviya Nagar', time: '10 min ago', status: 'Active' },
-    { type: 'Power Outage', area: 'Pink City', time: '25 min ago', status: 'Active' },
-    { type: 'Pothole', area: 'JLN Marg', time: '1 hr ago', status: 'Investigating' }
-  ];
+  // Historical Replay Time Travel State & Calculations
+  const simulatedTimeAgo = Math.abs(replayOffsetHours);
+  const historicalReports = communityReports.filter((r) => (r.createdAtHoursAgo ?? 0) >= simulatedTimeAgo);
+  
+  // Dynamic recalculation strictly tied to tickets open at simulated hour
+  const reportRatio = historicalReports.length / Math.max(1, communityReports.length);
+  const dynamicActiveTickets = replayOffsetHours === 0 
+    ? activeTickets 
+    : Math.round(38 + reportRatio * (activeTickets - 38));
+  
+  const loadIndex = Math.min(100, Math.floor(dynamicActiveTickets / 2));
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -114,7 +114,8 @@ export const Complaints = () => {
       coordinates: selectedLocation,
       confirmations: 1,
       userConfirmed: true,
-      isNew: true
+      isNew: true,
+      createdAtHoursAgo: 0
     });
 
     setComplaintSynthesis(`New report logged: ${finalCategory} in ${area}. Anomaly detection recalculating cluster severity...`);
@@ -140,7 +141,15 @@ export const Complaints = () => {
         {/* Floating Action Button */}
         <div className={`absolute bottom-10 left-24 z-30 ${isSelectingLocation ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'}`}>
           <button 
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              if (replayOffsetHours < 0) {
+                setReplayOffsetHours(0);
+                setIsReplaying(false);
+                setToast("Returned to LIVE feed to submit real-time incident report.");
+                setTimeout(() => setToast(null), 3500);
+              }
+              setIsModalOpen(true);
+            }}
             className="flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-6 py-3.5 rounded-full font-bold shadow-[0_0_25px_rgba(244,63,94,0.6)] transition-all transform hover:scale-105 cursor-pointer"
           >
             <Plus size={20} />
@@ -158,14 +167,20 @@ export const Complaints = () => {
             {/* Key Metrics Card */}
             <div className={`glass-panel p-6 flex flex-col gap-4 w-72 transition-opacity ${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
               <h2 className="text-xl font-bold tracking-wider mb-2 flex items-center gap-2">
-                <AlertTriangle className="text-rose-500" /> 311 TICKETS
+                <AlertTriangle className={replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'} /> 311 TICKETS
               </h2>
               
               <div className="flex flex-col items-center justify-center mb-4">
-                <div className="relative w-32 h-32 flex items-center justify-center rounded-full border-4 border-rose-500/30">
-                  <div className="absolute inset-0 rounded-full border-4 border-rose-500 border-r-transparent animate-[spin_5s_linear_infinite_reverse]" />
+                <div className={`relative w-32 h-32 flex items-center justify-center rounded-full border-4 ${
+                  replayOffsetHours < 0 ? 'border-amber-500/30' : 'border-rose-500/30'
+                }`}>
+                  <div className={`absolute inset-0 rounded-full border-4 border-r-transparent animate-[spin_5s_linear_infinite_reverse] ${
+                    replayOffsetHours < 0 ? 'border-amber-500' : 'border-rose-500'
+                  }`} />
                   <div className="flex flex-col items-center">
-                    <span className="text-3xl font-bold text-rose-500">{Math.min(100, Math.floor(activeTickets / 2))}%</span>
+                    <span className={`text-3xl font-bold ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'}`}>
+                      {loadIndex}%
+                    </span>
                     <span className="text-[10px] tracking-widest text-gray-400">LOAD INDEX</span>
                   </div>
                 </div>
@@ -174,7 +189,9 @@ export const Complaints = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-black/20 p-3 rounded-xl border border-white/5">
                   <div className="text-xs text-gray-400 flex items-center gap-1 mb-1"><TrendingUp size={12}/> OPEN</div>
-                  <div className="text-lg font-mono font-bold text-rose-500">{activeTickets}</div>
+                  <div className={`text-lg font-mono font-bold ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'}`}>
+                    {dynamicActiveTickets}
+                  </div>
                 </div>
                 <div className="bg-black/20 p-3 rounded-xl border border-white/5">
                   <div className="text-xs text-gray-400 flex items-center gap-1 mb-1"><CheckCircle size={12}/> AVG TIME</div>
@@ -182,32 +199,91 @@ export const Complaints = () => {
                 </div>
               </div>
 
-              <div className="mt-2 space-y-2 max-h-32 overflow-y-auto pr-1">
-                <div className="text-xs font-bold text-gray-400 mb-1">RECENT REPORTS</div>
-                {incidents.map((incident, idx) => (
+              <div className="mt-2 space-y-2 max-h-36 overflow-y-auto pr-1">
+                <div className="text-xs font-bold text-gray-400 mb-1 flex items-center justify-between">
+                  <span>{replayOffsetHours === 0 ? 'RECENT REPORTS' : `TICKETS AT T - ${Math.abs(replayOffsetHours)}H`}</span>
+                  <span className="text-[10px] text-cyan-400 font-mono font-normal">{historicalReports.length} visible</span>
+                </div>
+                {historicalReports.slice(0, 4).map((report, idx) => (
                   <div key={idx} className="flex justify-between items-center text-xs bg-white/5 p-2 rounded border border-white/5">
-                    <div>
-                      <div className="text-white">{incident.type}</div>
-                      <div className="text-gray-500 text-[10px]">{incident.area} • {incident.time}</div>
+                    <div className="truncate pr-2">
+                      <div className="text-white font-medium truncate">{report.category}</div>
+                      <div className="text-gray-500 text-[10px] truncate">{report.area} • {report.timestamp}</div>
                     </div>
-                    <span className={`px-2 py-1 rounded text-[9px] ${incident.status === 'Active' ? 'bg-rose-500/20 text-rose-500' : 'bg-amber-500/20 text-amber-500'}`}>
-                      {incident.status}
+                    <span className={`px-2 py-0.5 rounded text-[9px] font-mono shrink-0 ${
+                      report.severity === 'Critical' 
+                        ? 'bg-rose-500/20 text-rose-400' 
+                        : report.severity === 'High' 
+                        ? 'bg-orange-500/20 text-orange-400' 
+                        : 'bg-amber-500/20 text-amber-400'
+                    }`}>
+                      {report.severity}
                     </span>
                   </div>
                 ))}
+                {historicalReports.length === 0 && (
+                  <div className="text-xs text-gray-500 italic py-2 text-center">
+                    No active incidents logged prior to this time.
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* AI Synthesis Banner */}
-            <div className={`glass-panel p-4 flex-1 flex items-center gap-4 border-l-4 border-l-rose-500 transition-opacity ${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
-              <div className="p-3 bg-rose-500/20 rounded-full text-rose-500">
-                <Lightbulb size={24} />
-              </div>
-              <div>
-                <div className="text-xs font-bold tracking-widest text-rose-500 mb-1">LIVE AI SYNTHESIS</div>
-                <div className="text-sm text-gray-300 leading-relaxed">
-                  {complaintSynthesis}
+            {/* AI Synthesis Banner with Integrated Historical Replay Header */}
+            <div className={`glass-panel p-4 flex-1 flex flex-col gap-2.5 transition-opacity ${
+              replayOffsetHours < 0 
+                ? 'border-l-4 border-l-amber-500 shadow-[0_8px_32px_rgba(245,158,11,0.15)]' 
+                : 'border-l-4 border-l-rose-500'
+            } ${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
+              {/* Header Line */}
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-2.5">
+                  <div className={`p-2 rounded-xl shrink-0 ${
+                    replayOffsetHours < 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-500'
+                  }`}>
+                    {replayOffsetHours < 0 ? <History size={18} /> : <Lightbulb size={18} />}
+                  </div>
+                  <div className={`text-xs font-bold tracking-widest ${
+                    replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'
+                  }`}>
+                    {replayOffsetHours < 0 ? `HISTORICAL REPLAY SYNTHESIS` : 'LIVE AI SYNTHESIS'}
+                  </div>
                 </div>
+
+                {/* Right side: Amber Simulation Badge + Return to Live Button */}
+                {replayOffsetHours < 0 && (
+                  <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-200 text-xs font-semibold">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+                      </span>
+                      <span>
+                        Simulating Historical State: <strong className="font-mono text-amber-300">T - {Math.abs(replayOffsetHours)} hrs</strong> <span className="text-amber-400/70 font-normal">(Read Only)</span>
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setReplayOffsetHours(0);
+                        setIsReplaying(false);
+                      }}
+                      title="Return to real-time live feed"
+                      className="px-3 py-1 text-xs font-bold bg-amber-500/25 hover:bg-amber-400 text-amber-300 hover:text-black rounded-full border border-amber-500/50 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95"
+                    >
+                      <RotateCcw size={12} />
+                      <span>Return to Live ⚡</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Explanatory Body Text */}
+              <div className="text-sm text-gray-300 leading-relaxed pl-1">
+                {replayOffsetHours < 0 
+                  ? `Historical municipal state reconstructed at T - ${Math.abs(replayOffsetHours)} hrs. Showing ${historicalReports.length} active civic complaint clusters across monitored Jaipur sectors. Intake system is operating in historical review mode.`
+                  : complaintSynthesis
+                }
               </div>
             </div>
           </div>

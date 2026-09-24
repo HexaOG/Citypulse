@@ -2,19 +2,25 @@ import { useMemo } from 'react';
 import { Header } from '../components/Header';
 import { CivicMap } from '../components/CivicMap';
 import { TimeTravelSlider } from '../components/TimeTravelSlider';
-import { Car, AlertCircle, Clock } from 'lucide-react';
+import { Car, AlertCircle, Clock, History, RotateCcw } from 'lucide-react';
 import { usePulseStore } from '../store/useStore';
+import { getHistoricalTraffic } from '../utils/historicalSimulation';
 
 export const Traffic = () => {
   const events = usePulseStore(state => state.events);
-  const latestTraffic = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'transit'), [events]);
-  
-  const delay = Math.round(latestTraffic?.rawMetrics?.delay_minutes ?? 0);
-  const congestion = Math.min(100, delay * 8);
+  const replayOffsetHours = usePulseStore(state => state.replayOffsetHours);
+  const setReplayOffsetHours = usePulseStore(state => state.setReplayOffsetHours);
+  const setIsReplaying = usePulseStore(state => state.setIsReplaying);
 
-  const isCritical = delay > 25;
-  const isWarning = delay > 10;
-  
+  const latestTraffic = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'transit'), [events]);
+  const liveDelay = latestTraffic?.rawMetrics?.delay_minutes;
+
+  const trafficData = useMemo(() => {
+    return getHistoricalTraffic(replayOffsetHours, liveDelay);
+  }, [replayOffsetHours, liveDelay]);
+
+  const { congestion, delay, incidents, isCritical, isWarning, synthesis } = trafficData;
+
   const textColor = isCritical ? 'text-rose-500' : (isWarning ? 'text-amber-500' : 'text-emerald-500');
   const borderColor = isCritical ? 'border-rose-500' : (isWarning ? 'border-amber-500' : 'border-emerald-500');
   const borderOpacity = isCritical ? 'border-rose-500/30' : (isWarning ? 'border-amber-500/30' : 'border-emerald-500/30');
@@ -54,23 +60,52 @@ export const Traffic = () => {
                 </div>
                 <div className="bg-black/20 p-3 rounded-xl border border-white/5">
                   <div className="text-xs text-gray-400 flex items-center gap-1 mb-1"><AlertCircle size={12}/> INCIDENTS</div>
-                  <div className={`text-lg font-mono font-bold ${textColor}`}>{isCritical ? 3 : (isWarning ? 1 : 0)} Active</div>
+                  <div className={`text-lg font-mono font-bold ${textColor}`}>{incidents} Active</div>
                 </div>
               </div>
             </div>
 
-            {/* AI Synthesis Banner */}
-            <div className={`glass-panel p-4 flex-1 flex items-center gap-4 border-l-4 ${borderLeft} pointer-events-auto`}>
-              <div className={`p-3 ${bgOpacity} rounded-full ${textColor}`}>
-                <Car size={24} />
-              </div>
-              <div>
-                <div className={`text-xs font-bold tracking-widest ${textColor} mb-1`}>LIVE AI SYNTHESIS</div>
-                <div className="text-sm text-gray-300 leading-relaxed">
-                  {isCritical 
-                    ? "Severe congestion detected. Main bypass clogged due to scattered incidents. Traffic diverted via Ring Road. Consider alternative routes for the next 2 hours."
-                    : (isWarning ? "Moderate congestion building on major corridors. Adjust commute time by ~15 minutes." : "Traffic flowing nominally across all monitored sectors. No significant delays.")}
+            {/* AI Synthesis Banner with Integrated Replay Header */}
+            <div className={`glass-panel p-4 flex-1 flex flex-col gap-2.5 border-l-4 ${borderLeft} pointer-events-auto shadow-lg`}>
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-2.5">
+                  <div className={`p-2 rounded-xl shrink-0 ${bgOpacity} ${textColor}`}>
+                    {replayOffsetHours < 0 ? <History size={18} /> : <Car size={18} />}
+                  </div>
+                  <div className={`text-xs font-bold tracking-widest ${textColor}`}>
+                    {replayOffsetHours < 0 ? 'HISTORICAL TRAFFIC REPLAY' : 'LIVE AI SYNTHESIS'}
+                  </div>
                 </div>
+
+                {replayOffsetHours < 0 && (
+                  <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-200 text-xs font-semibold">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+                      </span>
+                      <span>
+                        SIMULATED REPLAY: <strong className="font-mono text-amber-300">T - {Math.abs(replayOffsetHours)} hrs</strong>
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setReplayOffsetHours(0);
+                        setIsReplaying(false);
+                      }}
+                      title="Return to real-time live feed"
+                      className="px-3 py-1 text-xs font-bold bg-amber-500/25 hover:bg-amber-400 text-amber-300 hover:text-black rounded-full border border-amber-500/50 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95"
+                    >
+                      <RotateCcw size={12} />
+                      <span>Return to Live ⚡</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="text-sm text-gray-300 leading-relaxed pl-1">
+                {synthesis}
               </div>
             </div>
           </div>
