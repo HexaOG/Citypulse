@@ -49,50 +49,119 @@
 }
 
 .leaflet-container {
-  background: #0a0a0f !important;
-  transition: background 0.3s ease;
+  background-color: #0b0f14 !important;
+  transition: background-color 0.3s ease;
 }
-.leaflet-layer,
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out,
+
+.leaflet-tile-pane {
+  opacity: 0.85;
+  filter: saturate(0.2) brightness(0.9);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* Incident & Sensor Marker Outer Glows */
+.leaflet-overlay-pane svg path.leaflet-interactive {
+  transition: filter 0.2s ease, stroke-width 0.2s ease;
+}
+
+.leaflet-overlay-pane svg path[stroke="#f43f5e"] {
+  filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.85));
+}
+.leaflet-overlay-pane svg path[stroke="#f97316"] {
+  filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.85));
+}
+.leaflet-overlay-pane svg path[stroke="#eab308"] {
+  filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.85));
+}
+.leaflet-overlay-pane svg path[stroke="#06b6d4"] {
+  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.95));
+}
+.leaflet-overlay-pane svg path[stroke="#00e676"] {
+  filter: drop-shadow(0 0 6px rgba(0, 230, 118, 0.85));
+}
+.leaflet-overlay-pane svg path[stroke="#ffea00"] {
+  filter: drop-shadow(0 0 6px rgba(255, 234, 0, 0.85));
+}
+.leaflet-overlay-pane svg path[stroke="#00b0ff"] {
+  filter: drop-shadow(0 0 6px rgba(0, 176, 255, 0.85));
+}
+
+.leaflet-control-zoom a {
+  background-color: rgba(18, 24, 33, 0.85) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(8px);
+}
+
 .leaflet-control-attribution {
-  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-  transition: filter 0.3s ease;
+  background-color: rgba(11, 15, 20, 0.75) !important;
+  color: #94a3b8 !important;
+  backdrop-filter: blur(6px);
+}
+.leaflet-control-attribution a {
+  color: #06b6d4 !important;
 }
 
 /* ========================================================
    LIGHT MODE STYLING & CONTRAST REFINEMENT
    ======================================================== */
-html.light {
+html.light,
+.light {
   color-scheme: light;
 }
 
-html.light body {
-  background-color: #f1f5f9;
-  color: #0f172a;
+html.light body,
+.light body {
+  background-color: #f0f2f5;
+  color: #1a202c;
 }
 
-html.light .bg-background {
-  background-color: #f1f5f9 !important;
+html.light .bg-background,
+.light .bg-background {
+  background-color: #f0f2f5 !important;
 }
 
-html.light .glass-panel {
-  background-color: rgba(255, 255, 255, 0.85);
+html.light .glass-panel,
+html.light .glass-card,
+html.light .panel,
+.light .glass-panel,
+.light .glass-card,
+.light .panel {
+  background: rgba(245, 247, 250, 0.82) !important;
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
-  color: #0f172a;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #1a202c !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Map tiles in light mode */
-html.light .leaflet-container {
-  background: #e2e8f0 !important;
+html.light .leaflet-container,
+.light .leaflet-container {
+  background-color: #f0f2f5 !important;
 }
-html.light .leaflet-layer,
-html.light .leaflet-control-zoom-in,
-html.light .leaflet-control-zoom-out,
-html.light .leaflet-control-attribution {
+html.light .leaflet-tile-pane,
+.light .leaflet-tile-pane {
+  opacity: 0.95;
   filter: none !important;
+}
+
+/* Marker contrast rings in light mode */
+html.light .leaflet-overlay-pane svg path.leaflet-interactive,
+.light .leaflet-overlay-pane svg path.leaflet-interactive {
+  filter: drop-shadow(0 0 1.5px rgba(15, 23, 42, 0.75)) drop-shadow(0 0 4px currentColor) !important;
+}
+
+html.light .leaflet-control-zoom a {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  color: #1a202c !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light .leaflet-control-attribution {
+  background-color: rgba(245, 247, 250, 0.85) !important;
+  color: #64748b !important;
+}
+html.light .leaflet-control-attribution a {
+  color: #0284c7 !important;
 }
 
 /* Headings and primary text in light mode */
@@ -103,22 +172,30 @@ html.light h4,
 html.light .glass-panel h1,
 html.light .glass-panel h2,
 html.light .glass-panel h3,
-html.light .glass-panel h4 {
-  color: #0f172a;
+html.light .glass-panel h4,
+.light h1,
+.light h2,
+.light h3,
+.light h4 {
+  color: #1a202c !important;
 }
 
 html.light p,
 html.light .glass-panel p,
-html.light .text-gray-400 {
+html.light .text-gray-400,
+html.light .text-gray-500,
+.light p,
+.light .glass-panel p,
+.light .text-gray-400,
+.light .text-gray-500 {
   color: #64748b !important;
 }
 
-html.light .text-gray-300 {
+html.light .text-gray-300,
+html.light .text-gray-200,
+.light .text-gray-300,
+.light .text-gray-200 {
   color: #334155 !important;
-}
-
-html.light .text-gray-500 {
-  color: #64748b !important;
 }
 
 /* Cards & containers in light mode */

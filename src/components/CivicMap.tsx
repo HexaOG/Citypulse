@@ -44,7 +44,16 @@ const MapController = () => {
   return null;
 };
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY;
+const STADIA_DARK_URL = STADIA_API_KEY
+  ? `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`
+  : 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
+
+const STADIA_LIGHT_URL = STADIA_API_KEY
+  ? `https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`
+  : 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
+
+const STADIA_ATTRIBUTION = '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 export const CivicMap = () => {
   const events = usePulseStore(state => state.events);
@@ -55,6 +64,9 @@ export const CivicMap = () => {
   const setIsCommunityDrawerOpen = usePulseStore(state => state.setIsCommunityDrawerOpen);
   const selectedAreaFilter = usePulseStore(state => state.selectedAreaFilter);
   const isSelectingLocation = usePulseStore(state => state.isSelectingLocation);
+  const theme = usePulseStore(state => state.theme);
+
+  const tileUrl = theme === 'light' ? STADIA_LIGHT_URL : STADIA_DARK_URL;
 
   const visibleReports = selectedAreaFilter === 'All Areas'
     ? communityReports
@@ -72,8 +84,10 @@ export const CivicMap = () => {
         zoomControl={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url={`https://api.mapbox.com/styles/v1/mapbox/dark-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`}
+          key={tileUrl}
+          attribution={STADIA_ATTRIBUTION}
+          url={tileUrl}
+          subdomains={['a', 'b', 'c', 'd']}
           maxZoom={20}
         />
         
@@ -143,7 +157,7 @@ export const CivicMap = () => {
               <Popup>
                 <div className="font-bold border-b border-white/10 pb-1 mb-1">{report.category}</div>
                 <div className="text-xs mb-1">{report.description}</div>
-                <div className="text-[10px] text-gray-400">{report.time}</div>
+                <div className="text-[10px] text-gray-400">{report.timestamp}</div>
               </Popup>
             </CircleMarker>
           );
@@ -151,16 +165,16 @@ export const CivicMap = () => {
 
         {/* Other feed streams (weather, transit, aqi) */}
         {events.filter(ev => ev.sourceFeed !== '311').map((ev, i) => {
-          let color = 'var(--accent-blue)'; // weather
-          if (ev.sourceFeed === 'transit') color = 'var(--accent-yellow)';
-          if (ev.sourceFeed === 'aqi') color = 'var(--accent-green)';
+          let color = '#00b0ff'; // weather
+          if (ev.sourceFeed === 'transit') color = '#ffea00';
+          if (ev.sourceFeed === 'aqi') color = '#00e676';
           
           return (
             <CircleMarker
               key={`${ev.eventId}-${i}`}
               center={[ev.coordinates[0], ev.coordinates[1]]}
-              pathOptions={{ color, fillColor: color, fillOpacity: 0.8 }}
-              radius={ev.severity === 'Critical' ? 10 : 6}
+              pathOptions={{ color, fillColor: color, fillOpacity: 0.85, weight: 2 }}
+              radius={ev.severity === 'Critical' ? 10 : 7}
             >
               <Popup>
                 <strong className="uppercase">{ev.sourceFeed}</strong><br/>
