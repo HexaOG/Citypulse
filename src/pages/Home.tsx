@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Header } from '../components/Header';
 import { Link } from 'react-router-dom';
 import { CloudRain, Car, Wind, AlertTriangle, ArrowRight, Activity } from 'lucide-react';
@@ -87,8 +87,8 @@ export const Home = () => {
   };
 
   return (
-    <div className="relative w-full h-full bg-[#0a0a0f] text-white overflow-y-auto">
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0a0f] to-[#0a0a0f]"></div>
+    <div className="relative w-full h-full bg-background transition-colors duration-300 overflow-y-auto">
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/40 via-transparent to-transparent pointer-events-none"></div>
       
       <div className="relative z-10 min-h-screen flex flex-col p-6 pointer-events-auto">
         <Header />

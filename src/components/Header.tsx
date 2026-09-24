@@ -1,13 +1,15 @@
-import React from 'react';
+import type { ChangeEvent } from 'react';
 import { usePulseStore } from '../store/useStore';
-import { Radio, CloudRain } from 'lucide-react';
+import { Radio, CloudRain, Sun, Moon } from 'lucide-react';
 
 export const Header = () => {
   const connected = usePulseStore(state => state.connected);
   const scenario = usePulseStore(state => state.scenario);
   const setScenario = usePulseStore(state => state.setScenario);
+  const theme = usePulseStore(state => state.theme);
+  const toggleTheme = usePulseStore(state => state.toggleTheme);
   
-  const handleScenarioChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleScenarioChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     setScenario(val);
     fetch('http://localhost:8000/api/scenario', {
@@ -24,7 +26,7 @@ export const Header = () => {
         <div className="text-xs tracking-widest text-gray-400 uppercase">Live Civic Health Dashboard</div>
       </div>
       
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <div className="glass-panel px-4 py-2 flex items-center gap-3">
           <CloudRain size={16} className="text-accent-blue" />
           <select 
@@ -41,6 +43,26 @@ export const Header = () => {
           <Radio size={16} className={connected ? 'animate-pulse' : ''} />
           {connected ? 'LIVE' : 'DISCONNECTED'}
         </div>
+
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle Theme"
+          title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          className="glass-panel px-3.5 py-2 flex items-center gap-2 text-sm font-semibold hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.25)] transition-all cursor-pointer group"
+        >
+          {theme === 'dark' ? (
+            <>
+              <Sun size={16} className="text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
+              <span className="hidden sm:inline text-xs tracking-wider">LIGHT</span>
+            </>
+          ) : (
+            <>
+              <Moon size={16} className="text-indigo-400 group-hover:-rotate-12 transition-transform duration-300" />
+              <span className="hidden sm:inline text-xs tracking-wider">DARK</span>
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

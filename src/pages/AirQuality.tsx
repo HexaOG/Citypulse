@@ -1,8 +1,7 @@
-import React from 'react';
 import { Header } from '../components/Header';
 import { CivicMap } from '../components/CivicMap';
 import { TimeTravelSlider } from '../components/TimeTravelSlider';
-import { Wind, Activity, Zap } from 'lucide-react';
+import { Wind, Activity } from 'lucide-react';
 
 export const AirQuality = () => {
   return (
@@ -13,10 +12,10 @@ export const AirQuality = () => {
       <div className="absolute inset-0 z-10 pointer-events-none">
         <Header />
         
-        <div className="absolute top-24 left-24 right-6 flex items-start justify-between pointer-events-auto">
+        <div className="absolute top-24 left-24 right-6 flex items-start justify-between pointer-events-none">
           <div className="flex gap-6 items-start w-full">
             {/* Key Metrics Card */}
-            <div className="glass-panel p-6 flex flex-col gap-4 w-72">
+            <div className="glass-panel p-6 flex flex-col gap-4 w-72 pointer-events-auto">
               <h2 className="text-xl font-bold tracking-wider mb-2 flex items-center gap-2">
                 <Wind className="text-cyan-500" /> AIR QUALITY
               </h2>
@@ -48,7 +47,7 @@ export const AirQuality = () => {
             </div>
 
             {/* AI Synthesis Banner */}
-            <div className="glass-panel p-4 flex-1 flex items-center gap-4 border-l-4 border-l-cyan-500">
+            <div className="glass-panel p-4 flex-1 flex items-center gap-4 border-l-4 border-l-cyan-500 pointer-events-auto">
               <div className="p-3 bg-cyan-500/20 rounded-full text-cyan-500">
                 <Activity size={24} />
               </div>

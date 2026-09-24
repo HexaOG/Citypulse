@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { CivicMap } from '../components/CivicMap';
 import { TimeTravelSlider } from '../components/TimeTravelSlider';
@@ -13,10 +12,10 @@ export const Traffic = () => {
       <div className="absolute inset-0 z-10 pointer-events-none">
         <Header />
         
-        <div className="absolute top-24 left-24 right-6 flex items-start justify-between pointer-events-auto">
+        <div className="absolute top-24 left-24 right-6 flex items-start justify-between pointer-events-none">
           <div className="flex gap-6 items-start w-full">
             {/* Key Metrics Card */}
-            <div className="glass-panel p-6 flex flex-col gap-4 w-72">
+            <div className="glass-panel p-6 flex flex-col gap-4 w-72 pointer-events-auto">
               <h2 className="text-xl font-bold tracking-wider mb-2 flex items-center gap-2">
                 <Car className="text-amber-500" /> TRAFFIC STATUS
               </h2>
@@ -44,7 +43,7 @@ export const Traffic = () => {
             </div>
 
             {/* AI Synthesis Banner */}
-            <div className="glass-panel p-4 flex-1 flex items-center gap-4">
+            <div className="glass-panel p-4 flex-1 flex items-center gap-4 pointer-events-auto">
               <div className="p-3 bg-amber-500/20 rounded-full text-amber-500">
                 <Car size={24} />
               </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { usePulseStore } from '../store/useStore';
 
 export const SituationBriefing = () => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { usePulseStore } from '../store/useStore';
 import { AlertTriangle, Link } from 'lucide-react';
 
