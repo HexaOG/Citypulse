@@ -1,11 +1,11 @@
 import React from 'react';
-import { Header } from './components/Header';
-import { PulseMeter } from './components/PulseMeter';
-import { SituationBriefing } from './components/SituationBriefing';
-import { CivicMap } from './components/CivicMap';
-import { AnomalyDrawer } from './components/AnomalyDrawer';
-import { TimeTravelSlider } from './components/TimeTravelSlider';
-import { AlertConfigModal } from './components/AlertConfigModal';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Navigation } from './components/Navigation';
+import { Home } from './pages/Home';
+import { Weather } from './pages/Weather';
+import { Traffic } from './pages/Traffic';
+import { AirQuality } from './pages/AirQuality';
+import { Complaints } from './pages/Complaints';
 import { usePulseStream } from './hooks/usePulseStream';
 
 function App() {
@@ -13,26 +13,19 @@ function App() {
   usePulseStream();
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-background">
-      <CivicMap />
-      
-      {/* Overlay Layer (pointer-events-none so we can click map, children can override) */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <Header />
+    <BrowserRouter>
+      <div className="relative w-screen h-screen overflow-hidden bg-background">
+        <Navigation />
         
-        <div className="absolute top-24 left-6 right-6 flex items-start justify-between pointer-events-auto">
-          <div className="flex gap-6 items-start w-full">
-            <PulseMeter />
-            <SituationBriefing />
-          </div>
-        </div>
-        
-        <AnomalyDrawer />
-        
-        <TimeTravelSlider />
-        <AlertConfigModal />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/weather" element={<Weather />} />
+          <Route path="/traffic" element={<Traffic />} />
+          <Route path="/air-quality" element={<AirQuality />} />
+          <Route path="/complaints" element={<Complaints />} />
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
