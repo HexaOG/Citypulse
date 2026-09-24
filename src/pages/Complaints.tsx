@@ -43,7 +43,8 @@ const AREA_OPTIONS = [
   'Raja Park',
   'Jagatpura',
   'Vidyadhar Nagar',
-  'Sodala'
+  'Sodala',
+  'Other'
 ];
 
 export const Complaints = () => {
@@ -70,6 +71,7 @@ export const Complaints = () => {
   const [category, setCategory] = useState('Power Outage');
   const [customCategory, setCustomCategory] = useState('');
   const [area, setArea] = useState('Malviya Nagar');
+  const [customArea, setCustomArea] = useState('');
   const [severity, setSeverity] = useState('High');
   const [description, setDescription] = useState('');
 
@@ -100,15 +102,16 @@ export const Complaints = () => {
     }
 
     const finalCategory = category === 'Other' ? (customCategory.trim() || 'Other Problem') : category;
+    const finalArea = area === 'Other' ? (customArea.trim() || 'Other Area') : area;
     const eventId = `CP-${Math.floor(1000 + Math.random() * 9000)}`;
     
     // Live Submission Sync to Community Feed
     addCommunityReport({
       id: eventId,
       category: finalCategory,
-      description: description.trim() || `${finalCategory} reported in ${area}.`,
-      area,
-      street: `${area} • Verified Resident Report`,
+      description: description.trim() || `${finalCategory} reported in ${finalArea}.`,
+      area: finalArea,
+      street: `${finalArea} • Verified Resident Report`,
       severity: severity as any,
       timestamp: 'Just now',
       coordinates: selectedLocation,
@@ -118,8 +121,8 @@ export const Complaints = () => {
       createdAtHoursAgo: 0
     });
 
-    setComplaintSynthesis(`New report logged: ${finalCategory} in ${area}. Anomaly detection recalculating cluster severity...`);
-    setToast(`Incident ${eventId} successfully broadcasted to community stream.`);
+    setComplaintSynthesis(`New report logged: ${finalCategory} in ${finalArea}. Anomaly detection recalculating cluster severity...`);
+    setToast(`Incident ${eventId} in ${finalArea} successfully broadcasted to community stream.`);
     
     // Auto-hide toast
     setTimeout(() => setToast(null), 4000);
@@ -128,6 +131,7 @@ export const Complaints = () => {
     setSelectedLocation(null);
     setDescription('');
     setCustomCategory('');
+    setCustomArea('');
   };
 
   return (
@@ -431,11 +435,11 @@ export const Complaints = () => {
                     className="w-full bg-black/40 hover:bg-black/60 border border-white/10 hover:border-cyan-500/50 rounded-xl p-3 text-white flex items-center justify-between transition-all group focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(6,182,212,0.2)]"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-white/5 text-gray-300">
+                      <div className={`p-2 rounded-lg ${area === 'Other' ? 'bg-cyan-500/15 text-cyan-400' : 'bg-white/5 text-gray-300'}`}>
                         <Building2 size={18} />
                       </div>
                       <span className="font-medium text-sm text-gray-200 group-hover:text-white transition-colors">
-                        {area}
+                        {area === 'Other' ? (customArea.trim() ? `Other (${customArea})` : 'Other / Custom Area') : area}
                       </span>
                     </div>
                     <ChevronDown 
@@ -451,9 +455,10 @@ export const Complaints = () => {
                         className="fixed inset-0 z-30" 
                         onClick={() => setIsAreaOpen(false)}
                       />
-                      <div className="absolute top-full left-0 right-0 mt-2 bg-[#0e111a]/95 backdrop-blur-xl border border-white/15 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.85)] z-40 p-1.5 space-y-1 max-h-52 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-150">
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-[#0e111a]/95 backdrop-blur-xl border border-white/15 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.85)] z-40 p-1.5 space-y-1 max-h-56 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-150">
                         {AREA_OPTIONS.map((item) => {
                           const isSelected = area === item;
+                          const isOther = item === 'Other';
                           return (
                             <button
                               key={item}
@@ -468,13 +473,36 @@ export const Complaints = () => {
                                   : 'text-gray-300 hover:bg-white/[0.06] hover:text-white border border-transparent'
                               }`}
                             >
-                              <span>{item}</span>
+                              <span className={isOther ? 'text-cyan-400 font-semibold' : ''}>
+                                {isOther ? 'Other / Custom Area' : item}
+                              </span>
                               {isSelected && <Check size={16} className="text-cyan-400" />}
                             </button>
                           );
                         })}
                       </div>
                     </>
+                  )}
+
+                  {/* Extra Specification for Other Area */}
+                  {area === 'Other' && (
+                    <div className="mt-3 p-3.5 rounded-xl bg-cyan-950/20 border border-cyan-500/30 backdrop-blur-sm animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <MapPin size={14} className="text-cyan-400" />
+                        <label className="text-[11px] font-bold tracking-widest text-cyan-400 uppercase">
+                          Specify Custom Area / Neighborhood
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        required
+                        value={customArea}
+                        onChange={(e) => setCustomArea(e.target.value)}
+                        placeholder="e.g. C-Scheme, Shastri Nagar, Civil Lines, Tonk Phatak..."
+                        className="w-full bg-black/50 border border-white/10 rounded-lg p-2.5 text-sm text-white placeholder-gray-500 outline-none focus:border-cyan-400 transition-all shadow-inner"
+                        autoFocus
+                      />
+                    </div>
                   )}
                 </div>
                 

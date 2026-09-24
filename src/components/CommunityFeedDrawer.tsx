@@ -46,6 +46,18 @@ const AREA_OPTIONS = [
   'Raja Park',
   'Jagatpura',
   'Vidyadhar Nagar',
+  'Sodala',
+  'Other'
+];
+
+const KNOWN_AREAS = [
+  'Malviya Nagar',
+  'Vaishali Nagar',
+  'Mansarovar',
+  'Pink City',
+  'Raja Park',
+  'Jagatpura',
+  'Vidyadhar Nagar',
   'Sodala'
 ];
 
@@ -90,7 +102,11 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
 
   // Filter Reports
   const filteredReports = timeFilteredReports.filter((report) => {
-    const matchesArea = selectedAreaFilter === 'All Areas' || report.area === selectedAreaFilter;
+    const matchesArea = selectedAreaFilter === 'All Areas' 
+      ? true 
+      : (selectedAreaFilter === 'Other'
+          ? !KNOWN_AREAS.includes(report.area) || report.area === 'Other'
+          : report.area === selectedAreaFilter);
     const matchesCat = selectedCategory === 'All' 
       ? true 
       : (selectedCategory === 'Other' 
@@ -233,7 +249,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
             >
               {AREA_OPTIONS.map((area) => (
                 <option key={area} value={area} className="bg-[#111420] text-white">
-                  {area === 'All Areas' ? '🌐 All City Areas' : `📍 ${area}`}
+                  {area === 'All Areas' ? '🌐 All City Areas' : (area === 'Other' ? '📍 Other Areas' : `📍 ${area}`)}
                 </option>
               ))}
             </select>
