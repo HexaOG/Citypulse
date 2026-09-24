@@ -142,25 +142,6 @@ export const Complaints = () => {
       <div className={`absolute inset-0 z-10 ${isSelectingLocation ? 'pointer-events-none' : 'pointer-events-none'}`}>
         <Header />
         
-        {/* Floating Action Button */}
-        <div className={`absolute bottom-10 left-24 z-30 ${isSelectingLocation ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'}`}>
-          <button 
-            onClick={() => {
-              if (replayOffsetHours < 0) {
-                setReplayOffsetHours(0);
-                setIsReplaying(false);
-                setToast("Returned to LIVE feed to submit real-time incident report.");
-                setTimeout(() => setToast(null), 3500);
-              }
-              setIsModalOpen(true);
-            }}
-            className="flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-6 py-3.5 rounded-full font-bold shadow-[0_0_25px_rgba(244,63,94,0.6)] transition-all transform hover:scale-105 cursor-pointer"
-          >
-            <Plus size={20} />
-            REPORT INCIDENT
-          </button>
-        </div>
-
         {/* Community Feed Drawer */}
         <div className={`${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100'}`}>
           <CommunityFeedDrawer onOpenReportModal={() => setIsModalOpen(true)} />
@@ -170,7 +151,7 @@ export const Complaints = () => {
           <div className="flex gap-6 items-start w-full">
             {/* Key Metrics Card */}
             <div className={`glass-panel p-6 flex flex-col gap-4 w-72 transition-opacity ${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
-              <h2 className="text-xl font-bold tracking-wider mb-2 flex items-center gap-2">
+              <h2 className="text-xl font-bold tracking-wider mb-2 flex items-center gap-2 text-slate-800 dark:text-white">
                 <AlertTriangle className={replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'} /> 311 TICKETS
               </h2>
               
@@ -184,7 +165,7 @@ export const Complaints = () => {
                       fill="transparent"
                       stroke="currentColor"
                       strokeWidth="8"
-                      className="text-white/5 dark:text-white/5"
+                      className="text-slate-200 dark:text-white/5"
                     />
                     <circle
                       cx="50"
@@ -202,52 +183,69 @@ export const Complaints = () => {
                     <span className={`text-4xl font-black font-mono tracking-tight ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'}`}>
                       {loadIndex}%
                     </span>
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mt-1">LOAD INDEX</span>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 dark:text-slate-400 mt-1">LOAD INDEX</span>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-black/20 p-3 rounded-xl border border-white/5">
-                  <div className="text-xs text-gray-400 flex items-center gap-1 mb-1"><TrendingUp size={12}/> OPEN</div>
-                  <div className={`text-lg font-mono font-bold ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'}`}>
+                <div className="bg-slate-100/80 dark:bg-black/20 p-3 rounded-xl border border-slate-200/80 dark:border-white/5">
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-medium flex items-center gap-1 mb-1"><TrendingUp size={12}/> OPEN</div>
+                  <div className={`text-lg font-mono font-bold ${replayOffsetHours < 0 ? 'text-amber-500 dark:text-amber-400' : 'text-slate-900 dark:text-white'}`}>
                     {dynamicActiveTickets}
                   </div>
                 </div>
-                <div className="bg-black/20 p-3 rounded-xl border border-white/5">
-                  <div className="text-xs text-gray-400 flex items-center gap-1 mb-1"><CheckCircle size={12}/> AVG TIME</div>
-                  <div className="text-lg font-mono font-bold text-emerald-500">4.2h</div>
+                <div className="bg-slate-100/80 dark:bg-black/20 p-3 rounded-xl border border-slate-200/80 dark:border-white/5">
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-medium flex items-center gap-1 mb-1"><CheckCircle size={12}/> AVG TIME</div>
+                  <div className="text-lg font-mono font-bold text-slate-900 dark:text-white">4.2h</div>
                 </div>
               </div>
 
               <div className="mt-2 space-y-2 max-h-36 overflow-y-auto pr-1">
-                <div className="text-xs font-bold text-gray-400 mb-1 flex items-center justify-between">
+                <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1 flex items-center justify-between">
                   <span>{replayOffsetHours === 0 ? 'RECENT REPORTS' : `TICKETS AT T - ${Math.abs(replayOffsetHours)}H`}</span>
-                  <span className="text-[10px] text-cyan-400 font-mono font-normal">{historicalReports.length} visible</span>
+                  <span className="text-[10px] text-sky-500 dark:text-cyan-400 font-mono font-normal">{historicalReports.length} visible</span>
                 </div>
                 {historicalReports.slice(0, 4).map((report, idx) => (
-                  <div key={idx} className="flex justify-between items-center text-xs bg-white/5 p-2 rounded border border-white/5">
+                  <div key={idx} className="flex justify-between items-center text-xs bg-slate-100/70 dark:bg-white/5 p-2 rounded-lg border border-slate-200/80 dark:border-white/5">
                     <div className="truncate pr-2">
-                      <div className="text-white font-medium truncate">{report.category}</div>
-                      <div className="text-gray-500 text-[10px] truncate">{report.area} • {report.timestamp}</div>
+                      <div className="text-slate-700 dark:text-slate-300 font-medium truncate">{report.category}</div>
+                      <div className="text-slate-500 dark:text-slate-400 text-[10px] truncate">{report.area} • {report.timestamp}</div>
                     </div>
                     <span className={`px-2 py-0.5 rounded text-[9px] font-mono shrink-0 ${
                       report.severity === 'Critical' 
-                        ? 'bg-rose-500/20 text-rose-400' 
+                        ? 'bg-rose-500/20 text-rose-500 dark:text-rose-400' 
                         : report.severity === 'High' 
-                        ? 'bg-orange-500/20 text-orange-400' 
-                        : 'bg-amber-500/20 text-amber-400'
+                        ? 'bg-orange-500/20 text-orange-500 dark:text-orange-400' 
+                        : 'bg-amber-500/20 text-amber-500 dark:text-amber-400'
                     }`}>
                       {report.severity}
                     </span>
                   </div>
                 ))}
                 {historicalReports.length === 0 && (
-                  <div className="text-xs text-gray-500 italic py-2 text-center">
+                  <div className="text-xs text-slate-500 dark:text-slate-400 italic py-2 text-center">
                     No active incidents logged prior to this time.
                   </div>
                 )}
               </div>
+
+              {/* Nested + REPORT INCIDENT Button: single plus */}
+              <button 
+                onClick={() => {
+                  if (replayOffsetHours < 0) {
+                    setReplayOffsetHours(0);
+                    setIsReplaying(false);
+                    setToast("Returned to LIVE feed to submit real-time incident report.");
+                    setTimeout(() => setToast(null), 3500);
+                  }
+                  setIsModalOpen(true);
+                }}
+                className="mt-2 w-full py-2.5 px-4 bg-rose-500 hover:bg-rose-600 text-white font-semibold rounded-xl shadow-lg shadow-rose-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]"
+              >
+                <Plus size={18} />
+                <span>REPORT INCIDENT</span>
+              </button>
             </div>
 
             {/* AI Synthesis Banner with Integrated Historical Replay Header */}
@@ -300,7 +298,7 @@ export const Complaints = () => {
               </div>
 
               {/* Explanatory Body Text */}
-              <div className="text-sm text-gray-300 leading-relaxed pl-1">
+              <div className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed pl-1">
                 {replayOffsetHours < 0 
                   ? `Historical municipal state reconstructed at T - ${Math.abs(replayOffsetHours)} hrs. Showing ${historicalReports.length} active civic complaint clusters across monitored Jaipur sectors. Intake system is operating in historical review mode.`
                   : complaintSynthesis

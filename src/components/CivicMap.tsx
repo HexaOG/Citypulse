@@ -45,20 +45,9 @@ const MapController = () => {
   return null;
 };
 
-const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY;
-const STADIA_DARK_URL = STADIA_API_KEY
-  ? `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`
-  : 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
-
-const STADIA_LIGHT_URL = STADIA_API_KEY
-  ? `https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`
-  : 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
-
-const STADIA_ATTRIBUTION = '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-
-const CARTO_DARK_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-const CARTO_LIGHT_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-const CARTO_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+const ESRI_DARK_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+const ESRI_LIGHT_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+const ESRI_ATTRIBUTION = '&copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors';
 
 export const CivicMap = () => {
   const events = usePulseStore(state => state.events);
@@ -72,7 +61,7 @@ export const CivicMap = () => {
   const replayOffsetHours = usePulseStore(state => state.replayOffsetHours);
   const theme = usePulseStore(state => state.theme);
 
-  const tileUrl = theme === 'light' ? CARTO_LIGHT_URL : CARTO_DARK_URL;
+  const tileUrl = theme === 'light' ? ESRI_LIGHT_URL : ESRI_DARK_URL;
 
   // Historical Replay Time Travel Filtering
   // Reports created after simulated scrubber time (T - |offset|) are hidden.
@@ -101,15 +90,15 @@ export const CivicMap = () => {
       <MapContainer 
         center={[26.9124, 75.7873]} 
         zoom={14} 
+        maxZoom={16}
         style={{ height: '100%', width: '100%', cursor: isSelectingLocation ? 'crosshair' : 'grab' }}
         zoomControl={false}
       >
         <TileLayer
           key={tileUrl}
-          attribution={CARTO_ATTRIBUTION}
+          attribution={ESRI_ATTRIBUTION}
           url={tileUrl}
-          subdomains={['a', 'b', 'c', 'd']}
-          maxZoom={20}
+          maxZoom={16}
         />
         
         <LocationPicker />

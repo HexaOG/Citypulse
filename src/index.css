@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-background: #08090e;
   --color-panel: #0e121a;
@@ -54,13 +56,16 @@
   width: 5px;
   height: 5px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(6, 182, 212, 0.45);
 }
@@ -84,21 +89,27 @@
 .leaflet-overlay-pane svg path[stroke="#f43f5e"] {
   filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.95));
 }
+
 .leaflet-overlay-pane svg path[stroke="#f97316"] {
   filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.95));
 }
+
 .leaflet-overlay-pane svg path[stroke="#eab308"] {
   filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.95));
 }
+
 .leaflet-overlay-pane svg path[stroke="#06b6d4"] {
   filter: drop-shadow(0 0 10px rgba(6, 182, 212, 1));
 }
+
 .leaflet-overlay-pane svg path[stroke="#00e676"] {
   filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.95));
 }
+
 .leaflet-overlay-pane svg path[stroke="#ffea00"] {
   filter: drop-shadow(0 0 8px rgba(255, 234, 0, 0.95));
 }
+
 .leaflet-overlay-pane svg path[stroke="#00b0ff"] {
   filter: drop-shadow(0 0 8px rgba(0, 176, 255, 0.95));
 }
@@ -116,6 +127,7 @@
   backdrop-filter: blur(8px);
   border-top-left-radius: 6px;
 }
+
 .leaflet-control-attribution a {
   color: #38bdf8 !important;
 }
@@ -157,6 +169,7 @@ html.light .leaflet-container,
 .light .leaflet-container {
   background-color: #f0f2f5 !important;
 }
+
 html.light .leaflet-tile-pane,
 .light .leaflet-tile-pane {
   opacity: 0.95;
@@ -174,10 +187,12 @@ html.light .leaflet-control-zoom a {
   color: #1a202c !important;
   border-color: rgba(0, 0, 0, 0.08) !important;
 }
+
 html.light .leaflet-control-attribution {
   background-color: rgba(245, 247, 250, 0.85) !important;
   color: #64748b !important;
 }
+
 html.light .leaflet-control-attribution a {
   color: #0284c7 !important;
 }
@@ -299,6 +314,7 @@ html.light textarea::placeholder {
 html.light ::-webkit-scrollbar-thumb {
   background: rgba(15, 23, 42, 0.2);
 }
+
 html.light ::-webkit-scrollbar-thumb:hover {
   background: rgba(15, 23, 42, 0.35);
 }
@@ -318,10 +334,12 @@ html.light .leaflet-popup-tip {
     transform: scale(0);
     opacity: 0;
   }
+
   60% {
     transform: scale(1.4);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
     opacity: 0.95;

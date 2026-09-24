@@ -4,6 +4,7 @@ import { Radio, CloudRain, Sun, Moon } from 'lucide-react';
 
 export const Header = () => {
   const connected = usePulseStore(state => state.connected);
+  const isSimulated = usePulseStore(state => state.isSimulated);
   const scenario = usePulseStore(state => state.scenario);
   const setScenario = usePulseStore(state => state.setScenario);
   const theme = usePulseStore(state => state.theme);
@@ -16,7 +17,7 @@ export const Header = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scenario: val })
-    });
+    }).catch(() => {});
   };
   
   return (
@@ -32,16 +33,18 @@ export const Header = () => {
           <select 
             value={scenario}
             onChange={handleScenarioChange}
-            className="bg-transparent border-none text-sm outline-none cursor-pointer"
+            className="bg-transparent border-none text-sm outline-none cursor-pointer text-slate-800 dark:text-slate-100 font-medium"
           >
-            <option value="normal" className="bg-panel">Scenario: Normal Operations</option>
-            <option value="storm" className="bg-panel">Scenario: Severe Storm Surge</option>
+            <option value="normal" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">Scenario: Normal Operations</option>
+            <option value="storm" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">Scenario: Severe Storm Surge</option>
           </select>
         </div>
         
-        <div className={`glass-panel px-4 py-2 flex items-center gap-2 text-sm font-semibold ${connected ? 'text-accent-green' : 'text-accent-red'}`}>
-          <Radio size={16} className={connected ? 'animate-pulse' : ''} />
-          {connected ? 'LIVE' : 'DISCONNECTED'}
+        <div className={`glass-panel px-4 py-2 flex items-center gap-2 text-sm font-semibold ${
+          connected ? 'text-accent-green' : (isSimulated ? 'text-cyan-400' : 'text-accent-red')
+        }`}>
+          <Radio size={16} className={connected || isSimulated ? 'animate-pulse' : ''} />
+          {connected ? 'LIVE' : (isSimulated ? 'SIMULATED LIVE' : 'DISCONNECTED')}
         </div>
 
         {/* Theme Toggle Button */}

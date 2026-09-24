@@ -289,6 +289,7 @@ interface PulseState {
   events: Event[];
   scenario: string;
   connected: boolean;
+  isSimulated: boolean;
   
   // Incident Reporting State
   isSelectingLocation: boolean;
@@ -318,7 +319,8 @@ interface PulseState {
   setPulseState: (data: any) => void;
   addEvent: (event: Event) => void;
   setScenario: (scenario: string) => void;
-  setConnectionStatus: (status: boolean) => void;
+  setConnectionStatus: (status: boolean, isSimulated?: boolean) => void;
+  setIsSimulated: (isSimulated: boolean) => void;
   setIsSelectingLocation: (val: boolean) => void;
   setSelectedLocation: (loc: [number, number] | null) => void;
   setActiveTickets: (count: number) => void;
@@ -340,7 +342,12 @@ const getInitialTheme = (): 'dark' | 'light' => {
     const saved = localStorage.getItem('citypulse_theme');
     if (saved === 'light') {
       document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
       return 'light';
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      return 'dark';
     }
   }
   return 'dark';
@@ -353,6 +360,7 @@ export const usePulseStore = create<PulseState>((set) => ({
   events: [],
   scenario: "normal",
   connected: false,
+  isSimulated: false,
   theme: getInitialTheme(),
   
   isSelectingLocation: false,
@@ -387,7 +395,9 @@ export const usePulseStore = create<PulseState>((set) => ({
       localStorage.setItem('citypulse_theme', nextTheme);
       if (nextTheme === 'light') {
         document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
       } else {
+        document.documentElement.classList.add('dark');
         document.documentElement.classList.remove('light');
       }
     }
@@ -403,7 +413,8 @@ export const usePulseStore = create<PulseState>((set) => ({
     events: [...state.events, event].slice(-100) // Keep last 100 events
   })),
   setScenario: (scenario) => set({ scenario }),
-  setConnectionStatus: (connected) => set({ connected }),
+  setConnectionStatus: (connected, isSimulated = false) => set({ connected, isSimulated }),
+  setIsSimulated: (isSimulated) => set({ isSimulated }),
   setIsSelectingLocation: (val) => set({ isSelectingLocation: val }),
   setSelectedLocation: (loc) => set({ selectedLocation: loc }),
   setActiveTickets: (count) => set({ activeTickets: count }),
