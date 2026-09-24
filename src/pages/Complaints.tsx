@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Header } from '../components/Header';
 import { CivicMap } from '../components/CivicMap';
 import { TimeTravelSlider } from '../components/TimeTravelSlider';
+import { CommunityFeedDrawer } from '../components/CommunityFeedDrawer';
 import { 
   AlertTriangle, 
   TrendingUp, 
@@ -45,8 +46,8 @@ export const Complaints = () => {
     complaintSynthesis, 
     isSelectingLocation, 
     selectedLocation, 
-    addEvent, 
-    setActiveTickets, 
+    addCommunityReport,
+    isCommunityDrawerOpen,
     setComplaintSynthesis, 
     setIsSelectingLocation,
     setSelectedLocation,
@@ -95,19 +96,25 @@ export const Complaints = () => {
     }
 
     const finalCategory = category === 'Other' ? (customCategory.trim() || 'Other Problem') : category;
-    const eventId = `INC-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-    addEvent({
-      eventId,
-      sourceFeed: '311',
-      timestamp: new Date().toISOString(),
-      coordinates: selectedLocation,
+    const eventId = `CP-${Math.floor(1000 + Math.random() * 9000)}`;
+    
+    // Live Submission Sync to Community Feed
+    addCommunityReport({
+      id: eventId,
       category: finalCategory,
-      severity
+      description: description.trim() || `${finalCategory} reported in ${area}.`,
+      area,
+      street: `${area} • Verified Resident Report`,
+      severity: severity as any,
+      timestamp: 'Just now',
+      coordinates: selectedLocation,
+      confirmations: 1,
+      userConfirmed: true,
+      isNew: true
     });
 
-    setActiveTickets(activeTickets + 1);
     setComplaintSynthesis(`New report logged: ${finalCategory} in ${area}. Anomaly detection recalculating cluster severity...`);
-    setToast(`Incident ${eventId} successfully broadcasted to stream.`);
+    setToast(`Incident ${eventId} successfully broadcasted to community stream.`);
     
     // Auto-hide toast
     setTimeout(() => setToast(null), 4000);
@@ -127,17 +134,22 @@ export const Complaints = () => {
         <Header />
         
         {/* Floating Action Button */}
-        <div className={`absolute bottom-12 right-12 z-50 ${isSelectingLocation ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'}`}>
+        <div className={`absolute bottom-10 left-24 z-30 ${isSelectingLocation ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'}`}>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-6 py-4 rounded-full font-bold shadow-[0_0_30px_rgba(244,63,94,0.6)] transition-all transform hover:scale-105"
+            className="flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-6 py-3.5 rounded-full font-bold shadow-[0_0_25px_rgba(244,63,94,0.6)] transition-all transform hover:scale-105 cursor-pointer"
           >
-            <Plus size={24} />
+            <Plus size={20} />
             REPORT INCIDENT
           </button>
         </div>
 
-        <div className="absolute top-24 left-24 right-6 flex items-start justify-between pointer-events-none">
+        {/* Community Feed Drawer */}
+        <div className={`${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100'}`}>
+          <CommunityFeedDrawer onOpenReportModal={() => setIsModalOpen(true)} />
+        </div>
+
+        <div className={`absolute top-24 left-24 ${isCommunityDrawerOpen ? 'right-[460px]' : 'right-16'} transition-all duration-300 flex items-start justify-between pointer-events-none`}>
           <div className="flex gap-6 items-start w-full">
             {/* Key Metrics Card */}
             <div className={`glass-panel p-6 flex flex-col gap-4 w-72 transition-opacity ${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
