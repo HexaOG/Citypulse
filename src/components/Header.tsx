@@ -1,20 +1,26 @@
 import React from 'react';
-import { usePulseStore } from '../store/useStore';
 import { Radio, CloudRain } from 'lucide-react';
+import { resolveScenarioUrl } from '../lib/pulse.js';
+import { usePulseStore } from '../store/useStore';
 
 export const Header = () => {
   const connected = usePulseStore(state => state.connected);
   const scenario = usePulseStore(state => state.scenario);
   const setScenario = usePulseStore(state => state.setScenario);
   
-  const handleScenarioChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleScenarioChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     setScenario(val);
-    fetch('http://localhost:8000/api/scenario', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scenario: val })
-    });
+
+    try {
+      await fetch(resolveScenarioUrl(window.location.href), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scenario: val }),
+      });
+    } catch {
+      // No local backend in the static deployment; the UI keeps running with simulated data.
+    }
   };
   
   return (

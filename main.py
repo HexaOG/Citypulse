@@ -42,37 +42,39 @@ async def websocket_endpoint(websocket: WebSocket):
     
     try:
         while True:
-            # Send latest CHI state every 2 seconds
-            event = await asyncio.wait_for(queue.get(), timeout=2.0)
-            fusion_engine.ingest_event(event)
-            
-            # Recalculate
-            status = fusion_engine.calculate_chi()
-            narrative = narrative_gen.generate(status)
-            anomalies = [a.dict() for a in fusion_engine.detect_anomalies()]
-            
-            payload = {
-                "type": "PULSE_UPDATE",
-                "event": event.dict(),
-                "status": status.dict(),
-                "narrative": narrative,
-                "anomalies": anomalies
-            }
-            await websocket.send_json(payload)
-    except asyncio.TimeoutError:
-        # Keep alive / periodic update even if no events
-        status = fusion_engine.calculate_chi()
-        narrative = narrative_gen.generate(status)
-        anomalies = [a.dict() for a in fusion_engine.detect_anomalies()]
-        payload = {
-            "type": "PULSE_UPDATE",
-            "status": status.dict(),
-            "narrative": narrative,
-            "anomalies": anomalies
-        }
-        await websocket.send_json(payload)
+            try:
+                # Send latest CHI state every 2 seconds
+                event = await asyncio.wait_for(queue.get(), timeout=2.0)
+                fusion_engine.ingest_event(event)
+                
+                # Recalculate
+                status = fusion_engine.calculate_chi()
+                narrative = narrative_gen.generate(status)
+                anomalies = [a.dict() for a in fusion_engine.detect_anomalies()]
+                
+                payload = {
+                    "type": "PULSE_UPDATE",
+                    "event": event.dict(),
+                    "status": status.dict(),
+                    "narrative": narrative,
+                    "anomalies": anomalies
+                }
+                await websocket.send_json(payload)
+            except (asyncio.TimeoutError, TimeoutError):
+                # Keep alive / periodic update even if no events
+                status = fusion_engine.calculate_chi()
+                narrative = narrative_gen.generate(status)
+                anomalies = [a.dict() for a in fusion_engine.detect_anomalies()]
+                payload = {
+                    "type": "PULSE_UPDATE",
+                    "status": status.dict(),
+                    "narrative": narrative,
+                    "anomalies": anomalies
+                }
+                await websocket.send_json(payload)
     except WebSocketDisconnect:
         simulator.remove_subscriber(queue)
     except Exception as e:
         print(f"WS Error: {e}")
         simulator.remove_subscriber(queue)
+
