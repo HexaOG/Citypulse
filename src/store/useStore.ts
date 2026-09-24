@@ -7,6 +7,7 @@ interface Event {
   coordinates: [number, number];
   category: string;
   severity: string;
+  rawMetrics?: any;
 }
 
 interface PulseState {

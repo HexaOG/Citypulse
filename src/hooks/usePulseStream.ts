@@ -8,7 +8,7 @@ export const usePulseStream = () => {
     let ws: WebSocket;
     
     const connect = () => {
-      ws = new WebSocket('ws://localhost:8000/ws/pulse');
+      ws = new WebSocket('ws://localhost:8080/ws/pulse');
       
       ws.onopen = () => {
         setConnectionStatus(true);

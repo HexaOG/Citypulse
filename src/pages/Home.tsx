@@ -1,17 +1,44 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Header } from '../components/Header';
 import { Link } from 'react-router-dom';
 import { CloudRain, Car, Wind, AlertTriangle, ArrowRight, Activity } from 'lucide-react';
+import { usePulseStore } from '../store/useStore';
 
 export const Home = () => {
+  const events = usePulseStore(state => state.events);
+  const chiScore = usePulseStore(state => state.chiScore);
+  const narrative = usePulseStore(state => state.narrative);
+
+  const latestWeather = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'weather'), [events]);
+  const latestAQI = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'aqi'), [events]);
+
+  let weatherMetric = 'Connecting...';
+  let weatherStatus = 'active';
+  if (latestWeather && latestWeather.rawMetrics) {
+      const temp = latestWeather.rawMetrics.temperature;
+      const condition = latestWeather.category === 'rain' ? 'Rain' : 'Clear';
+      weatherMetric = temp !== undefined ? `${temp}°C / ${condition}` : condition;
+      weatherStatus = latestWeather.severity === 'critical' || latestWeather.severity === 'high' ? 'critical' : 'good';
+  }
+
+  let aqiMetric = 'Connecting...';
+  let aqiStatus = 'active';
+  if (latestAQI && latestAQI.rawMetrics?.us_aqi !== undefined) {
+      const aqi = latestAQI.rawMetrics.us_aqi;
+      aqiMetric = `${aqi} AQI`;
+      if (aqi < 50) aqiStatus = 'good';
+      else if (aqi < 100) aqiStatus = 'warning';
+      else aqiStatus = 'critical';
+  }
+
   const modules = [
     {
       title: 'Weather & Environment',
       to: '/weather',
       icon: CloudRain,
-      metric: 'Heavy Rain Alert',
-      color: 'emerald',
-      status: 'active'
+      metric: weatherMetric,
+      color: weatherStatus === 'critical' ? 'rose' : 'emerald',
+      status: weatherStatus
     },
     {
       title: 'Traffic & Transit',
@@ -25,9 +52,9 @@ export const Home = () => {
       title: 'Air Quality (AQI)',
       to: '/air-quality',
       icon: Wind,
-      metric: '42 Good',
-      color: 'cyan',
-      status: 'good'
+      metric: aqiMetric,
+      color: aqiStatus === 'critical' ? 'rose' : (aqiStatus === 'warning' ? 'amber' : 'cyan'),
+      status: aqiStatus
     },
     {
       title: '311 Complaints',
@@ -80,16 +107,18 @@ export const Home = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/10 max-w-sm">
                 <div className="text-xs font-bold text-gray-500 mb-1">AI SITUATION SUMMARY</div>
                 <div className="text-sm leading-relaxed">
-                  "Overall civic pulse is stable; minor traffic delays reported in East Corridor, weather clear. No major cross-system anomalies detected."
+                  "{narrative}"
                 </div>
               </div>
               
               <div className="flex flex-col items-center">
                 <div className="relative w-24 h-24 flex items-center justify-center rounded-full border-4 border-emerald-500/30">
                   <div className="absolute inset-0 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin" style={{ animationDuration: '4s' }} />
-                  <div className="text-2xl font-bold text-emerald-500">92</div>
+                  <div className="text-2xl font-bold text-emerald-500">{chiScore}</div>
                 </div>
-                <div className="mt-2 text-xs font-bold tracking-widest text-emerald-500">STABLE</div>
+                <div className="mt-2 text-xs font-bold tracking-widest text-emerald-500">
+                  {chiScore > 80 ? 'STABLE' : (chiScore > 50 ? 'WARNING' : 'CRITICAL')}
+                </div>
               </div>
             </div>
           </div>

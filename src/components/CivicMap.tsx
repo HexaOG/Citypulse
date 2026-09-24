@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { usePulseStore } from '../store/useStore';
 
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+
 export const CivicMap = () => {
   const events = usePulseStore(state => state.events);
   
@@ -15,8 +17,9 @@ export const CivicMap = () => {
         zoomControl={false}
       >
         <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url={`https://api.mapbox.com/styles/v1/mapbox/dark-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`}
+          maxZoom={20}
         />
         
         {events.map((ev, i) => {
