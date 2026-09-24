@@ -56,6 +56,10 @@ const STADIA_LIGHT_URL = STADIA_API_KEY
 
 const STADIA_ATTRIBUTION = '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
+const CARTO_DARK_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const CARTO_LIGHT_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+const CARTO_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
 export const CivicMap = () => {
   const events = usePulseStore(state => state.events);
   const selectedLocation = usePulseStore(state => state.selectedLocation);
@@ -68,7 +72,7 @@ export const CivicMap = () => {
   const replayOffsetHours = usePulseStore(state => state.replayOffsetHours);
   const theme = usePulseStore(state => state.theme);
 
-  const tileUrl = theme === 'light' ? STADIA_LIGHT_URL : STADIA_DARK_URL;
+  const tileUrl = theme === 'light' ? CARTO_LIGHT_URL : CARTO_DARK_URL;
 
   // Historical Replay Time Travel Filtering
   // Reports created after simulated scrubber time (T - |offset|) are hidden.
@@ -102,7 +106,7 @@ export const CivicMap = () => {
       >
         <TileLayer
           key={tileUrl}
-          attribution={STADIA_ATTRIBUTION}
+          attribution={CARTO_ATTRIBUTION}
           url={tileUrl}
           subdomains={['a', 'b', 'c', 'd']}
           maxZoom={20}
