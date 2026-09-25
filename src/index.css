@@ -141,14 +141,18 @@ html.light,
 }
 
 html.light body,
-.light body {
-  background-color: #f0f2f5;
-  color: #1a202c;
+.light body,
+html.light .app-root,
+html.light .main-layout,
+.light .app-root,
+.light .main-layout {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
 }
 
 html.light .bg-background,
 .light .bg-background {
-  background-color: #f0f2f5 !important;
+  background-color: #f8fafc !important;
 }
 
 html.light .glass-panel,
@@ -213,12 +217,8 @@ html.light .glass-panel h4,
   color: #1a202c !important;
 }
 
-html.light p,
-html.light .glass-panel p,
 html.light .text-gray-400,
 html.light .text-gray-500,
-.light p,
-.light .glass-panel p,
 .light .text-gray-400,
 .light .text-gray-500 {
   color: #64748b !important;

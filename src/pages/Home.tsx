@@ -120,26 +120,26 @@ export const Home = () => {
   };
 
   return (
-    <div className="relative w-full h-full bg-[#08090e] transition-colors duration-300 overflow-y-auto">
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(6,182,212,0.12)_0%,_rgba(139,92,246,0.06)_40%,_transparent_75%)] pointer-events-none"></div>
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
+    <div className="relative w-full h-full bg-slate-50 dark:bg-[#08090e] text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-y-auto">
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(6,182,212,0.12)_0%,_rgba(139,92,246,0.06)_40%,_transparent_75%)] opacity-40 dark:opacity-100 pointer-events-none"></div>
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
       
       <div className="relative z-10 min-h-screen flex flex-col p-6 pointer-events-auto">
         <Header />
         
-        <div className="mt-24 ml-24 max-w-6xl w-full mx-auto flex-1 flex flex-col pb-24">
+        <div className="mt-24 ml-20 md:ml-24 max-w-6xl w-full mx-auto flex-1 flex flex-col pb-36 mb-12">
           {/* Hero / Pulse Overview */}
-          <div className={`glass-panel p-8 mb-8 flex items-center justify-between transition-all ${
+          <div className={`p-8 mb-8 rounded-2xl flex items-center justify-between transition-all bg-white dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800/80 shadow-sm ${
             replayOffsetHours < 0 ? 'border-l-4 border-l-amber-500 shadow-[0_8px_32px_rgba(245,158,11,0.15)]' : ''
           }`}>
             <div>
               <div className="flex items-center gap-3 mb-2 flex-wrap">
-                <h2 className="text-3xl font-bold tracking-tighter flex items-center gap-3">
-                  SYSTEM PULSE {replayOffsetHours < 0 ? <History className="text-amber-400" /> : <Activity className="text-emerald-500" />}
+                <h2 className="text-3xl font-bold tracking-tighter flex items-center gap-3 text-slate-900 dark:text-white">
+                  SYSTEM PULSE {replayOffsetHours < 0 ? <History className="text-amber-500" /> : <Activity className="text-emerald-500" />}
                 </h2>
                 {replayOffsetHours < 0 && (
                   <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
+                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30 animate-pulse">
                       T - {Math.abs(replayOffsetHours)} HRS
                     </span>
                     <button
@@ -147,7 +147,7 @@ export const Home = () => {
                         setReplayOffsetHours(0);
                         setIsReplaying(false);
                       }}
-                      className="px-2.5 py-1 text-xs font-bold bg-amber-500/20 hover:bg-amber-400 text-amber-300 hover:text-black rounded-full border border-amber-500/40 transition-all cursor-pointer flex items-center gap-1 shadow-sm active:scale-95"
+                      className="px-2.5 py-1 text-xs font-bold bg-amber-500/20 hover:bg-amber-400 text-amber-600 dark:text-amber-300 hover:text-black rounded-full border border-amber-500/40 transition-all cursor-pointer flex items-center gap-1 shadow-sm active:scale-95"
                     >
                       <RotateCcw size={12} />
                       <span>Live</span>
@@ -155,7 +155,7 @@ export const Home = () => {
                   </div>
                 )}
               </div>
-              <p className="text-gray-400">
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
                 {replayOffsetHours < 0 
                   ? `Reconstructed aggregate civic pulse at T - ${Math.abs(replayOffsetHours)} hours across all telemetry streams.` 
                   : 'Aggregate civic health score across all active monitoring feeds.'}
@@ -163,11 +163,11 @@ export const Home = () => {
             </div>
             
             <div className="flex items-center gap-8">
-              <div className="p-4 bg-white/5 rounded-xl border border-white/10 max-w-sm">
-                <div className="text-xs font-bold text-gray-500 mb-1">
+              <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 max-w-sm">
+                <div className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">
                   {replayOffsetHours < 0 ? `REPLAY SUMMARY (T - ${Math.abs(replayOffsetHours)}H)` : 'AI SITUATION SUMMARY'}
                 </div>
-                <div className="text-sm leading-relaxed">
+                <div className="text-sm leading-relaxed text-slate-700 dark:text-slate-200 font-medium">
                   {replayOffsetHours < 0 
                     ? `Historical timeline evaluation: Traffic congestion standing at ${trafficSim.congestion}%, ambient AQI at ${aqiSim.aqi}, and ${dynamicActiveTickets} active municipal tickets open.`
                     : `"${narrative}"`}
@@ -184,7 +184,7 @@ export const Home = () => {
                       fill="transparent"
                       stroke="currentColor"
                       strokeWidth="8"
-                      className="text-white/5 dark:text-white/5"
+                      className="text-slate-200 dark:text-white/5"
                     />
                     <circle
                       cx="50"
@@ -198,12 +198,12 @@ export const Home = () => {
                       className={`${replayOffsetHours < 0 ? 'text-amber-500' : 'text-emerald-500'} transition-all duration-1000 ease-out`}
                     />
                   </svg>
-                  <div className={`text-3xl font-black font-mono tracking-tight z-10 ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-emerald-500'}`}>
+                  <div className={`text-3xl font-black font-mono tracking-tight z-10 ${replayOffsetHours < 0 ? 'text-amber-500 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
                     {dynamicChiScore}
                   </div>
                 </div>
-                <div className={`mt-2 text-[10px] font-bold tracking-widest px-2.5 py-1 flex items-center rounded-xl bg-opacity-20 border ${
-                  replayOffsetHours < 0 ? 'bg-amber-500 border-amber-500/40 text-amber-500' : 'bg-emerald-500 border-emerald-500/40 text-emerald-500'
+                <div className={`mt-2 text-[10px] font-bold tracking-widest px-2.5 py-1 flex items-center rounded-xl border ${
+                  replayOffsetHours < 0 ? 'bg-amber-500/15 border-amber-500/40 text-amber-600 dark:text-amber-400' : 'bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400'
                 }`}>
                   {dynamicChiScore > 80 ? 'STABLE' : (dynamicChiScore > 50 ? 'WARNING' : 'CRITICAL')}
                 </div>
@@ -212,13 +212,17 @@ export const Home = () => {
           </div>
           
           {/* Module Grid Navigation */}
-          <h3 className="text-sm font-bold tracking-widest text-gray-500 mb-4 ml-2">ACTIVE SENSORY MODULES</h3>
+          <h3 className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 mb-4 ml-2 uppercase">ACTIVE SENSORY MODULES</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
             {modules.map((mod, idx) => {
               const Icon = mod.icon;
               return (
-                <Link key={idx} to={mod.to} className="group glass-panel p-6 hover:bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] cursor-pointer flex flex-col justify-between h-48 relative overflow-hidden">
-                  <div className={`absolute -right-12 -top-12 w-48 h-48 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity ${
+                <Link 
+                  key={idx} 
+                  to={mod.to} 
+                  className="group bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/80 shadow-sm hover:shadow-md p-6 rounded-2xl transition-all duration-300 hover:scale-[1.01] cursor-pointer flex flex-col justify-between h-48 relative overflow-hidden"
+                >
+                  <div className={`absolute -right-12 -top-12 w-48 h-48 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity ${
                     mod.color === 'emerald' ? 'bg-emerald-500' :
                     mod.color === 'amber' ? 'bg-amber-500' :
                     mod.color === 'cyan' ? 'bg-cyan-500' : 'bg-rose-500'
@@ -226,19 +230,19 @@ export const Home = () => {
                   
                   <div className="flex justify-between items-start z-10">
                     <div className={`p-3 rounded-xl ${getColorClasses(mod.color)}`}>
-                      <Icon size={28} />
+                      <Icon size={26} />
                     </div>
                     <div className="flex items-center gap-2">
                       <div className={`w-2.5 h-2.5 rounded-full ${getDotClass(mod.status)}`} />
-                      <span className="text-xs font-bold uppercase tracking-wider text-gray-400">{mod.status}</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">{mod.status}</span>
                     </div>
                   </div>
                   
                   <div className="z-10 mt-auto">
-                    <div className="text-sm text-gray-400 mb-1 font-mono">{mod.metric}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-300 mb-1 font-mono font-medium">{mod.metric}</div>
                     <div className="flex items-center justify-between">
-                      <h4 className="text-xl font-bold tracking-wider">{mod.title}</h4>
-                      <span className="text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-white">
+                      <h4 className="text-xl font-bold tracking-wider text-slate-900 dark:text-white">{mod.title}</h4>
+                      <span className="text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-sky-600 dark:text-sky-400">
                         Inspect Stream <ArrowRight size={16} />
                       </span>
                     </div>
