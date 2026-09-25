@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import { CivicMap } from '../components/CivicMap';
 import { TimeTravelSlider } from '../components/TimeTravelSlider';
@@ -7,29 +7,47 @@ import { usePulseStore } from '../store/useStore';
 import { getHistoricalWeather } from '../utils/historicalSimulation';
 
 const getWeatherIcon = (condition: string, className = "") => {
-  if (condition.includes("Thunderstorm")) return <CloudLightning className={className} />;
-  if (condition.includes("Rain") || condition.includes("Showers")) return <CloudRain className={className} />;
-  if (condition.includes("Sunny")) return <Sun className={className} />;
-  if (condition.includes("Night")) return <Moon className={className} />;
+  const c = condition.toLowerCase();
+  if (c.includes("thunderstorm") || c.includes("storm")) return <CloudLightning className={className} />;
+  if (c.includes("rain") || c.includes("showers") || c.includes("drizzle")) return <CloudRain className={className} />;
+  if (c.includes("sunny") || c.includes("clear")) return <Sun className={className} />;
+  if (c.includes("night")) return <Moon className={className} />;
   return <Cloud className={className} />;
 };
 
 export const Weather = () => {
-  const events = usePulseStore(state => state.events);
   const replayOffsetHours = usePulseStore(state => state.replayOffsetHours);
   const setReplayOffsetHours = usePulseStore(state => state.setReplayOffsetHours);
   const setIsReplaying = usePulseStore(state => state.setIsReplaying);
 
-  const latestWeather = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'weather'), [events]);
+  const [realtimeWeather, setRealtimeWeather] = useState<{ temp?: number; precip?: number; wind?: number; condition?: string } | undefined>(undefined);
+
+  useEffect(() => {
+    // Fetch live terrestrial weather via Open-Meteo
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=26.9124&longitude=75.7873&current=temperature_2m,precipitation,weathercode,windspeed_10m')
+      .then(r => r.json())
+      .then(d => {
+        const w = d.current.weathercode;
+        let cond = 'Clear Sky';
+        if (w >= 1 && w <= 3) cond = 'Partly Cloudy';
+        if (w >= 45 && w <= 48) cond = 'Fog';
+        if (w >= 51 && w <= 67) cond = 'Rain Showers';
+        if (w >= 71 && w <= 77) cond = 'Snow';
+        if (w >= 95) cond = 'Thunderstorm';
+        
+        setRealtimeWeather({
+          temp: d.current.temperature_2m,
+          precip: d.current.precipitation,
+          wind: d.current.windspeed_10m,
+          condition: cond
+        });
+      })
+      .catch(e => console.warn('Real-time weather unavailable, falling back to simulation', e));
+  }, []);
   
   const weatherData = useMemo(() => {
-    return getHistoricalWeather(replayOffsetHours, {
-      temp: latestWeather?.rawMetrics?.temperature,
-      precip: latestWeather?.rawMetrics?.precipitation,
-      wind: latestWeather?.rawMetrics?.windSpeed,
-      condition: latestWeather?.category
-    });
-  }, [replayOffsetHours, latestWeather]);
+    return getHistoricalWeather(replayOffsetHours, realtimeWeather);
+  }, [replayOffsetHours, realtimeWeather]);
 
   const { temp, precip, wind, condition, synthesis } = weatherData;
 
@@ -43,15 +61,10 @@ export const Weather = () => {
   const forecastPoints = useMemo(() => {
     return [1, 3, 6, 12].map(offset => {
       // Simulate future by shifting the simulation timeline
-      const fData = getHistoricalWeather(replayOffsetHours - offset, {
-        temp: latestWeather?.rawMetrics?.temperature,
-        precip: latestWeather?.rawMetrics?.precipitation,
-        wind: latestWeather?.rawMetrics?.windSpeed,
-        condition: latestWeather?.category
-      });
+      const fData = getHistoricalWeather(replayOffsetHours - offset, realtimeWeather);
       return { hourOffset: offset, ...fData };
     });
-  }, [replayOffsetHours, latestWeather]);
+  }, [replayOffsetHours, realtimeWeather]);
 
   return (
     <div className="relative w-full h-full">

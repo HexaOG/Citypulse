@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import { CivicMap } from '../components/CivicMap';
 import { TimeTravelSlider } from '../components/TimeTravelSlider';
@@ -7,17 +7,25 @@ import { usePulseStore } from '../store/useStore';
 import { getHistoricalAQI } from '../utils/historicalSimulation';
 
 export const AirQuality = () => {
-  const events = usePulseStore(state => state.events);
   const replayOffsetHours = usePulseStore(state => state.replayOffsetHours);
   const setReplayOffsetHours = usePulseStore(state => state.setReplayOffsetHours);
   const setIsReplaying = usePulseStore(state => state.setIsReplaying);
 
-  const latestAQI = useMemo(() => events.slice().reverse().find(e => e.sourceFeed === 'aqi'), [events]);
-  const liveAqiVal = latestAQI?.rawMetrics?.us_aqi;
+  const [realtimeAqi, setRealtimeAqi] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    // Fetch live atmospheric AQI telemetry via Open-Meteo
+    fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=26.9124&longitude=75.7873&current=us_aqi')
+      .then(r => r.json())
+      .then(d => {
+        setRealtimeAqi(d.current.us_aqi);
+      })
+      .catch(e => console.warn('Real-time AQI unavailable, falling back to simulation', e));
+  }, []);
 
   const aqiData = useMemo(() => {
-    return getHistoricalAQI(replayOffsetHours, liveAqiVal);
-  }, [replayOffsetHours, liveAqiVal]);
+    return getHistoricalAQI(replayOffsetHours, realtimeAqi);
+  }, [replayOffsetHours, realtimeAqi]);
 
   const { aqi, pm25, pm10, ozone, status, isPoor, isModerate, synthesis } = aqiData;
 
