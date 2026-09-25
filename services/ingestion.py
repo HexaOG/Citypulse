@@ -1,12 +1,14 @@
 import asyncio
 import random
 import uuid
+import json
+import urllib.request
 from datetime import datetime, timezone
 from models import CanonicalCivicEvent
 
-# Base coordinates for downtown area
-BASE_LAT = 40.7128
-BASE_LNG = -74.0060
+# Base coordinates for downtown area (Jaipur, India)
+BASE_LAT = 26.9124
+BASE_LNG = 75.7873
 
 def generate_random_coords(radius=0.05):
     return [
@@ -50,18 +52,54 @@ class MultiStreamSimulator:
         self.running = False
 
     async def _weather_loop(self):
+        last_fetch = 0
+        cached_wx = None
         while self.running:
             coords = [BASE_LNG, BASE_LAT]
             severity = 'low'
             category = 'clear'
             precip = 0
             wind = random.uniform(5, 15)
+            temp = 20
             
             if self.active_scenario == 'storm':
                 severity = random.choice(['high', 'critical'])
                 category = 'rain'
                 precip = random.uniform(20, 50)
                 wind = random.uniform(40, 80)
+            else:
+                now = datetime.now().timestamp()
+                if now - last_fetch > 60:
+                    try:
+                        def get_wx():
+                            url = f"https://api.open-meteo.com/v1/forecast?latitude={BASE_LAT}&longitude={BASE_LNG}&current=temperature_2m,precipitation,wind_speed_10m,weather_code"
+                            req = urllib.request.Request(url, headers={'User-Agent': 'CityPulse/1.0'})
+                            with urllib.request.urlopen(req, timeout=5) as r:
+                                return json.loads(r.read())
+                        data = await asyncio.to_thread(get_wx)
+                        cached_wx = data.get("current", {})
+                        last_fetch = now
+                    except Exception as e:
+                        print(f"Weather fetch error: {e}")
+                
+                if cached_wx:
+                    precip = cached_wx.get("precipitation", 0)
+                    wind = cached_wx.get("wind_speed_10m", 0)
+                    temp = cached_wx.get("temperature_2m", 20)
+                    wmo_code = cached_wx.get("weather_code", 0)
+                    
+                    if wmo_code == 0: category = 'Sunny'
+                    elif wmo_code in [1, 2]: category = 'Partly Cloudy'
+                    elif wmo_code == 3: category = 'Overcast'
+                    elif wmo_code in [45, 48]: category = 'Foggy'
+                    elif 50 <= wmo_code <= 69 or 80 <= wmo_code <= 82: category = 'Rainy'
+                    elif 70 <= wmo_code <= 79 or 85 <= wmo_code <= 86: category = 'Snowy'
+                    elif wmo_code >= 95: category = 'Thunderstorm'
+                    else: category = 'Clear'
+                    
+                    severity = 'low'
+                    if precip > 5 or wind > 30: severity = 'medium'
+                    if precip > 20 or wind > 50 or wmo_code >= 95: severity = 'high'
             
             event = CanonicalCivicEvent(
                 eventId=str(uuid.uuid4()),
@@ -71,7 +109,7 @@ class MultiStreamSimulator:
                 h3Index=get_h3_mock(coords[0], coords[1]),
                 category=category,
                 severity=severity,
-                rawMetrics={'precipitation': precip, 'windSpeed': wind},
+                rawMetrics={'temperature': temp, 'precipitation': precip, 'windSpeed': wind},
                 confidenceScore=1.0
             )
             await self.broadcast(event)
@@ -128,6 +166,8 @@ class MultiStreamSimulator:
             await asyncio.sleep(sleep_time)
 
     async def _aqi_loop(self):
+        last_fetch = 0
+        cached_aqi = None
         while self.running:
             coords = generate_random_coords()
             aqi_val = random.uniform(20, 50)
@@ -136,6 +176,26 @@ class MultiStreamSimulator:
             if self.active_scenario == 'smog':
                 aqi_val = random.uniform(150, 300)
                 severity = 'high' if aqi_val < 200 else 'critical'
+            else:
+                now = datetime.now().timestamp()
+                if now - last_fetch > 60:
+                    try:
+                        def get_aqi():
+                            url = f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={BASE_LAT}&longitude={BASE_LNG}&current=us_aqi"
+                            req = urllib.request.Request(url, headers={'User-Agent': 'CityPulse/1.0'})
+                            with urllib.request.urlopen(req, timeout=5) as r:
+                                return json.loads(r.read())
+                        data = await asyncio.to_thread(get_aqi)
+                        current = data.get("current", {})
+                        cached_aqi = current.get("us_aqi", None)
+                        last_fetch = now
+                    except Exception as e:
+                        print(f"AQI fetch error: {e}")
+                
+                if cached_aqi is not None:
+                    aqi_val = cached_aqi + random.uniform(-2, 2)
+                    if aqi_val > 150: severity = 'high'
+                    elif aqi_val > 100: severity = 'medium'
                 
             event = CanonicalCivicEvent(
                 eventId=str(uuid.uuid4()),
@@ -145,7 +205,7 @@ class MultiStreamSimulator:
                 h3Index=get_h3_mock(coords[0], coords[1]),
                 category='air_quality',
                 severity=severity,
-                rawMetrics={'us_aqi': aqi_val},
+                rawMetrics={'us_aqi': round(aqi_val, 1)},
                 confidenceScore=0.98
             )
             await self.broadcast(event)
