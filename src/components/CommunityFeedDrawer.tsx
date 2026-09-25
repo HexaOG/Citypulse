@@ -240,6 +240,25 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
         </div>
 
         <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              const headers = "ID,Category,Description,Area,Street,Severity,Confirmations\n";
+              const rows = communityReports.map(r => `"${r.id}","${r.category}","${r.description.replace(/"/g, '""')}","${r.area}","${r.street}","${r.severity}",${r.confirmations}`).join("\n");
+              const blob = new Blob([headers + rows], { type: 'text/csv' });
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `citypulse_incident_reports_${new Date().toISOString().split('T')[0]}.csv`;
+              a.click();
+              window.URL.revokeObjectURL(url);
+            }}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
+            title="Download database export"
+          >
+            <Globe size={14} />
+            <span className="hidden sm:inline">Export CSV</span>
+          </button>
+          
           {onOpenReportModal && (
             <button
               onClick={onOpenReportModal}
