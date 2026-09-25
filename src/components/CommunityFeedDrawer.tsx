@@ -23,7 +23,7 @@ import { usePulseStore } from '../store/useStore';
 
 const CATEGORY_MAP: Record<string, { icon: any; color: string; bg: string }> = {
   'Power Outage': { icon: Zap, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-  'Waterlogging/Drainage': { icon: Droplets, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+  'Waterlogging/Drainage': { icon: Droplets, color: 'text-rose-400', bg: 'bg-rose-500/10' },
   'Pothole/Road Hazard': { icon: Construction, color: 'text-orange-400', bg: 'bg-orange-500/10' },
   'Broken Streetlight': { icon: Lightbulb, color: 'text-yellow-300', bg: 'bg-yellow-500/10' },
   'Fallen Tree/Debris': { icon: TreePine, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
@@ -178,16 +178,16 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
           type="button"
           onClick={() => setIsCommunityDrawerOpen(true)}
           aria-label="Open Community Reports Feed"
-          className="fixed right-0 top-1/3 -translate-y-1/2 z-[1050] pointer-events-auto flex flex-col items-center gap-2 py-4 px-2 rounded-l-xl shadow-xl border border-r-0 cursor-pointer transition-all bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-slate-200/90 dark:border-slate-800 text-slate-800 dark:text-slate-100 hover:px-3 group animate-in fade-in slide-in-from-right-2 duration-200"
+          className="fixed right-0 top-1/3 -tranzinc-y-1/2 z-[1050] pointer-events-auto flex flex-col items-center gap-2 py-4 px-2 rounded-l-xl shadow-xl border border-r-0 cursor-pointer transition-all bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-zinc-200/90 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 hover:px-3 group animate-in fade-in slide-in-from-right-2 duration-200"
         >
           <div className={`p-2 rounded-xl transition-all ${
             replayOffsetHours < 0 
               ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-white' 
-              : 'bg-sky-500/15 text-sky-600 dark:text-sky-400 group-hover:bg-sky-500 group-hover:text-white'
+              : 'bg-violet-500/15 text-violet-600 dark:text-violet-400 group-hover:bg-violet-500 group-hover:text-white'
           }`}>
             <MessageSquareText size={18} />
           </div>
-          <span className="[writing-mode:vertical-lr] text-xs font-bold tracking-wider uppercase text-slate-800 dark:text-slate-100 py-1">
+          <span className="[writing-mode:vertical-lr] text-xs font-bold tracking-wider uppercase text-zinc-800 dark:text-zinc-100 py-1">
             COMMUNITY FEED
           </span>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border shadow-sm ${
@@ -202,32 +202,32 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
 
       {/* Main Community Feed Drawer Panel */}
       <aside
-        className={`fixed top-20 bottom-6 right-4 md:right-6 w-96 md:w-[430px] z-[1050] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-2xl rounded-2xl flex flex-col transition-transform duration-300 ease-in-out ${
-          isCommunityDrawerOpen ? 'translate-x-0 pointer-events-auto' : 'translate-x-[calc(100%+32px)] pointer-events-none'
+        className={`fixed top-20 bottom-6 right-4 md:right-6 w-96 md:w-[430px] z-[1050] bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl rounded-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+          isCommunityDrawerOpen ? 'tranzinc-x-0 pointer-events-auto' : 'tranzinc-x-[calc(100%+32px)] pointer-events-none'
         }`}
       >
       {/* Drawer Header */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+      <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className={`p-2 rounded-xl border ${
             replayOffsetHours < 0
               ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30'
-              : 'bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/30'
+              : 'bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/30'
           }`}>
             <MessageSquareText size={18} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="font-bold text-base tracking-wide text-slate-900 dark:text-white">Community Feed</h2>
+              <h2 className="font-bold text-base tracking-wide text-zinc-900 dark:text-white">Community Feed</h2>
               <span className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-full border ${
                 replayOffsetHours < 0
                   ? 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/40'
-                  : 'bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/30'
+                  : 'bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/30'
               }`}>
                 {sortedReports.length} Reports
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
               {replayOffsetHours < 0 ? (
                 <span className="text-amber-600 dark:text-amber-400 font-mono font-semibold">
                   Historical view at T - {Math.abs(replayOffsetHours)}h
@@ -271,7 +271,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
           <button
             onClick={() => setIsCommunityDrawerOpen(false)}
             aria-label="Collapse Community Feed"
-            className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/15 text-slate-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white transition-colors cursor-pointer border border-slate-200/60 dark:border-transparent"
+            className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-white/5 dark:hover:bg-white/15 text-zinc-500 dark:text-gray-400 hover:text-zinc-800 dark:hover:text-white transition-colors cursor-pointer border border-zinc-200/60 dark:border-transparent"
           >
             <ChevronRight size={18} />
           </button>
@@ -290,7 +290,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
       )}
 
       {/* Filter & Sort Controls */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-800 space-y-3 bg-slate-50/80 dark:bg-slate-900/50">
+      <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 space-y-3 bg-zinc-50/80 dark:bg-zinc-900/50">
         {/* Row 1: Area Dropdown & Sort Toggle */}
         <div className="flex gap-2 items-center">
           <div className="flex-1 relative" ref={areaDropdownRef}>
@@ -299,13 +299,13 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
               onClick={() => setIsAreaMenuOpen(!isAreaMenuOpen)}
               aria-haspopup="listbox"
               aria-expanded={isAreaMenuOpen}
-              className="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm font-medium shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-sky-500/30 flex items-center justify-between cursor-pointer"
+              className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 rounded-xl px-3 py-2 text-sm font-medium shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-violet-500/30 flex items-center justify-between cursor-pointer"
             >
               <div className="flex items-center gap-2 truncate">
                 {selectedAreaFilter === 'All Areas' ? (
-                  <Globe size={15} className="text-slate-500 dark:text-slate-400 shrink-0" />
+                  <Globe size={15} className="text-zinc-500 dark:text-zinc-400 shrink-0" />
                 ) : (
-                  <MapPin size={15} className="text-slate-500 dark:text-slate-400 shrink-0" />
+                  <MapPin size={15} className="text-zinc-500 dark:text-zinc-400 shrink-0" />
                 )}
                 <span className="truncate">
                   {selectedAreaFilter === 'All Areas'
@@ -315,7 +315,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
               </div>
               <ChevronDown
                 size={15}
-                className={`text-slate-500 dark:text-slate-400 transition-transform duration-200 shrink-0 ml-1.5 ${
+                className={`text-zinc-500 dark:text-zinc-400 transition-transform duration-200 shrink-0 ml-1.5 ${
                   isAreaMenuOpen ? 'rotate-180' : ''
                 }`}
               />
@@ -324,7 +324,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
             {isAreaMenuOpen && (
               <div
                 role="listbox"
-                className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl rounded-xl p-1 max-h-64 overflow-y-auto space-y-0.5 animate-in fade-in zoom-in-95 duration-150"
+                className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-xl p-1 max-h-64 overflow-y-auto space-y-0.5 animate-in fade-in zoom-in-95 duration-150"
               >
                 {AREA_OPTIONS.map((area) => {
                   const isSelected = selectedAreaFilter === area;
@@ -340,21 +340,21 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                       }}
                       className={`w-full text-left px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center justify-between cursor-pointer ${
                         isSelected
-                          ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400 font-semibold'
-                          : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                          ? 'bg-violet-500/10 text-violet-600 dark:text-violet-400 font-semibold'
+                          : 'text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
                       }`}
                     >
                       <div className="flex items-center gap-2 truncate">
                         {area === 'All Areas' ? (
-                          <Globe size={14} className={isSelected ? 'text-sky-500' : 'text-slate-400'} />
+                          <Globe size={14} className={isSelected ? 'text-violet-500' : 'text-zinc-400'} />
                         ) : (
-                          <MapPin size={14} className={isSelected ? 'text-sky-500' : 'text-slate-400'} />
+                          <MapPin size={14} className={isSelected ? 'text-violet-500' : 'text-zinc-400'} />
                         )}
                         <span className="truncate">
                           {area === 'All Areas' ? 'All City Areas' : (area === 'Other' ? 'Other Areas' : area)}
                         </span>
                       </div>
-                      {isSelected && <Check size={14} className="text-sky-500 shrink-0 ml-1" />}
+                      {isSelected && <Check size={14} className="text-violet-500 shrink-0 ml-1" />}
                     </button>
                   );
                 })}
@@ -364,10 +364,10 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
 
           <button
             onClick={() => setSortBy(sortBy === 'recent' ? 'severity' : 'recent')}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-800 dark:text-slate-200 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-sky-500/30 cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-sm font-medium text-zinc-800 dark:text-zinc-200 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-violet-500/30 cursor-pointer whitespace-nowrap"
             title="Toggle Sorting"
           >
-            <ArrowUpDown size={15} className="text-slate-500 dark:text-slate-400" />
+            <ArrowUpDown size={15} className="text-zinc-500 dark:text-zinc-400" />
             <span>{sortBy === 'recent' ? 'Most Recent' : 'High Severity'}</span>
           </button>
         </div>
@@ -382,8 +382,8 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                 onClick={() => setSelectedCategory(pill.id)}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all whitespace-nowrap cursor-pointer border ${
                   isActive
-                    ? 'bg-sky-500 text-white font-medium border-sky-500 shadow-sm'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                    ? 'bg-violet-500 text-white font-medium border-violet-500 shadow-sm'
+                    : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700'
                 }`}
               >
                 {pill.label}
@@ -396,7 +396,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
       {/* Reports Feed List */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3.5 pr-3">
         {sortedReports.length === 0 ? (
-          <div className="text-center py-12 flex flex-col items-center gap-3 text-slate-500 dark:text-gray-400">
+          <div className="text-center py-12 flex flex-col items-center gap-3 text-zinc-500 dark:text-gray-400">
             <AlertTriangle size={32} className="text-amber-500/70" />
             <p className="text-sm font-medium">No reports match your selected filters.</p>
             <button
@@ -404,7 +404,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                 setSelectedAreaFilter('All Areas');
                 setSelectedCategory('All');
               }}
-              className="text-xs text-sky-500 hover:underline font-bold cursor-pointer"
+              className="text-xs text-violet-500 hover:underline font-bold cursor-pointer"
             >
               Reset Filters
             </button>
@@ -425,19 +425,19 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                 }}
                 className={`group rounded-xl p-3 transition-all duration-200 cursor-pointer border shadow-sm relative overflow-hidden ${
                   isFocused
-                    ? 'bg-sky-50 dark:bg-sky-950/30 border-sky-500 ring-2 ring-sky-500/40 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
-                    : 'bg-slate-50 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm'
+                    ? 'bg-violet-50 dark:bg-violet-950/30 border-violet-500 ring-2 ring-violet-500/40 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
+                    : 'bg-zinc-50 dark:bg-zinc-800/80 hover:bg-white dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/60 shadow-sm'
                 }`}
               >
                 {/* Header: ID, Timestamp, Severity Badge */}
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-slate-500 dark:text-slate-400 group-hover:text-sky-500 transition-colors">
+                    <span className="font-mono text-xs font-bold text-zinc-500 dark:text-zinc-400 group-hover:text-violet-500 transition-colors">
                       #{report.id}
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-slate-400">• {report.timestamp}</span>
+                    <span className="text-[11px] text-zinc-500 dark:text-zinc-400">• {report.timestamp}</span>
                     {report.isNew && (
-                      <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-sky-500/20 text-sky-600 dark:text-sky-300 border border-sky-500/40 animate-pulse">
+                      <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-violet-500/20 text-violet-600 dark:text-violet-300 border border-violet-500/40 animate-pulse">
                         NEW
                       </span>
                     )}
@@ -453,21 +453,21 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                     <div className={`p-1.5 rounded-md ${catDetails.bg} ${catDetails.color}`}>
                       <Icon size={14} />
                     </div>
-                    <span className="text-slate-900 dark:text-white font-semibold text-sm">{report.category}</span>
+                    <span className="text-zinc-900 dark:text-white font-semibold text-sm">{report.category}</span>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed pl-1">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed pl-1">
                     {report.description}
                   </p>
                 </div>
 
                 {/* Location Street Row */}
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 mb-2.5 pl-1">
+                <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 mb-2.5 pl-1">
                   <MapPin size={13} className="text-rose-500 dark:text-rose-400 shrink-0" />
                   <span className="truncate">{report.street}</span>
                 </div>
 
                 {/* Card Action Footer */}
-                <div className="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between gap-2">
+                <div className="pt-2 border-t border-zinc-200 dark:border-zinc-700/60 flex items-center justify-between gap-2">
                   {/* Upvote / Me Too Button */}
                   <button
                     type="button"
@@ -477,14 +477,14 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                     }}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
                       report.userConfirmed
-                        ? 'bg-sky-500 text-white border-sky-500 shadow-sm'
-                        : 'bg-white dark:bg-slate-700/60 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600'
+                        ? 'bg-violet-500 text-white border-violet-500 shadow-sm'
+                        : 'bg-white dark:bg-zinc-700/60 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-600'
                     }`}
                   >
                     {report.userConfirmed ? (
                       <CheckCircle2 size={13} className="text-white" />
                     ) : (
-                      <span className="text-sky-500">▲</span>
+                      <span className="text-violet-500">▲</span>
                     )}
                     <span>
                       {report.userConfirmed ? 'Confirmed' : 'Confirm Issue'} ({report.confirmations})
@@ -499,9 +499,9 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                       setFocusedIncidentId(report.id);
                       setFocusedLocation({ coordinates: report.coordinates, zoom: 16 });
                     }}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-700/60 hover:bg-slate-100 dark:hover:bg-slate-700 text-[11px] font-bold text-slate-600 dark:text-slate-300 transition-colors cursor-pointer border border-slate-200 dark:border-slate-600"
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-zinc-700/60 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-[11px] font-bold text-zinc-600 dark:text-zinc-300 transition-colors cursor-pointer border border-zinc-200 dark:border-zinc-600"
                   >
-                    <Crosshair size={13} className="text-sky-500" />
+                    <Crosshair size={13} className="text-violet-500" />
                     <span>Focus Pin</span>
                   </button>
                 </div>

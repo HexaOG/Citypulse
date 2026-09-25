@@ -19,7 +19,7 @@ export const PulseMeter = () => {
   return (
     <div className="glass-panel p-6 flex flex-col items-center w-64 border-t-2" style={{ borderTopColor: strokeColor }}>
       <div className="flex items-center justify-between w-full mb-6">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">SYSTEM PULSE</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 font-mono">SYSTEM PULSE</span>
         {isCritical ? <AlertTriangle size={14} className={textColorClass} /> : <CheckCircle2 size={14} className={textColorClass} />}
       </div>
       
@@ -50,7 +50,7 @@ export const PulseMeter = () => {
         <span className={`text-[10px] font-bold uppercase tracking-widest mt-1 ${textColorClass}`}>{label}</span>
       </div>
       
-      <div className="flex items-center justify-center gap-2 w-full p-2.5 rounded-lg bg-black/20 border border-white/5 text-slate-400">
+      <div className="flex items-center justify-center gap-2 w-full p-2.5 rounded-lg bg-black/20 border border-white/5 text-zinc-400">
         <TrendIcon size={14} className={textColorClass} />
         <span className="text-xs font-mono font-medium">Real-time Index</span>
       </div>

@@ -17,7 +17,7 @@ export const SituationBriefing = () => {
         <div className="text-[10px] font-bold tracking-widest uppercase font-mono" style={{ color: `var(--tw-colors-${isCritical ? 'rose' : (isWarning ? 'amber' : 'emerald')}-500, ${isCritical ? '#f43f5e' : (isWarning ? '#f97316' : '#10b981')})` }}>
           LIVE AI SYNTHESIS
         </div>
-        <div className="text-sm text-slate-300 leading-relaxed font-medium">
+        <div className="text-sm text-zinc-300 leading-relaxed font-medium">
           "{narrative}"
         </div>
       </div>

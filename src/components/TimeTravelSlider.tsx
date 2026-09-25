@@ -65,10 +65,10 @@ export const TimeTravelSlider = () => {
   const progressPercent = Math.min(100, Math.max(0, ((replayOffsetHours + 48) / 48) * 100));
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[90vw] max-w-[480px] pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-2xl rounded-2xl p-3.5 flex flex-col gap-2.5 transition-all">
+    <div className="fixed bottom-4 left-1/2 -tranzinc-x-1/2 z-[1000] w-[90vw] max-w-[480px] pointer-events-auto bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl rounded-2xl p-3.5 flex flex-col gap-2.5 transition-all">
       {/* Header Row: Label & Time Display */}
       <div className="flex justify-between items-center text-xs font-semibold tracking-wider">
-        <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 uppercase text-[11px]">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 uppercase text-[11px]">
           <span>Historical Replay (48H)</span>
           {replayOffsetHours < 0 && (
             <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30 animate-pulse">
@@ -94,7 +94,7 @@ export const TimeTravelSlider = () => {
               <button
                 onClick={handleReturnToLive}
                 title="Return to real-time live feed"
-                className="flex items-center gap-1 text-[11px] font-bold text-sky-600 dark:text-cyan-400 hover:underline transition-all cursor-pointer"
+                className="flex items-center gap-1 text-[11px] font-bold text-violet-600 dark:text-rose-400 hover:underline transition-all cursor-pointer"
               >
                 <RotateCcw size={11} />
                 <span>Live</span>
@@ -112,7 +112,7 @@ export const TimeTravelSlider = () => {
             onClick={handleRewind}
             title="Rewind 3 hours"
             disabled={replayOffsetHours <= -48}
-            className="p-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 active:scale-95 disabled:opacity-30 disabled:pointer-events-none rounded-xl transition-all cursor-pointer"
+            className="p-1.5 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 active:scale-95 disabled:opacity-30 disabled:pointer-events-none rounded-xl transition-all cursor-pointer"
           >
             <Rewind size={15} />
           </button>
@@ -123,7 +123,7 @@ export const TimeTravelSlider = () => {
             className={`p-2 rounded-full transition-all active:scale-95 cursor-pointer shadow-md ${
               isReplaying 
                 ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-[0_0_12px_rgba(245,158,11,0.4)]' 
-                : 'bg-sky-500 hover:bg-sky-400 text-white shadow-[0_0_12px_rgba(14,165,233,0.4)]'
+                : 'bg-violet-500 hover:bg-violet-400 text-white shadow-[0_0_12px_rgba(14,165,233,0.4)]'
             }`}
           >
             {isReplaying ? <Pause size={15} className="fill-current" /> : <Play size={15} className="fill-current ml-0.5" />}
@@ -133,7 +133,7 @@ export const TimeTravelSlider = () => {
             onClick={handleFastForward}
             title="Fast-forward 3 hours"
             disabled={replayOffsetHours >= 0}
-            className="p-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 active:scale-95 disabled:opacity-30 disabled:pointer-events-none rounded-xl transition-all cursor-pointer"
+            className="p-1.5 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 active:scale-95 disabled:opacity-30 disabled:pointer-events-none rounded-xl transition-all cursor-pointer"
           >
             <FastForward size={15} />
           </button>
@@ -144,7 +144,7 @@ export const TimeTravelSlider = () => {
           <div className="relative w-full flex items-center">
             {/* Custom filled track gradient */}
             <div 
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full pointer-events-none bg-gradient-to-r from-amber-500 via-sky-500 to-emerald-400 transition-all duration-75"
+              className="absolute left-0 top-1/2 -tranzinc-y-1/2 h-1.5 rounded-full pointer-events-none bg-gradient-to-r from-amber-500 via-violet-500 to-emerald-400 transition-all duration-75"
               style={{ width: `${progressPercent}%` }}
             />
             
@@ -156,13 +156,13 @@ export const TimeTravelSlider = () => {
               value={replayOffsetHours}
               onChange={handleSliderChange}
               aria-label="Historical Replay Timeline Scrubber"
-              className="w-full h-1.5 bg-slate-200 dark:bg-slate-700/60 rounded-full appearance-none cursor-pointer outline-none transition-all z-10
+              className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-700/60 rounded-full appearance-none cursor-pointer outline-none transition-all z-10
                 [&::-webkit-slider-thumb]:appearance-none 
                 [&::-webkit-slider-thumb]:w-3.5 
                 [&::-webkit-slider-thumb]:h-3.5 
                 [&::-webkit-slider-thumb]:bg-white 
                 [&::-webkit-slider-thumb]:border
-                [&::-webkit-slider-thumb]:border-slate-300
+                [&::-webkit-slider-thumb]:border-zinc-300
                 dark:[&::-webkit-slider-thumb]:border-transparent
                 [&::-webkit-slider-thumb]:rounded-full 
                 [&::-webkit-slider-thumb]:shadow-md 
@@ -172,7 +172,7 @@ export const TimeTravelSlider = () => {
                 [&::-moz-range-thumb]:h-3.5 
                 [&::-moz-range-thumb]:bg-white 
                 [&::-moz-range-thumb]:border
-                [&::-moz-range-thumb]:border-slate-300
+                [&::-moz-range-thumb]:border-zinc-300
                 dark:[&::-moz-range-thumb]:border-transparent
                 [&::-moz-range-thumb]:rounded-full 
                 [&::-moz-range-thumb]:shadow-md"
@@ -180,13 +180,13 @@ export const TimeTravelSlider = () => {
           </div>
 
           {/* Tick Labels */}
-          <div className="flex justify-between items-center text-[10px] font-mono text-slate-500 dark:text-slate-400 px-0.5 pt-0.5 select-none">
-            <span className="hover:text-slate-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-48)}>-48h</span>
-            <span className="hover:text-slate-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-36)}>-36h</span>
-            <span className="hover:text-slate-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-24)}>-24h</span>
-            <span className="hover:text-slate-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-12)}>-12h</span>
+          <div className="flex justify-between items-center text-[10px] font-mono text-zinc-500 dark:text-zinc-400 px-0.5 pt-0.5 select-none">
+            <span className="hover:text-zinc-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-48)}>-48h</span>
+            <span className="hover:text-zinc-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-36)}>-36h</span>
+            <span className="hover:text-zinc-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-24)}>-24h</span>
+            <span className="hover:text-zinc-900 dark:hover:text-white cursor-pointer" onClick={() => setReplayOffsetHours(-12)}>-12h</span>
             <span 
-              className={`cursor-pointer font-bold ${replayOffsetHours === 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400 hover:text-emerald-500'}`}
+              className={`cursor-pointer font-bold ${replayOffsetHours === 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500 dark:text-zinc-400 hover:text-emerald-500'}`}
               onClick={handleReturnToLive}
             >
               LIVE

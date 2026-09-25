@@ -32,7 +32,7 @@ function App() {
         </div>
       )}
 
-      <div className={`relative w-screen h-screen overflow-hidden bg-slate-50 dark:bg-[#08090e] text-slate-900 dark:text-slate-100 transition-all duration-300 ${criticalEvent ? 'pt-6' : ''}`}>
+      <div className={`relative w-screen h-screen overflow-hidden bg-zinc-50 dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 transition-all duration-300 ${criticalEvent ? 'pt-6' : ''}`}>
         <Navigation />
         
         <Routes>

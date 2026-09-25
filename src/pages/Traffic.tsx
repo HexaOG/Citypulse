@@ -67,7 +67,7 @@ export const Traffic = () => {
                   </svg>
                   <div className="flex flex-col items-center z-10">
                     <span className={`text-4xl font-black font-mono tracking-tight ${textColor}`}>{congestion}%</span>
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mt-1">CONGESTION</span>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mt-1">CONGESTION</span>
                   </div>
                 </div>
               </div>
