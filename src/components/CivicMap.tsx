@@ -45,9 +45,9 @@ const MapController = () => {
   return null;
 };
 
-const CARTO_DARK_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-const CARTO_LIGHT_URL = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-const CARTO_ATTRIBUTION = '&copy; OpenStreetMap contributors &copy; CARTO';
+const ESRI_DARK_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+const ESRI_LIGHT_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+const ESRI_ATTRIBUTION = '&copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors';
 
 export const CivicMap = () => {
   const events = usePulseStore(state => state.events);
@@ -61,7 +61,7 @@ export const CivicMap = () => {
   const replayOffsetHours = usePulseStore(state => state.replayOffsetHours);
   const theme = usePulseStore(state => state.theme);
 
-  const tileUrl = theme === 'light' ? CARTO_LIGHT_URL : CARTO_DARK_URL;
+  const tileUrl = theme === 'light' ? ESRI_LIGHT_URL : ESRI_DARK_URL;
 
   // Historical Replay Time Travel Filtering
 
@@ -97,7 +97,7 @@ export const CivicMap = () => {
       >
         <TileLayer
           key={tileUrl}
-          attribution={CARTO_ATTRIBUTION}
+          attribution={ESRI_ATTRIBUTION}
           url={tileUrl}
           maxZoom={16}
         />
