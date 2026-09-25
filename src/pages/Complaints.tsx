@@ -310,7 +310,7 @@ export const Complaints = () => {
         
         {/* Toast Notification */}
         {toast && (
-          <div className="absolute bottom-32 left-1/2 -tranzinc-x-1/2 bg-[#13131a]/90 backdrop-blur-md border border-rose-500/30 text-white px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl animate-in fade-in slide-in-from-bottom-4 pointer-events-auto z-50">
+          <div className="absolute bottom-32 left-1/2 -translate-x-1/2 bg-[#13131a]/90 backdrop-blur-md border border-rose-500/30 text-white px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl animate-in fade-in slide-in-from-bottom-4 pointer-events-auto z-50">
             <CheckCircle className="text-zinc-300" size={20} />
             <span className="text-sm font-medium">{toast}</span>
           </div>
@@ -318,7 +318,7 @@ export const Complaints = () => {
         
         {/* Map Selection Overlay Hint */}
         {isSelectingLocation && (
-          <div className="absolute top-24 left-1/2 -tranzinc-x-1/2 bg-rose-500/20 border border-rose-500 text-rose-100 px-6 py-3 rounded-full flex items-center gap-3 animate-pulse pointer-events-auto z-50 shadow-2xl">
+          <div className="absolute top-24 left-1/2 -translate-x-1/2 bg-rose-500/20 border border-rose-500 text-rose-100 px-6 py-3 rounded-full flex items-center gap-3 animate-pulse pointer-events-auto z-50 shadow-2xl">
             <MapPin size={20} />
             <span className="font-bold">Click anywhere on the map to drop a pin</span>
             <button 

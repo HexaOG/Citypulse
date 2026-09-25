@@ -15,7 +15,7 @@ export const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed left-4 md:left-6 top-1/2 -tranzinc-y-1/2 z-[950] flex flex-col gap-3 pointer-events-auto">
+    <nav className="fixed left-4 md:left-6 top-1/2 -translate-y-1/2 z-[950] flex flex-col gap-3 pointer-events-auto">
       {links.map((link) => {
         const Icon = link.icon;
         return (
@@ -40,7 +40,7 @@ export const Navigation = () => {
                       : 'text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white'
                   }`}
                 />
-                <span className="absolute left-full ml-3 px-3 py-1.5 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 rounded-xl text-xs font-semibold whitespace-nowrap opacity-0 -tranzinc-x-3 pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:tranzinc-x-0 shadow-xl">
+                <span className="absolute left-full ml-3 px-3 py-1.5 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 rounded-xl text-xs font-semibold whitespace-nowrap opacity-0 -translate-x-3 pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 shadow-xl">
                   {link.label}
                 </span>
               </>
@@ -62,7 +62,7 @@ export const Navigation = () => {
         ) : (
           <Moon size={20} className="text-indigo-500 group-hover:-rotate-12 transition-transform duration-300" />
         )}
-        <span className="absolute left-full ml-3 px-3 py-1.5 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 rounded-xl text-xs font-semibold whitespace-nowrap opacity-0 -tranzinc-x-3 pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:tranzinc-x-0 shadow-xl">
+        <span className="absolute left-full ml-3 px-3 py-1.5 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 rounded-xl text-xs font-semibold whitespace-nowrap opacity-0 -translate-x-3 pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 shadow-xl">
           {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
         </span>
       </button>

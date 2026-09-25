@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Navigation } from './components/Navigation';
 import { Home } from './pages/Home';
 import { Weather } from './pages/Weather';
@@ -8,18 +8,28 @@ import { AirQuality } from './pages/AirQuality';
 import { Complaints } from './pages/Complaints';
 import { usePulseStream } from './hooks/usePulseStream';
 import { usePulseStore } from './store/useStore';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, X } from 'lucide-react';
 
 function App() {
   // Initialize websocket stream
   usePulseStream();
 
   const events = usePulseStore(state => state.events);
+  const [dismissedAlerts, setDismissedAlerts] = useState<Set<string>>(new Set());
   
-  // Look backwards through events to find the most recent critical/high incident
+  // Look backwards through events to find the most recent critical/high incident that hasn't been dismissed
   const criticalEvent = useMemo(() => {
-    return events.slice().reverse().find(e => e.severity === 'critical' || e.severity === 'high');
-  }, [events]);
+    return events.slice().reverse().find(e => 
+      (e.severity === 'critical' || e.severity === 'high') && 
+      !dismissedAlerts.has(e.eventId)
+    );
+  }, [events, dismissedAlerts]);
+
+  const dismissCurrentAlert = () => {
+    if (criticalEvent) {
+      setDismissedAlerts(prev => new Set(prev).add(criticalEvent.eventId));
+    }
+  };
 
   return (
     <BrowserRouter>
@@ -29,6 +39,13 @@ function App() {
           <AlertTriangle size={12} className="animate-pulse" />
           <span>ACTIVE CITY ALERT:</span>
           <span>{criticalEvent.category.toUpperCase()} IN PROGRESS [{criticalEvent.coordinates[0].toFixed(3)}, {criticalEvent.coordinates[1].toFixed(3)}] - AWAITING CREW DISPATCH</span>
+          <button 
+            onClick={dismissCurrentAlert}
+            className="absolute right-4 p-1 rounded-md hover:bg-white/20 transition-colors cursor-pointer"
+            aria-label="Dismiss Alert"
+          >
+            <X size={14} />
+          </button>
         </div>
       )}
 

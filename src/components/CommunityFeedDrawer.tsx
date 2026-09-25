@@ -178,7 +178,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
           type="button"
           onClick={() => setIsCommunityDrawerOpen(true)}
           aria-label="Open Community Reports Feed"
-          className="fixed right-0 top-1/3 -tranzinc-y-1/2 z-[1050] pointer-events-auto flex flex-col items-center gap-2 py-4 px-2 rounded-l-xl shadow-xl border border-r-0 cursor-pointer transition-all bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-zinc-200/90 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 hover:px-3 group animate-in fade-in slide-in-from-right-2 duration-200"
+          className="fixed right-0 top-1/3 -translate-y-1/2 z-[1050] pointer-events-auto flex flex-col items-center gap-2 py-4 px-2 rounded-l-xl shadow-xl border border-r-0 cursor-pointer transition-all bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-zinc-200/90 dark:border-zinc-800 text-zinc-800 dark:text-zinc-100 hover:px-3 group animate-in fade-in slide-in-from-right-2 duration-200"
         >
           <div className={`p-2 rounded-xl transition-all ${
             replayOffsetHours < 0 
@@ -203,7 +203,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
       {/* Main Community Feed Drawer Panel */}
       <aside
         className={`fixed top-20 bottom-6 right-4 md:right-6 w-96 md:w-[430px] z-[1050] bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl rounded-xl flex flex-col transition-transform duration-300 ease-in-out ${
-          isCommunityDrawerOpen ? 'tranzinc-x-0 pointer-events-auto' : 'tranzinc-x-[calc(100%+32px)] pointer-events-none'
+          isCommunityDrawerOpen ? 'translate-x-0 pointer-events-auto' : 'translate-x-[calc(100%+32px)] pointer-events-none'
         }`}
       >
       {/* Drawer Header */}
