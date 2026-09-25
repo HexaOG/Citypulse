@@ -20,26 +20,51 @@ export const Weather = () => {
   const setReplayOffsetHours = usePulseStore(state => state.setReplayOffsetHours);
   const setIsReplaying = usePulseStore(state => state.setIsReplaying);
 
-  const [realtimeWeather, setRealtimeWeather] = useState<{ temp?: number; precip?: number; wind?: number; condition?: string } | undefined>(undefined);
+  const [realtimeWeather, setRealtimeWeather] = useState<{ temp?: number; precip?: number; wind?: number; condition?: string; hourly?: any[] } | undefined>(undefined);
 
   useEffect(() => {
-    // Fetch live terrestrial weather via Open-Meteo
-    fetch('https://api.open-meteo.com/v1/forecast?latitude=26.9124&longitude=75.7873&current=temperature_2m,precipitation,weathercode,windspeed_10m')
+    // Fetch live terrestrial weather + real hourly forecast via Open-Meteo
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=26.9124&longitude=75.7873&current=temperature_2m,precipitation,weathercode,windspeed_10m&hourly=temperature_2m,precipitation,weathercode,windspeed_10m&forecast_days=2')
       .then(r => r.json())
       .then(d => {
-        const w = d.current.weathercode;
-        let cond = 'Clear Sky';
-        if (w >= 1 && w <= 3) cond = 'Partly Cloudy';
-        if (w >= 45 && w <= 48) cond = 'Fog';
-        if (w >= 51 && w <= 67) cond = 'Rain Showers';
-        if (w >= 71 && w <= 77) cond = 'Snow';
-        if (w >= 95) cond = 'Thunderstorm';
+        const getCond = (w: number) => {
+          if (w >= 1 && w <= 3) return 'Partly Cloudy';
+          if (w >= 45 && w <= 48) return 'Fog';
+          if (w >= 51 && w <= 67) return 'Rain Showers';
+          if (w >= 71 && w <= 77) return 'Snow';
+          if (w >= 95) return 'Thunderstorm';
+          return 'Clear Sky';
+        };
+
+        const currentWCode = d.current.weathercode;
+        const currentCond = getCond(currentWCode);
+
+        // Find the current hour index from the hourly array
+        const currentIso = new Date().toISOString().substring(0, 14) + "00"; // roughly "YYYY-MM-DDTHH:00"
+        let currentIndex = d.hourly.time.findIndex((t: string) => t >= currentIso);
+        if (currentIndex === -1) currentIndex = 0;
+
+        const hrArray = [];
+        // Extract exact +1, +3, +6, and +12 hour forecasts
+        for (const offset of [1, 3, 6, 12]) {
+           const targetIndex = currentIndex + offset;
+           if (targetIndex < d.hourly.time.length) {
+              hrArray.push({
+                 hourOffset: offset,
+                 temp: d.hourly.temperature_2m[targetIndex],
+                 precip: d.hourly.precipitation[targetIndex],
+                 wind: d.hourly.windspeed_10m[targetIndex],
+                 condition: getCond(d.hourly.weathercode[targetIndex])
+              });
+           }
+        }
         
         setRealtimeWeather({
           temp: d.current.temperature_2m,
           precip: d.current.precipitation,
           wind: d.current.windspeed_10m,
-          condition: cond
+          condition: currentCond,
+          hourly: hrArray
         });
       })
       .catch(e => console.warn('Real-time weather unavailable, falling back to simulation', e));
@@ -57,10 +82,14 @@ export const Weather = () => {
   const borderLeft = isStorm ? 'border-l-amber-500' : (isRain ? 'border-l-cyan-500' : 'border-l-emerald-500');
   const bgOpacity = isStorm ? 'bg-amber-500/20' : (isRain ? 'bg-cyan-500/20' : 'bg-emerald-500/20');
 
-  // Generate 4 forecast points (e.g. +1h, +3h, +6h, +12h) based on the current replay hour
+  // Generate 4 forecast points (e.g. +1h, +3h, +6h, +12h)
   const forecastPoints = useMemo(() => {
+    // If not doing historical replay and real hourly data is available from API, use it outright
+    if (replayOffsetHours === 0 && realtimeWeather?.hourly && realtimeWeather.hourly.length === 4) {
+       return realtimeWeather.hourly;
+    }
+    // Otherwise fallback to simulating future trends based on the time travel offset
     return [1, 3, 6, 12].map(offset => {
-      // Simulate future by shifting the simulation timeline
       const fData = getHistoricalWeather(replayOffsetHours - offset, realtimeWeather);
       return { hourOffset: offset, ...fData };
     });
