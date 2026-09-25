@@ -460,7 +460,7 @@ export const usePulseStore = create<PulseState>((set) => ({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 })
-    }).catch(err => console.info('Local API unavailable, falling back to local database persistence.'));
+    }).catch(() => console.info('Local API unavailable, falling back to local database persistence.'));
 
     // Optimistically update store & persist locally
     set((state) => {

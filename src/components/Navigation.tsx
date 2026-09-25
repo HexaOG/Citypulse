@@ -22,7 +22,7 @@ export const Navigation = () => {
           <NavLink
             key={link.to}
             to={link.to}
-            className={({ isActive }) =>
+            className={({ isActive }: { isActive: boolean }) =>
               `group relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-200 backdrop-blur-xl border ${
                 isActive
                   ? 'bg-sky-500/15 border-sky-500/50 text-sky-600 dark:text-sky-400 dark:bg-white/20 dark:border-white/40 shadow-md'
@@ -30,7 +30,7 @@ export const Navigation = () => {
               }`
             }
           >
-            {({ isActive }) => (
+            {({ isActive }: { isActive: boolean }) => (
               <>
                 <Icon
                   size={22}
