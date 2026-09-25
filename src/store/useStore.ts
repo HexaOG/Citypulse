@@ -353,6 +353,20 @@ const getInitialTheme = (): 'dark' | 'light' => {
   return 'dark';
 };
 
+const getInitialReports = (): CommunityReport[] => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('citypulse_db_reports');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse local database records", e);
+      }
+    }
+  }
+  return INITIAL_COMMUNITY_REPORTS;
+};
+
 export const usePulseStore = create<PulseState>((set) => ({
   chiScore: 100,
   narrative: "Connecting to civic streams...",
@@ -368,7 +382,7 @@ export const usePulseStore = create<PulseState>((set) => ({
   activeTickets: 142,
   complaintSynthesis: "Surge in power failure tickets clustered in Sector 4 following localized rainfall. High correlation with current storm cell. Dispatching emergency crews.",
   
-  communityReports: INITIAL_COMMUNITY_REPORTS,
+  communityReports: getInitialReports(),
   selectedAreaFilter: 'All Areas',
   focusedIncidentId: null,
   focusedLocation: null,
@@ -441,18 +455,25 @@ export const usePulseStore = create<PulseState>((set) => ({
   }),
 
   addCommunityReport: (report) => {
-    // Post to backend database
+    // Post to backend database if available
     fetch('http://localhost:8080/api/reports', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 })
-    }).catch(err => console.error('Failed to post report:', err));
+    }).catch(err => console.info('Local API unavailable, falling back to local database persistence.'));
 
-    // Optimistically update store
+    // Optimistically update store & persist locally
     set((state) => {
       if (state.communityReports.some(r => r.id === report.id)) return state;
+      
+      const newReports = [{ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 }, ...state.communityReports];
+      
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('citypulse_db_reports', JSON.stringify(newReports));
+      }
+
       return {
-        communityReports: [{ ...report, createdAtHoursAgo: report.createdAtHoursAgo ?? 0 }, ...state.communityReports],
+        communityReports: newReports,
         activeTickets: state.activeTickets + 1,
         events: [
           {
@@ -469,8 +490,8 @@ export const usePulseStore = create<PulseState>((set) => ({
     });
   },
 
-  confirmReportIssue: (id) => set((state) => ({
-    communityReports: state.communityReports.map((item) => {
+  confirmReportIssue: (id) => set((state) => {
+    const updatedReports = state.communityReports.map((item) => {
       if (item.id === id) {
         const isConfirmed = !!item.userConfirmed;
         return {
@@ -480,8 +501,14 @@ export const usePulseStore = create<PulseState>((set) => ({
         };
       }
       return item;
-    })
-  })),
+    });
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('citypulse_db_reports', JSON.stringify(updatedReports));
+    }
+
+    return { communityReports: updatedReports };
+  }),
 
   setSelectedAreaFilter: (area) => set({ selectedAreaFilter: area }),
   setFocusedIncidentId: (id) => set({ focusedIncidentId: id }),
