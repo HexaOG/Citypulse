@@ -169,7 +169,7 @@ export const CivicMap = () => {
                 <div className="font-bold border-b border-white/10 pb-1 mb-1 flex items-center justify-between gap-2">
                   <span>{report.category}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono uppercase ${
-                    isCritical ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'
+                    isCritical ? 'bg-rose-500/20 text-zinc-300' : 'bg-amber-500/20 text-amber-400'
                   }`}>
                     {report.severity}
                   </span>

@@ -15,8 +15,8 @@ export const Header = () => {
       </div>
       
       <div className="flex items-center gap-3">
-        <div className={`bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-2xl px-4 py-2 flex items-center gap-2 text-sm font-semibold ${
-          connected ? 'text-emerald-600 dark:text-accent-green' : (isSimulated ? 'text-violet-600 dark:text-rose-400' : 'text-rose-600 dark:text-accent-red')
+        <div className={`bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-xl px-4 py-2 flex items-center gap-2 text-sm font-semibold ${
+          connected ? 'text-emerald-600 dark:text-accent-green' : (isSimulated ? 'text-zinc-100 dark:text-zinc-300' : 'text-zinc-300 dark:text-accent-red')
         }`}>
           <Radio size={16} className={connected || isSimulated ? 'animate-pulse' : ''} />
           {connected ? 'LIVE' : (isSimulated ? 'SIMULATED LIVE' : 'DISCONNECTED')}
@@ -27,7 +27,7 @@ export const Header = () => {
           onClick={toggleTheme}
           aria-label="Toggle Theme"
           title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-          className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 shadow-sm rounded-2xl px-3.5 py-2 flex items-center gap-2 text-sm font-semibold hover:border-violet-500/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer group"
+          className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 shadow-sm rounded-xl px-3.5 py-2 flex items-center gap-2 text-sm font-semibold hover:border-white/20 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer group"
         >
           {theme === 'dark' ? (
             <>

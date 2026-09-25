@@ -8,7 +8,7 @@ export const PulseMeter = () => {
   const isWarning = chiScore >= 50 && chiScore < 80;
   
   const strokeColor = isCritical ? '#f43f5e' : (isWarning ? '#f97316' : '#10b981');
-  const textColorClass = isCritical ? 'text-rose-500' : (isWarning ? 'text-amber-500' : 'text-emerald-500');
+  const textColorClass = isCritical ? 'text-zinc-300' : (isWarning ? 'text-amber-500' : 'text-emerald-500');
   let label = isCritical ? 'CRITICAL' : (isWarning ? 'WARNING' : 'STABLE');
   let TrendIcon = isCritical || isWarning ? TrendingDown : TrendingUp;
 

@@ -23,9 +23,9 @@ export const Navigation = () => {
             key={link.to}
             to={link.to}
             className={({ isActive }: { isActive: boolean }) =>
-              `group relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-200 backdrop-blur-xl border ${
+              `group relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 backdrop-blur-xl border ${
                 isActive
-                  ? 'bg-violet-500/15 border-violet-500/50 text-violet-600 dark:text-violet-400 dark:bg-white/20 dark:border-white/40 shadow-md'
+                  ? 'bg-white/10 border-white/20 text-zinc-100 dark:text-zinc-100 dark:bg-white/20 dark:border-white/40 shadow-md'
                   : 'bg-white/90 dark:bg-zinc-900/90 border-zinc-200/90 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 shadow-sm'
               }`
             }
@@ -36,7 +36,7 @@ export const Navigation = () => {
                   size={22}
                   className={`transition-colors ${
                     isActive
-                      ? 'text-violet-600 dark:text-white'
+                      ? 'text-zinc-100 dark:text-white'
                       : 'text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white'
                   }`}
                 />
@@ -55,7 +55,7 @@ export const Navigation = () => {
       <button
         onClick={toggleTheme}
         aria-label="Toggle Theme"
-        className="group relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-200 backdrop-blur-xl border bg-white/90 dark:bg-zinc-900/90 border-zinc-200/90 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 shadow-sm cursor-pointer"
+        className="group relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 backdrop-blur-xl border bg-white/90 dark:bg-zinc-900/90 border-zinc-200/90 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 shadow-sm cursor-pointer"
       >
         {theme === 'dark' ? (
           <Sun size={20} className="text-amber-500 group-hover:rotate-45 transition-transform duration-300" />

@@ -25,7 +25,7 @@ function App() {
     <BrowserRouter>
       {/* Global Emergency Ticker */}
       {criticalEvent && (
-        <div className="absolute top-0 w-full bg-rose-600/90 text-white text-[11px] font-mono font-bold tracking-widest py-1 flex items-center justify-center gap-2 z-[9999] backdrop-blur-md border-b border-rose-500/50 shadow-[0_0_15px_rgba(225,29,72,0.3)] pointer-events-auto">
+        <div className="absolute top-0 w-full bg-rose-600/90 text-white text-[11px] font-mono font-bold tracking-widest py-1 flex items-center justify-center gap-2 z-[9999] backdrop-blur-md border-b border-rose-500/50 shadow-2xl pointer-events-auto">
           <AlertTriangle size={12} className="animate-pulse" />
           <span>ACTIVE CITY ALERT:</span>
           <span>{criticalEvent.category.toUpperCase()} IN PROGRESS [{criticalEvent.coordinates[0].toFixed(3)}, {criticalEvent.coordinates[1].toFixed(3)}] - AWAITING CREW DISPATCH</span>

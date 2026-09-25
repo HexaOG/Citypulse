@@ -26,12 +26,12 @@ import {
 import { usePulseStore } from '../store/useStore';
 
 const CATEGORY_OPTIONS = [
-  { id: 'Waterlogging/Drainage', label: 'Waterlogging / Drainage', icon: Droplets, color: 'text-rose-400', bg: 'bg-rose-500/10' },
+  { id: 'Waterlogging/Drainage', label: 'Waterlogging / Drainage', icon: Droplets, color: 'text-zinc-300', bg: 'bg-rose-500/10' },
   { id: 'Power Outage', label: 'Power Outage', icon: Zap, color: 'text-amber-400', bg: 'bg-amber-500/10' },
   { id: 'Pothole/Road Hazard', label: 'Pothole / Road Hazard', icon: Construction, color: 'text-orange-400', bg: 'bg-orange-500/10' },
   { id: 'Broken Streetlight', label: 'Broken Streetlight', icon: Lightbulb, color: 'text-yellow-300', bg: 'bg-yellow-500/10' },
   { id: 'Fallen Tree/Debris', label: 'Fallen Tree / Debris', icon: TreePine, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-  { id: 'Garbage/Sanitation', label: 'Garbage / Sanitation', icon: Trash2, color: 'text-rose-400', bg: 'bg-rose-500/10' },
+  { id: 'Garbage/Sanitation', label: 'Garbage / Sanitation', icon: Trash2, color: 'text-zinc-300', bg: 'bg-rose-500/10' },
   { id: 'Other', label: 'Other / Unlisted Issue', icon: HelpCircle, color: 'text-purple-400', bg: 'bg-purple-500/10' }
 ];
 
@@ -152,7 +152,7 @@ export const Complaints = () => {
             {/* Key Metrics Card */}
             <div className={`glass-panel p-5 flex flex-col gap-3.5 w-72 max-h-[calc(100vh-5rem)] overflow-y-auto transition-opacity ${isSelectingLocation ? 'opacity-20 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
               <h2 className="text-xl font-bold tracking-wider mb-2 flex items-center gap-2 text-zinc-800 dark:text-white">
-                <AlertTriangle className={replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'} /> 311 TICKETS
+                <AlertTriangle className={replayOffsetHours < 0 ? 'text-amber-400' : 'text-zinc-300'} /> 311 TICKETS
               </h2>
               
               <div className="flex flex-col items-center justify-center mb-4">
@@ -176,11 +176,11 @@ export const Complaints = () => {
                       strokeWidth="8"
                       strokeDasharray={`${(loadIndex / 100) * (2 * Math.PI * 40)} ${2 * Math.PI * 40}`}
                       strokeLinecap="round"
-                      className={`${replayOffsetHours < 0 ? 'text-amber-500' : 'text-rose-500'} transition-all duration-1000 ease-out`}
+                      className={`${replayOffsetHours < 0 ? 'text-amber-500' : 'text-zinc-300'} transition-all duration-1000 ease-out`}
                     />
                   </svg>
                   <div className="flex flex-col items-center z-10">
-                    <span className={`text-4xl font-black font-mono tracking-tight ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'}`}>
+                    <span className={`text-4xl font-black font-mono tracking-tight ${replayOffsetHours < 0 ? 'text-amber-400' : 'text-zinc-300'}`}>
                       {loadIndex}%
                     </span>
                     <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-500 dark:text-zinc-400 mt-1">LOAD INDEX</span>
@@ -204,7 +204,7 @@ export const Complaints = () => {
               <div className="mt-2 space-y-2 max-h-36 overflow-y-auto pr-1">
                 <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1 flex items-center justify-between">
                   <span>{replayOffsetHours === 0 ? 'RECENT REPORTS' : `TICKETS AT T - ${Math.abs(replayOffsetHours)}H`}</span>
-                  <span className="text-[10px] text-violet-500 dark:text-rose-400 font-mono font-normal">{historicalReports.length} visible</span>
+                  <span className="text-[10px] text-zinc-100 dark:text-zinc-300 font-mono font-normal">{historicalReports.length} visible</span>
                 </div>
                 {historicalReports.slice(0, 4).map((report, idx) => (
                   <div key={idx} className="flex justify-between items-center text-xs bg-zinc-100/70 dark:bg-white/5 p-2 rounded-lg border border-zinc-200/80 dark:border-white/5">
@@ -214,7 +214,7 @@ export const Complaints = () => {
                     </div>
                     <span className={`px-2 py-0.5 rounded text-[9px] font-mono shrink-0 ${
                       report.severity === 'Critical' 
-                        ? 'bg-rose-500/20 text-rose-500 dark:text-rose-400' 
+                        ? 'bg-rose-500/20 text-zinc-300 dark:text-zinc-300' 
                         : report.severity === 'High' 
                         ? 'bg-orange-500/20 text-orange-500 dark:text-orange-400' 
                         : 'bg-amber-500/20 text-amber-500 dark:text-amber-400'
@@ -258,12 +258,12 @@ export const Complaints = () => {
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div className="flex items-center gap-2.5">
                   <div className={`p-2 rounded-xl shrink-0 ${
-                    replayOffsetHours < 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-500'
+                    replayOffsetHours < 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-zinc-300'
                   }`}>
                     {replayOffsetHours < 0 ? <History size={18} /> : <Lightbulb size={18} />}
                   </div>
                   <div className={`text-xs font-bold tracking-widest ${
-                    replayOffsetHours < 0 ? 'text-amber-400' : 'text-rose-500'
+                    replayOffsetHours < 0 ? 'text-amber-400' : 'text-zinc-300'
                   }`}>
                     {replayOffsetHours < 0 ? `HISTORICAL REPLAY SYNTHESIS` : 'LIVE AI SYNTHESIS'}
                   </div>
@@ -310,15 +310,15 @@ export const Complaints = () => {
         
         {/* Toast Notification */}
         {toast && (
-          <div className="absolute bottom-32 left-1/2 -tranzinc-x-1/2 bg-[#13131a]/90 backdrop-blur-md border border-rose-500/30 text-white px-6 py-3 rounded-full flex items-center gap-3 shadow-[0_0_20px_rgba(6,182,212,0.2)] animate-in fade-in slide-in-from-bottom-4 pointer-events-auto z-50">
-            <CheckCircle className="text-rose-500" size={20} />
+          <div className="absolute bottom-32 left-1/2 -tranzinc-x-1/2 bg-[#13131a]/90 backdrop-blur-md border border-rose-500/30 text-white px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl animate-in fade-in slide-in-from-bottom-4 pointer-events-auto z-50">
+            <CheckCircle className="text-zinc-300" size={20} />
             <span className="text-sm font-medium">{toast}</span>
           </div>
         )}
         
         {/* Map Selection Overlay Hint */}
         {isSelectingLocation && (
-          <div className="absolute top-24 left-1/2 -tranzinc-x-1/2 bg-rose-500/20 border border-rose-500 text-rose-100 px-6 py-3 rounded-full flex items-center gap-3 animate-pulse pointer-events-auto z-50 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+          <div className="absolute top-24 left-1/2 -tranzinc-x-1/2 bg-rose-500/20 border border-rose-500 text-rose-100 px-6 py-3 rounded-full flex items-center gap-3 animate-pulse pointer-events-auto z-50 shadow-2xl">
             <MapPin size={20} />
             <span className="font-bold">Click anywhere on the map to drop a pin</span>
             <button 
@@ -346,11 +346,11 @@ export const Complaints = () => {
           />
 
           {/* Modal Container */}
-          <div className="relative z-10 w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl p-6 bg-white dark:bg-zinc-900/95 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-800 shadow-2xl backdrop-blur-xl">
+          <div className="relative z-10 w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl p-6 bg-white dark:bg-zinc-900/95 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-800 shadow-2xl backdrop-blur-xl">
             {/* Header with Title and Close 'X' Button */}
             <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-700/60">
               <h3 className="text-lg font-bold flex items-center gap-2 text-zinc-900 dark:text-white">
-                <AlertTriangle className="text-rose-500" size={20} />
+                <AlertTriangle className="text-zinc-300" size={20} />
                 Report Civic Incident
               </h3>
               <button 
@@ -374,7 +374,7 @@ export const Complaints = () => {
                     setIsCategoryOpen(!isCategoryOpen);
                     setIsAreaOpen(false);
                   }}
-                  className="w-full bg-zinc-100 dark:bg-black/40 hover:bg-zinc-200 dark:hover:bg-black/60 border border-zinc-200 dark:border-white/10 hover:border-violet-500/50 rounded-xl p-3 text-zinc-900 dark:text-white flex items-center justify-between transition-all group focus:outline-none focus:ring-2 focus:ring-violet-500/30 cursor-pointer"
+                  className="w-full bg-zinc-100 dark:bg-black/40 hover:bg-zinc-200 dark:hover:bg-black/60 border border-zinc-200 dark:border-white/10 hover:border-white/20 rounded-xl p-3 text-zinc-900 dark:text-white flex items-center justify-between transition-all group focus:outline-none focus:ring-2 focus:ring-violet-500/30 cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${selectedCategoryObj.bg} ${selectedCategoryObj.color}`}>
@@ -386,7 +386,7 @@ export const Complaints = () => {
                   </div>
                   <ChevronDown 
                     size={18} 
-                    className={`text-zinc-400 dark:text-gray-400 group-hover:text-zinc-700 dark:group-hover:text-white transition-transform duration-200 ${isCategoryOpen ? 'rotate-180 text-violet-500' : ''}`} 
+                    className={`text-zinc-400 dark:text-gray-400 group-hover:text-zinc-700 dark:group-hover:text-white transition-transform duration-200 ${isCategoryOpen ? 'rotate-180 text-zinc-100' : ''}`} 
                   />
                 </button>
 
@@ -411,7 +411,7 @@ export const Complaints = () => {
                             }}
                             className={`w-full flex items-center justify-between p-2.5 rounded-lg text-sm text-left transition-all cursor-pointer ${
                               isSelected 
-                                ? 'bg-violet-500/15 border border-violet-500/40 text-violet-600 dark:text-rose-300 font-semibold' 
+                                ? 'bg-white/10 border border-white/20 text-zinc-100 dark:text-rose-300 font-semibold' 
                                 : 'text-zinc-700 dark:text-gray-300 hover:bg-zinc-100 dark:hover:bg-white/[0.06] hover:text-zinc-900 dark:hover:text-white border border-transparent'
                             }`}
                           >
@@ -421,7 +421,7 @@ export const Complaints = () => {
                               </div>
                               <span>{opt.label}</span>
                             </div>
-                            {isSelected && <Check size={16} className="text-violet-500 dark:text-rose-400" />}
+                            {isSelected && <Check size={16} className="text-zinc-100 dark:text-zinc-300" />}
                           </button>
                         );
                       })}
@@ -460,10 +460,10 @@ export const Complaints = () => {
                     setIsAreaOpen(!isAreaOpen);
                     setIsCategoryOpen(false);
                   }}
-                  className="w-full bg-zinc-100 dark:bg-black/40 hover:bg-zinc-200 dark:hover:bg-black/60 border border-zinc-200 dark:border-white/10 hover:border-violet-500/50 rounded-xl p-3 text-zinc-900 dark:text-white flex items-center justify-between transition-all group focus:outline-none focus:ring-2 focus:ring-violet-500/30 cursor-pointer"
+                  className="w-full bg-zinc-100 dark:bg-black/40 hover:bg-zinc-200 dark:hover:bg-black/60 border border-zinc-200 dark:border-white/10 hover:border-white/20 rounded-xl p-3 text-zinc-900 dark:text-white flex items-center justify-between transition-all group focus:outline-none focus:ring-2 focus:ring-violet-500/30 cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${area === 'Other' ? 'bg-violet-500/15 text-violet-600 dark:text-rose-400' : 'bg-zinc-200 dark:bg-white/5 text-zinc-700 dark:text-gray-300'}`}>
+                    <div className={`p-2 rounded-lg ${area === 'Other' ? 'bg-white/10 text-zinc-100 dark:text-zinc-300' : 'bg-zinc-200 dark:bg-white/5 text-zinc-700 dark:text-gray-300'}`}>
                       <Building2 size={18} />
                     </div>
                     <span className="font-medium text-sm text-zinc-800 dark:text-gray-200 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
@@ -472,7 +472,7 @@ export const Complaints = () => {
                   </div>
                   <ChevronDown 
                     size={18} 
-                    className={`text-zinc-400 dark:text-gray-400 group-hover:text-zinc-700 dark:group-hover:text-white transition-transform duration-200 ${isAreaOpen ? 'rotate-180 text-violet-500' : ''}`} 
+                    className={`text-zinc-400 dark:text-gray-400 group-hover:text-zinc-700 dark:group-hover:text-white transition-transform duration-200 ${isAreaOpen ? 'rotate-180 text-zinc-100' : ''}`} 
                   />
                 </button>
 
@@ -497,14 +497,14 @@ export const Complaints = () => {
                             }}
                             className={`w-full flex items-center justify-between p-2.5 rounded-lg text-sm text-left transition-all cursor-pointer ${
                               isSelected 
-                                ? 'bg-violet-500/15 border border-violet-500/40 text-violet-600 dark:text-rose-300 font-semibold' 
+                                ? 'bg-white/10 border border-white/20 text-zinc-100 dark:text-rose-300 font-semibold' 
                                 : 'text-zinc-700 dark:text-gray-300 hover:bg-zinc-100 dark:hover:bg-white/[0.06] hover:text-zinc-900 dark:hover:text-white border border-transparent'
                             }`}
                           >
-                            <span className={isOther ? 'text-violet-600 dark:text-rose-400 font-semibold' : ''}>
+                            <span className={isOther ? 'text-zinc-100 dark:text-zinc-300 font-semibold' : ''}>
                               {isOther ? 'Other / Custom Area' : item}
                             </span>
-                            {isSelected && <Check size={16} className="text-violet-500 dark:text-rose-400" />}
+                            {isSelected && <Check size={16} className="text-zinc-100 dark:text-zinc-300" />}
                           </button>
                         );
                       })}
@@ -516,8 +516,8 @@ export const Complaints = () => {
                 {area === 'Other' && (
                   <div className="mt-3 p-3.5 rounded-xl bg-violet-50 dark:bg-rose-950/20 border border-violet-200 dark:border-rose-500/30 backdrop-blur-sm animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="flex items-center gap-2 mb-2">
-                      <MapPin size={14} className="text-violet-600 dark:text-rose-400" />
-                      <label className="text-[11px] font-bold tracking-widest text-violet-600 dark:text-rose-400 uppercase">
+                      <MapPin size={14} className="text-zinc-100 dark:text-zinc-300" />
+                      <label className="text-[11px] font-bold tracking-widest text-zinc-100 dark:text-zinc-300 uppercase">
                         Specify Custom Area / Neighborhood
                       </label>
                     </div>
@@ -527,7 +527,7 @@ export const Complaints = () => {
                       value={customArea}
                       onChange={(e) => setCustomArea(e.target.value)}
                       placeholder="e.g. C-Scheme, Shastri Nagar, Civil Lines, Tonk Phatak..."
-                      className="w-full bg-white dark:bg-black/50 border border-zinc-200 dark:border-white/10 rounded-lg p-2.5 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-gray-500 outline-none focus:border-violet-400 dark:focus:border-rose-400 transition-all shadow-inner"
+                      className="w-full bg-white dark:bg-black/50 border border-zinc-200 dark:border-white/10 rounded-lg p-2.5 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-gray-500 outline-none focus:border-white/20 dark:focus:border-rose-400 transition-all shadow-inner"
                       autoFocus
                     />
                   </div>
@@ -545,7 +545,7 @@ export const Complaints = () => {
                       onClick={() => setSeverity(level)}
                       className={`flex-1 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
                         severity === level 
-                          ? (level === 'Critical' ? 'bg-rose-500 border-rose-500 text-white shadow-sm' : 'bg-violet-500 border-violet-500 text-white shadow-sm')
+                          ? (level === 'Critical' ? 'bg-rose-500 border-rose-500 text-white shadow-sm' : 'bg-violet-500 border-white/20 text-white shadow-sm')
                           : 'bg-zinc-100 dark:bg-black/40 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-gray-400 hover:border-zinc-300 dark:hover:border-white/30'
                       }`}
                     >
@@ -561,9 +561,9 @@ export const Complaints = () => {
                 <button
                   type="button"
                   onClick={() => setIsSelectingLocation(true)}
-                  className="w-full flex items-center justify-center gap-2 bg-zinc-100 dark:bg-black/40 border border-dashed border-zinc-300 dark:border-white/20 hover:border-violet-500 dark:hover:border-rose-500 text-zinc-700 dark:text-gray-300 hover:text-violet-600 dark:hover:text-rose-400 p-3.5 rounded-xl transition-colors cursor-pointer text-sm font-medium"
+                  className="w-full flex items-center justify-center gap-2 bg-zinc-100 dark:bg-black/40 border border-dashed border-zinc-300 dark:border-white/20 hover:border-white/20 dark:hover:border-rose-500 text-zinc-700 dark:text-gray-300 hover:text-zinc-100 dark:hover:text-zinc-300 p-3.5 rounded-xl transition-colors cursor-pointer text-sm font-medium"
                 >
-                  <MapPin size={18} className="text-rose-500" />
+                  <MapPin size={18} className="text-zinc-300" />
                   <span>{selectedLocation ? `Pinned: ${selectedLocation[0].toFixed(4)}, ${selectedLocation[1].toFixed(4)}` : 'Click to Pin on Map'}</span>
                 </button>
               </div>

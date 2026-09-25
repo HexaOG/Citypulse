@@ -29,8 +29,8 @@ export const AirQuality = () => {
 
   const { aqi, pm25, pm10, ozone, status, isPoor, isModerate, synthesis } = aqiData;
 
-  const textColor = isPoor ? 'text-rose-500' : (isModerate ? 'text-amber-500' : 'text-rose-500');
-  const textColorMuted = isPoor ? 'text-rose-500/80' : (isModerate ? 'text-amber-500/80' : 'text-rose-500/80');
+  const textColor = isPoor ? 'text-zinc-300' : (isModerate ? 'text-amber-500' : 'text-zinc-300');
+  const textColorMuted = isPoor ? 'text-zinc-300/80' : (isModerate ? 'text-amber-500/80' : 'text-zinc-300/80');
   const borderLeft = isPoor ? 'border-l-rose-500' : (isModerate ? 'border-l-amber-500' : 'border-l-rose-500');
   const bgOpacity = isPoor ? 'bg-rose-500/20' : (isModerate ? 'bg-amber-500/20' : 'bg-rose-500/20');
 

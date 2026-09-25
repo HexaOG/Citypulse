@@ -65,7 +65,7 @@ export const TimeTravelSlider = () => {
   const progressPercent = Math.min(100, Math.max(0, ((replayOffsetHours + 48) / 48) * 100));
 
   return (
-    <div className="fixed bottom-4 left-1/2 -tranzinc-x-1/2 z-[1000] w-[90vw] max-w-[480px] pointer-events-auto bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl rounded-2xl p-3.5 flex flex-col gap-2.5 transition-all">
+    <div className="fixed bottom-4 left-1/2 -tranzinc-x-1/2 z-[1000] w-[90vw] max-w-[480px] pointer-events-auto bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl rounded-xl p-3.5 flex flex-col gap-2.5 transition-all">
       {/* Header Row: Label & Time Display */}
       <div className="flex justify-between items-center text-xs font-semibold tracking-wider">
         <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 uppercase text-[11px]">
@@ -94,7 +94,7 @@ export const TimeTravelSlider = () => {
               <button
                 onClick={handleReturnToLive}
                 title="Return to real-time live feed"
-                className="flex items-center gap-1 text-[11px] font-bold text-violet-600 dark:text-rose-400 hover:underline transition-all cursor-pointer"
+                className="flex items-center gap-1 text-[11px] font-bold text-zinc-100 dark:text-zinc-300 hover:underline transition-all cursor-pointer"
               >
                 <RotateCcw size={11} />
                 <span>Live</span>

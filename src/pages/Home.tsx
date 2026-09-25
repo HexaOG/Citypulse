@@ -103,8 +103,8 @@ export const Home = () => {
     const map: Record<string, string> = {
       emerald: 'bg-emerald-500/20 text-emerald-500 border-emerald-500/50',
       amber: 'bg-amber-500/20 text-amber-500 border-amber-500/50',
-      cyan: 'bg-rose-500/20 text-rose-500 border-rose-500/50',
-      rose: 'bg-rose-500/20 text-rose-500 border-rose-500/50'
+      cyan: 'bg-rose-500/20 text-zinc-300 border-rose-500/50',
+      rose: 'bg-rose-500/20 text-zinc-300 border-rose-500/50'
     };
     return map[color] || map.emerald;
   };
@@ -129,7 +129,7 @@ export const Home = () => {
         
         <div className="mt-24 ml-20 md:ml-24 max-w-6xl w-full mx-auto flex-1 flex flex-col pb-36 mb-12">
           {/* Hero / Pulse Overview */}
-          <div className={`p-8 mb-8 rounded-2xl flex items-center justify-between transition-all bg-white dark:bg-zinc-900/90 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-sm ${
+          <div className={`p-8 mb-8 rounded-xl flex items-center justify-between transition-all bg-white dark:bg-zinc-900/90 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800/80 shadow-sm ${
             replayOffsetHours < 0 ? 'border-l-4 border-l-amber-500 shadow-[0_8px_32px_rgba(245,158,11,0.15)]' : ''
           }`}>
             <div>
@@ -220,7 +220,7 @@ export const Home = () => {
                 <Link 
                   key={idx} 
                   to={mod.to} 
-                  className="group bg-white dark:bg-zinc-900/90 border border-zinc-200/90 dark:border-zinc-800/80 shadow-sm hover:shadow-md p-6 rounded-2xl transition-all duration-300 hover:scale-[1.01] cursor-pointer flex flex-col justify-between h-48 relative overflow-hidden"
+                  className="group bg-white dark:bg-zinc-900/90 border border-zinc-200/90 dark:border-zinc-800/80 shadow-sm hover:shadow-md p-6 rounded-xl transition-all duration-300 hover:scale-[1.01] cursor-pointer flex flex-col justify-between h-48 relative overflow-hidden"
                 >
                   <div className={`absolute -right-12 -top-12 w-48 h-48 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity ${
                     mod.color === 'emerald' ? 'bg-emerald-500' :
@@ -242,7 +242,7 @@ export const Home = () => {
                     <div className="text-sm text-zinc-600 dark:text-zinc-300 mb-1 font-mono font-medium">{mod.metric}</div>
                     <div className="flex items-center justify-between">
                       <h4 className="text-xl font-bold tracking-wider text-zinc-900 dark:text-white">{mod.title}</h4>
-                      <span className="text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-violet-600 dark:text-violet-400">
+                      <span className="text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-zinc-100 dark:text-zinc-100">
                         Inspect Stream <ArrowRight size={16} />
                       </span>
                     </div>

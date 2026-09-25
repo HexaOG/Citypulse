@@ -23,11 +23,11 @@ import { usePulseStore } from '../store/useStore';
 
 const CATEGORY_MAP: Record<string, { icon: any; color: string; bg: string }> = {
   'Power Outage': { icon: Zap, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-  'Waterlogging/Drainage': { icon: Droplets, color: 'text-rose-400', bg: 'bg-rose-500/10' },
+  'Waterlogging/Drainage': { icon: Droplets, color: 'text-zinc-300', bg: 'bg-rose-500/10' },
   'Pothole/Road Hazard': { icon: Construction, color: 'text-orange-400', bg: 'bg-orange-500/10' },
   'Broken Streetlight': { icon: Lightbulb, color: 'text-yellow-300', bg: 'bg-yellow-500/10' },
   'Fallen Tree/Debris': { icon: TreePine, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-  'Garbage/Sanitation': { icon: Trash2, color: 'text-rose-400', bg: 'bg-rose-500/10' },
+  'Garbage/Sanitation': { icon: Trash2, color: 'text-zinc-300', bg: 'bg-rose-500/10' },
   'Other': { icon: HelpCircle, color: 'text-purple-400', bg: 'bg-purple-500/10' }
 };
 
@@ -155,7 +155,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case 'Critical':
-        return 'bg-rose-500/20 text-rose-400 border-rose-500/40 shadow-[0_0_10px_rgba(244,63,94,0.3)]';
+        return 'bg-rose-500/20 text-zinc-300 border-rose-500/40 shadow-[0_0_10px_rgba(244,63,94,0.3)]';
       case 'High':
         return 'bg-orange-500/20 text-orange-400 border-orange-500/40';
       case 'Medium':
@@ -183,7 +183,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
           <div className={`p-2 rounded-xl transition-all ${
             replayOffsetHours < 0 
               ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-white' 
-              : 'bg-violet-500/15 text-violet-600 dark:text-violet-400 group-hover:bg-violet-500 group-hover:text-white'
+              : 'bg-white/10 text-zinc-100 dark:text-zinc-100 group-hover:bg-violet-500 group-hover:text-white'
           }`}>
             <MessageSquareText size={18} />
           </div>
@@ -193,7 +193,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border shadow-sm ${
             replayOffsetHours < 0 
               ? 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/40' 
-              : 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30'
+              : 'bg-zinc-800 text-zinc-300 dark:text-zinc-300 border-rose-500/30'
           }`}>
             {timeFilteredReports.length}
           </span>
@@ -202,7 +202,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
 
       {/* Main Community Feed Drawer Panel */}
       <aside
-        className={`fixed top-20 bottom-6 right-4 md:right-6 w-96 md:w-[430px] z-[1050] bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl rounded-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed top-20 bottom-6 right-4 md:right-6 w-96 md:w-[430px] z-[1050] bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl rounded-xl flex flex-col transition-transform duration-300 ease-in-out ${
           isCommunityDrawerOpen ? 'tranzinc-x-0 pointer-events-auto' : 'tranzinc-x-[calc(100%+32px)] pointer-events-none'
         }`}
       >
@@ -212,7 +212,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
           <div className={`p-2 rounded-xl border ${
             replayOffsetHours < 0
               ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30'
-              : 'bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/30'
+              : 'bg-white/10 text-zinc-100 dark:text-zinc-100 border-white/20'
           }`}>
             <MessageSquareText size={18} />
           </div>
@@ -222,7 +222,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
               <span className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-full border ${
                 replayOffsetHours < 0
                   ? 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/40'
-                  : 'bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/30'
+                  : 'bg-white/10 text-zinc-100 dark:text-zinc-100 border-white/20'
               }`}>
                 {sortedReports.length} Reports
               </span>
@@ -340,21 +340,21 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                       }}
                       className={`w-full text-left px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center justify-between cursor-pointer ${
                         isSelected
-                          ? 'bg-violet-500/10 text-violet-600 dark:text-violet-400 font-semibold'
+                          ? 'bg-violet-500/10 text-zinc-100 dark:text-zinc-100 font-semibold'
                           : 'text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
                       }`}
                     >
                       <div className="flex items-center gap-2 truncate">
                         {area === 'All Areas' ? (
-                          <Globe size={14} className={isSelected ? 'text-violet-500' : 'text-zinc-400'} />
+                          <Globe size={14} className={isSelected ? 'text-zinc-100' : 'text-zinc-400'} />
                         ) : (
-                          <MapPin size={14} className={isSelected ? 'text-violet-500' : 'text-zinc-400'} />
+                          <MapPin size={14} className={isSelected ? 'text-zinc-100' : 'text-zinc-400'} />
                         )}
                         <span className="truncate">
                           {area === 'All Areas' ? 'All City Areas' : (area === 'Other' ? 'Other Areas' : area)}
                         </span>
                       </div>
-                      {isSelected && <Check size={14} className="text-violet-500 shrink-0 ml-1" />}
+                      {isSelected && <Check size={14} className="text-zinc-100 shrink-0 ml-1" />}
                     </button>
                   );
                 })}
@@ -382,7 +382,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                 onClick={() => setSelectedCategory(pill.id)}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all whitespace-nowrap cursor-pointer border ${
                   isActive
-                    ? 'bg-violet-500 text-white font-medium border-violet-500 shadow-sm'
+                    ? 'bg-violet-500 text-white font-medium border-white/20 shadow-sm'
                     : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700'
                 }`}
               >
@@ -404,7 +404,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                 setSelectedAreaFilter('All Areas');
                 setSelectedCategory('All');
               }}
-              className="text-xs text-violet-500 hover:underline font-bold cursor-pointer"
+              className="text-xs text-zinc-100 hover:underline font-bold cursor-pointer"
             >
               Reset Filters
             </button>
@@ -425,19 +425,19 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                 }}
                 className={`group rounded-xl p-3 transition-all duration-200 cursor-pointer border shadow-sm relative overflow-hidden ${
                   isFocused
-                    ? 'bg-violet-50 dark:bg-violet-950/30 border-violet-500 ring-2 ring-violet-500/40 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
+                    ? 'bg-violet-50 dark:bg-violet-950/30 border-white/20 border-zinc-500 shadow-2xl'
                     : 'bg-zinc-50 dark:bg-zinc-800/80 hover:bg-white dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/60 shadow-sm'
                 }`}
               >
                 {/* Header: ID, Timestamp, Severity Badge */}
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-zinc-500 dark:text-zinc-400 group-hover:text-violet-500 transition-colors">
+                    <span className="font-mono text-xs font-bold text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-100 transition-colors">
                       #{report.id}
                     </span>
                     <span className="text-[11px] text-zinc-500 dark:text-zinc-400">• {report.timestamp}</span>
                     {report.isNew && (
-                      <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-violet-500/20 text-violet-600 dark:text-violet-300 border border-violet-500/40 animate-pulse">
+                      <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-violet-500/20 text-zinc-100 dark:text-violet-300 border border-white/20 animate-pulse">
                         NEW
                       </span>
                     )}
@@ -462,7 +462,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
 
                 {/* Location Street Row */}
                 <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 mb-2.5 pl-1">
-                  <MapPin size={13} className="text-rose-500 dark:text-rose-400 shrink-0" />
+                  <MapPin size={13} className="text-zinc-300 dark:text-zinc-300 shrink-0" />
                   <span className="truncate">{report.street}</span>
                 </div>
 
@@ -477,14 +477,14 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                     }}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
                       report.userConfirmed
-                        ? 'bg-violet-500 text-white border-violet-500 shadow-sm'
+                        ? 'bg-violet-500 text-white border-white/20 shadow-sm'
                         : 'bg-white dark:bg-zinc-700/60 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-600'
                     }`}
                   >
                     {report.userConfirmed ? (
                       <CheckCircle2 size={13} className="text-white" />
                     ) : (
-                      <span className="text-violet-500">▲</span>
+                      <span className="text-zinc-100">▲</span>
                     )}
                     <span>
                       {report.userConfirmed ? 'Confirmed' : 'Confirm Issue'} ({report.confirmations})
@@ -501,7 +501,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
                     }}
                     className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-zinc-700/60 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-[11px] font-bold text-zinc-600 dark:text-zinc-300 transition-colors cursor-pointer border border-zinc-200 dark:border-zinc-600"
                   >
-                    <Crosshair size={13} className="text-violet-500" />
+                    <Crosshair size={13} className="text-zinc-100" />
                     <span>Focus Pin</span>
                   </button>
                 </div>

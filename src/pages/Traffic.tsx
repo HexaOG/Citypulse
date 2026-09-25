@@ -21,7 +21,7 @@ export const Traffic = () => {
 
   const { congestion, delay, incidents, isCritical, isWarning, synthesis } = trafficData;
 
-  const textColor = isCritical ? 'text-rose-500' : (isWarning ? 'text-amber-500' : 'text-emerald-500');
+  const textColor = isCritical ? 'text-zinc-300' : (isWarning ? 'text-amber-500' : 'text-emerald-500');
   const borderLeft = isCritical ? 'border-l-rose-500' : (isWarning ? 'border-l-amber-500' : 'border-l-emerald-500');
   const bgOpacity = isCritical ? 'bg-rose-500/20' : (isWarning ? 'bg-amber-500/20' : 'bg-emerald-500/20');
 

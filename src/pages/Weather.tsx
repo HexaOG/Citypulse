@@ -78,7 +78,7 @@ export const Weather = () => {
 
   const isRain = precip > 2;
   const isStorm = precip > 6;
-  const themeColor = isStorm ? 'text-amber-400' : (isRain ? 'text-rose-400' : 'text-emerald-500');
+  const themeColor = isStorm ? 'text-amber-400' : (isRain ? 'text-zinc-300' : 'text-emerald-500');
   const borderLeft = isStorm ? 'border-l-amber-500' : (isRain ? 'border-l-rose-500' : 'border-l-emerald-500');
   const bgOpacity = isStorm ? 'bg-amber-500/20' : (isRain ? 'bg-rose-500/20' : 'bg-emerald-500/20');
 
@@ -145,7 +145,7 @@ export const Weather = () => {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center bg-black/20 p-2.5 rounded-lg border border-white/5">
-                  <span className="text-xs text-gray-400 flex items-center gap-1.5"><Droplets size={13} className="text-rose-400" /> Precipitation</span>
+                  <span className="text-xs text-gray-400 flex items-center gap-1.5"><Droplets size={13} className="text-zinc-300" /> Precipitation</span>
                   <span className="font-mono text-sm font-bold text-white">{precip.toFixed(1)} mm</span>
                 </div>
                 <div className="flex justify-between items-center bg-black/20 p-2.5 rounded-lg border border-white/5">
@@ -208,7 +208,7 @@ export const Weather = () => {
                 {forecastPoints.map((f, i) => (
                   <div key={i} className="flex flex-col items-center gap-1.5 px-2">
                     <span className="text-[10px] text-gray-400 font-semibold">+{f.hourOffset} HR</span>
-                    {getWeatherIcon(f.condition, `w-5 h-5 ${f.precip > 6 ? 'text-amber-400' : (f.precip > 2 ? 'text-rose-400' : 'text-emerald-400')}`)}
+                    {getWeatherIcon(f.condition, `w-5 h-5 ${f.precip > 6 ? 'text-amber-400' : (f.precip > 2 ? 'text-zinc-300' : 'text-emerald-400')}`)}
                     <span className="font-mono text-sm font-bold text-white mt-0.5">{f.temp}°C</span>
                   </div>
                 ))}
