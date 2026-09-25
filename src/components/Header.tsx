@@ -1,24 +1,11 @@
-import type { ChangeEvent } from 'react';
 import { usePulseStore } from '../store/useStore';
-import { Radio, CloudRain, Sun, Moon } from 'lucide-react';
+import { Radio, Sun, Moon } from 'lucide-react';
 
 export const Header = () => {
   const connected = usePulseStore(state => state.connected);
   const isSimulated = usePulseStore(state => state.isSimulated);
-  const scenario = usePulseStore(state => state.scenario);
-  const setScenario = usePulseStore(state => state.setScenario);
   const theme = usePulseStore(state => state.theme);
   const toggleTheme = usePulseStore(state => state.toggleTheme);
-  
-  const handleScenarioChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value;
-    setScenario(val);
-    fetch('http://localhost:8000/api/scenario', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scenario: val })
-    }).catch(() => {});
-  };
   
   return (
     <div className="absolute top-0 left-0 right-0 z-10 flex justify-between items-start p-6 pointer-events-auto">
@@ -28,18 +15,6 @@ export const Header = () => {
       </div>
       
       <div className="flex items-center gap-3">
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 shadow-sm rounded-2xl px-4 py-2 flex items-center gap-3">
-          <CloudRain size={16} className="text-sky-500" />
-          <select 
-            value={scenario}
-            onChange={handleScenarioChange}
-            className="bg-transparent border-none text-sm outline-none cursor-pointer text-slate-800 dark:text-slate-100 font-medium"
-          >
-            <option value="normal" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">Scenario: Normal Operations</option>
-            <option value="storm" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100">Scenario: Severe Storm Surge</option>
-          </select>
-        </div>
-        
         <div className={`bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl px-4 py-2 flex items-center gap-2 text-sm font-semibold ${
           connected ? 'text-emerald-600 dark:text-accent-green' : (isSimulated ? 'text-sky-600 dark:text-cyan-400' : 'text-rose-600 dark:text-accent-red')
         }`}>
