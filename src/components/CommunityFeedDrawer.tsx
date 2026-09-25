@@ -290,7 +290,7 @@ export const CommunityFeedDrawer = ({ onOpenReportModal }: CommunityFeedDrawerPr
       )}
 
       {/* Filter & Sort Controls */}
-      <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 space-y-3 bg-zinc-50/80 dark:bg-zinc-900/50">
+      <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 space-y-3 bg-zinc-50/80 dark:bg-zinc-900/50 relative z-20">
         {/* Row 1: Area Dropdown & Sort Toggle */}
         <div className="flex gap-2 items-center">
           <div className="flex-1 relative" ref={areaDropdownRef}>
