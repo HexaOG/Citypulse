@@ -2,9 +2,17 @@ import { useMemo } from 'react';
 import { Header } from '../components/Header';
 import { CivicMap } from '../components/CivicMap';
 import { TimeTravelSlider } from '../components/TimeTravelSlider';
-import { CloudRain, Wind, Droplets, History, RotateCcw } from 'lucide-react';
+import { CloudRain, Wind, Droplets, History, RotateCcw, Cloud, Sun, CloudLightning, Moon } from 'lucide-react';
 import { usePulseStore } from '../store/useStore';
 import { getHistoricalWeather } from '../utils/historicalSimulation';
+
+const getWeatherIcon = (condition: string, className = "") => {
+  if (condition.includes("Thunderstorm")) return <CloudLightning className={className} />;
+  if (condition.includes("Rain") || condition.includes("Showers")) return <CloudRain className={className} />;
+  if (condition.includes("Sunny")) return <Sun className={className} />;
+  if (condition.includes("Night")) return <Moon className={className} />;
+  return <Cloud className={className} />;
+};
 
 export const Weather = () => {
   const events = usePulseStore(state => state.events);
@@ -30,6 +38,20 @@ export const Weather = () => {
   const themeColor = isStorm ? 'text-amber-400' : (isRain ? 'text-cyan-400' : 'text-emerald-500');
   const borderLeft = isStorm ? 'border-l-amber-500' : (isRain ? 'border-l-cyan-500' : 'border-l-emerald-500');
   const bgOpacity = isStorm ? 'bg-amber-500/20' : (isRain ? 'bg-cyan-500/20' : 'bg-emerald-500/20');
+
+  // Generate 4 forecast points (e.g. +1h, +3h, +6h, +12h) based on the current replay hour
+  const forecastPoints = useMemo(() => {
+    return [1, 3, 6, 12].map(offset => {
+      // Simulate future by shifting the simulation timeline
+      const fData = getHistoricalWeather(replayOffsetHours - offset, {
+        temp: latestWeather?.rawMetrics?.temperature,
+        precip: latestWeather?.rawMetrics?.precipitation,
+        wind: latestWeather?.rawMetrics?.windSpeed,
+        condition: latestWeather?.category
+      });
+      return { hourOffset: offset, ...fData };
+    });
+  }, [replayOffsetHours, latestWeather]);
 
   return (
     <div className="relative w-full h-full">
@@ -134,6 +156,23 @@ export const Weather = () => {
                 {synthesis}
               </div>
             </div>
+            
+            {/* Future Prediction Bar */}
+            <div className="glass-panel p-4 flex flex-col gap-3 w-80 pointer-events-auto">
+              <div className="text-xs uppercase tracking-widest font-bold text-gray-400 mb-1 flex items-center justify-between">
+                <span>Forecast Projection</span>
+              </div>
+              <div className="flex justify-between items-center w-full">
+                {forecastPoints.map((f, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5 px-2">
+                    <span className="text-[10px] text-gray-400 font-semibold">+{f.hourOffset} HR</span>
+                    {getWeatherIcon(f.condition, `w-5 h-5 ${f.precip > 6 ? 'text-amber-400' : (f.precip > 2 ? 'text-cyan-400' : 'text-emerald-400')}`)}
+                    <span className="font-mono text-sm font-bold text-white mt-0.5">{f.temp}°C</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
         
